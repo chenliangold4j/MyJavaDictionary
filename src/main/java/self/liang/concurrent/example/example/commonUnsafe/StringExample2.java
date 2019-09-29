@@ -10,6 +10,7 @@ import java.util.concurrent.Semaphore;
 
 @Slf4j
 @ThreadSafe
+//StringBuffer线程安全
 public class StringExample2 {
 
     // 请求总数
