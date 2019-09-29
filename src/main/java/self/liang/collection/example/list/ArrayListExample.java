@@ -10,5 +10,5 @@ public class ArrayListExample {
        //可以考虑看一下源码最后的排序。。归并排序
         ArrayList<Integer> arrayList = new ArrayList<>();
     }
-    
+
 }
