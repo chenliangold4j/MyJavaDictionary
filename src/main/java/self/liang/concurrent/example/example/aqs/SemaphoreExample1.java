@@ -15,6 +15,7 @@ public class SemaphoreExample1 {
 
         ExecutorService exec = Executors.newCachedThreadPool();
 
+        //控制进程并发数量
         final Semaphore semaphore = new Semaphore(3);
 
         for (int i = 0; i < threadCount; i++) {
