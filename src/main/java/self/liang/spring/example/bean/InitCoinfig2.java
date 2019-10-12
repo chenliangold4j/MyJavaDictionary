@@ -3,15 +3,17 @@ package self.liang.spring.example.bean;
 import org.springframework.context.annotation.*;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 import self.liang.spring.example.bean.conditions.LinuxCondition;
+import self.liang.spring.example.bean.conditions.MyImportBeanDefinnitionRegister;
 import self.liang.spring.example.bean.conditions.MyImportSelector;
 import self.liang.spring.example.bean.conditions.WindowsCondition;
 import self.liang.spring.example.bean.simulate.Color;
+import self.liang.spring.example.bean.simulate.ColorFaceotryBean;
 import self.liang.spring.example.bean.simulate.Skin;
 
 @Configuration
 @Conditional(value =  {WindowsCondition.class
 })//如果满足条件。则类下的bean都会被注册
-@Import({Color.class, Skin.class, MyImportSelector.class})
+@Import({Color.class, Skin.class, MyImportSelector.class, MyImportBeanDefinnitionRegister.class})
 public class InitCoinfig2 {
 
     @Bean("dog2")
@@ -42,4 +44,8 @@ public class InitCoinfig2 {
         return new Person("jobs",54);
     }
 
+    @Bean
+    public ColorFaceotryBean colorFaceotryBean(){
+        return new ColorFaceotryBean();
+    }
 }

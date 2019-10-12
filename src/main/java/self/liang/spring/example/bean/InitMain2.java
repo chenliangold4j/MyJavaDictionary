@@ -3,6 +3,7 @@ package self.liang.spring.example.bean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.env.Environment;
+import self.liang.spring.example.bean.simulate.Email;
 
 import java.util.Map;
 
@@ -25,6 +26,12 @@ public class InitMain2 {
 //        Object o3 = ctx.getBean("dog2");
         Map<String,Person> map = ctx.getBeansOfType(Person.class);
         System.out.println(map);
+        Email email = (Email) ctx.getBean("Email");
+        email.send();
 
+        Object object = ctx.getBean("colorFaceotryBean");
+        System.out.println(object.getClass());
+        Object objectFactory = ctx.getBean("&colorFaceotryBean");
+        System.out.println(objectFactory.getClass());
     }
 }

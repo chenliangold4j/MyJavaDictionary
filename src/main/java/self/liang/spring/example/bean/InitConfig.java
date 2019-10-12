@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 })
 public class InitConfig {
 
+
+
     //id为方法名
     @Bean("dogN")
     public Dog dog() {

@@ -1,6 +1,7 @@
 package self.liang.spring.example.bean;
 
 public class Person {
+
     String name;
     int id;
 
