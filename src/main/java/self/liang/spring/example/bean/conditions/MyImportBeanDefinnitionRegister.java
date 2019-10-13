@@ -12,6 +12,7 @@ public class MyImportBeanDefinnitionRegister implements ImportBeanDefinitionRegi
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
+        //注册bean
         if( !registry.containsBeanDefinition("Email")){
             RootBeanDefinition rootBeanDefinition = new RootBeanDefinition(Email.class);
             registry.registerBeanDefinition("Email",rootBeanDefinition);
