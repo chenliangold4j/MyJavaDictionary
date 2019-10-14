@@ -1,6 +1,6 @@
 package self.liang.concurrent.example.example.singleton;
 
-import com.mmall.concurrency.annoations.NotRecommend;
+import self.liang.concurrent.example.annoations.NotRecommend;
 import self.liang.concurrent.example.annoations.ThreadSafe;
 
 /**

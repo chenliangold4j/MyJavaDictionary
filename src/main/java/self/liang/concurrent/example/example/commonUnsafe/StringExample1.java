@@ -10,6 +10,7 @@ import java.util.concurrent.Semaphore;
 
 @Slf4j
 @NotThreadSafe
+//证明了stirngbuilder线程不安全
 public class StringExample1 {
 
     // 请求总数
@@ -17,6 +18,7 @@ public class StringExample1 {
 
     // 同时并发执行的线程数
     public static int threadTotal = 200;
+
 
     public static StringBuilder stringBuilder = new StringBuilder();
 
