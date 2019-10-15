@@ -30,15 +30,37 @@ public class MyList implements Spliterator<Integer> {
     public int characteristics() {
         return 0;
     }
+    
+    int  i ;
+    
+    MyList(int i){
+       this.i = i;
+    }
+    
+    public int getI()
+   {
+      return i;
+   }
 
-    public static void main(String[] args) {
+   public void setI(int i)
+   {
+      this.i = i;
+   }
+
+   
+   public static void main(String[] args) {
         Object[] test = new MyList[3];
-        test[0] = new MyList();
-        test[1] = new MyList();
-        test[2] = new MyList();
+        test[0] = new MyList(1);
+        test[1] = new MyList(2);
+        test[2] = new MyList(3);
       for(MyList myList:copyOf(test,2,MyList[].class)){
-          System.out.println(myList);
+           myList.setI(5);
+           System.out.println(myList);
       }
+      
+      for(Object myList:test){
+         System.out.println(myList);
+     }
     }
 
     public static <T,U> T[] copyOf(U[] original, int newLength, Class<? extends T[]> newType) {
@@ -54,8 +76,12 @@ public class MyList implements Spliterator<Integer> {
         return copy;
     }
 
-    @Override
-    public String toString() {
-        return "MyList{}";
-    }
+   @Override
+   public String toString()
+   {
+      return "MyList [i=" + i + "]";
+   }
+
+    
+    
 }
