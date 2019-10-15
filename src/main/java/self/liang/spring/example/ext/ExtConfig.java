@@ -1,7 +1,13 @@
 package self.liang.spring.example.ext;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import self.liang.spring.example.lifecycle.Car;
+
+import java.util.Map;
 
 /**
  * 扩展原理
@@ -32,11 +38,33 @@ import org.springframework.context.annotation.Configuration;
  *              ContextRefreshedEvent：容器刷新事件会发布这个事件
  *              ContextClosedEvent：关闭容器事件
  *      4）发布一个事件
+ *
+ * 原理：
+ *       ContextRefreshedEvent
+ *      初始化完成并调用
+ *          getApplicationEventMulticaster获取多播器
+ *          multicastEvent广播事件
+ *              获取所有applicationListener并转发
+ *
  */
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Configuration
 @ComponentScan("self.liang.spring.example.ext")
 public class ExtConfig {
 
+        @Autowired
+        @Qualifier("systemEnvironment")
+        Map<String,Object> en;
+
+
+        @Bean
+        public Car car(){
+            for(String key:en.keySet()){
+                System.out.println("-----------");
+                System.out.println(key+":"+en.get(key));
+            }
+            return new Car();
+        }
 
 
 
