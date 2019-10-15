@@ -47,16 +47,12 @@ public class MyConfigOfProfile implements EmbeddedValueResolverAware {
 
     @Profile("dev")
     @Bean("devDataSource")
-    public DataSource dataSourceDev(@Value("${db.password}") String pwd){
+    public DataSource dataSourceDev(@Value("${db.password}") String pwd) throws PropertyVetoException {
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
         dataSource.setUser(username);
         dataSource.setPassword(pwd);
         dataSource.setJdbcUrl("jdbc:mysql://192.168.3.4:3306/formydic2");
-        try {
-            dataSource.setDriverClass(resolver.resolveStringValue("${db.driverClass}"));
-        } catch (PropertyVetoException e) {
-            e.printStackTrace();
-        }
+        dataSource.setDriverClass("com.mysql.jdb.Driver");
         return dataSource;
     }
 
