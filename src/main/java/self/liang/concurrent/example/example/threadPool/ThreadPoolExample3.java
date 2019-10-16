@@ -1,6 +1,6 @@
 package self.liang.concurrent.example.example.threadPool;
 
-import jdk.internal.instrumentation.Logger;
+import org.slf4j.Logger;
 
 import self.liang.log.example.TestLogger;
 

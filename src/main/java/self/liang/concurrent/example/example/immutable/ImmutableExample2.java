@@ -1,7 +1,7 @@
 package self.liang.concurrent.example.example.immutable;
 
 import com.google.common.collect.Maps;
-import jdk.internal.instrumentation.Logger;
+import org.slf4j.Logger;
 import self.liang.concurrent.example.annoations.ThreadSafe;
 
 import self.liang.log.example.TestLogger;

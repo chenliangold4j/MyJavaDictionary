@@ -1,6 +1,6 @@
 package self.liang.concurrent.example.example.publish;
 
-import jdk.internal.instrumentation.Logger;
+import org.slf4j.Logger;
 
 import self.liang.concurrent.example.annoations.NotRecommend;
 import self.liang.concurrent.example.annoations.NotThreadSafe;

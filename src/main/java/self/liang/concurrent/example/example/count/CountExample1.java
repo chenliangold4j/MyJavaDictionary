@@ -1,6 +1,6 @@
 package self.liang.concurrent.example.example.count;
 
-import jdk.internal.instrumentation.Logger;
+import org.slf4j.Logger;
 import self.liang.concurrent.example.annoations.NotThreadSafe;
 import self.liang.log.example.TestLogger;
 

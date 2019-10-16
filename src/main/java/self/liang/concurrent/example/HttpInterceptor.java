@@ -1,7 +1,7 @@
 package self.liang.concurrent.example;
 
 
-import jdk.internal.instrumentation.Logger;
+import org.slf4j.Logger;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import self.liang.concurrent.example.example.threadLocal.RequestHolder;
 import self.liang.log.example.TestLogger;

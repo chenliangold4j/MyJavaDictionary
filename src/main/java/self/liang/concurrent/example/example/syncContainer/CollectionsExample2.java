@@ -1,7 +1,7 @@
 package self.liang.concurrent.example.example.syncContainer;
 
 import com.google.common.collect.Sets;
-import jdk.internal.instrumentation.Logger;
+import org.slf4j.Logger;
 import self.liang.concurrent.example.annoations.ThreadSafe;
 
 import self.liang.log.example.TestLogger;

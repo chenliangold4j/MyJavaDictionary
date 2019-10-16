@@ -1,7 +1,9 @@
 package self.liang.concurrent.example.example.syncContainer;
 
 import com.google.common.collect.Lists;
+import org.slf4j.Logger;
 import self.liang.concurrent.example.annoations.ThreadSafe;
+import self.liang.log.example.TestLogger;
 
 
 import java.util.Collections;
@@ -14,7 +16,7 @@ import java.util.concurrent.Semaphore;
 
 @ThreadSafe
 public class CollectionsExample1 {
-
+    private static Logger log= new TestLogger();
     // 请求总数
     public static int clientTotal = 5000;
 
@@ -42,7 +44,7 @@ public class CollectionsExample1 {
         }
         countDownLatch.await();
         executorService.shutdown();
-        log.info("size:{}", list.size());
+        log.info("size:{}"+ list.size());
     }
 
     private static void update(int i) {

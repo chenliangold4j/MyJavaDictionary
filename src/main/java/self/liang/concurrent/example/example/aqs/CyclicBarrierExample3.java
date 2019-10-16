@@ -2,13 +2,16 @@ package self.liang.concurrent.example.example.aqs;
 
 
 
+import org.slf4j.Logger;
+import self.liang.log.example.TestLogger;
+
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
 public class CyclicBarrierExample3 {
-
+    private static Logger log= new TestLogger();
     private static CyclicBarrier barrier = new CyclicBarrier(5, () -> {
         log.info("callback is running");
     });
@@ -33,8 +36,8 @@ public class CyclicBarrierExample3 {
 
     private static void race(int threadNum) throws Exception {
         Thread.sleep(1000);
-        log.info("{} is ready", threadNum);
+        log.info("{} is ready"+ threadNum);
         barrier.await();
-        log.info("{} continue", threadNum);
+        log.info("{} continue"+threadNum);
     }
 }

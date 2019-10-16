@@ -1,0 +1,26 @@
+1.web容器加载的时候扫描到spring-web的jar包下的META-INF/services/javax.servlet.ServletContainerInitializer
+2.加载这个文件指定的类SpringServletContainerInitializer
+3.spring的应用一启动会加载感兴趣的WebApplicationInitializer接口下的所有组件
+4.并且为WebApplicationInitializer组件创建对象（不是接口和抽象类)
+    1）AbstractContextLoaderInitializer:创建根容器：WebApplicationContext
+    2）AbstractDispatcherServletInitializer
+            创建一个web容器：WebApplicationContext servletAppContext = createServletApplicationContext();
+            创建一个DispatcherServlet：FrameworkServlet dispatcherServlet = createDispatcherServlet(servletAppContext);
+            将创建的DispatcherServlet添加到servletContext.addServlet(servletName, dispatcherServlet);
+                    registration.setLoadOnStartup(1);
+                    registration.addMapping(getServletMappings());//我们重写getServletMappings（）来设置拦截
+                    registration.setAsyncSupported(isAsyncSupported());
+    3）AbstractAnnotationConfigDispatcherServletInitializer：注解方式的DispatcherServlet初始化器
+            创建根容器createRootApplicationContext()
+                    getRootConfigClasses();获取配置类
+            创建web容器createServletApplicationContext()
+                    Class<?>[] configClasses = getServletConfigClasses();//获取配置类并创建
+总结：
+    以注解方式启动springMVC；实现AbstractAnnotationConfigDispatcherServletInitializer
+    实现抽象方法，执行配置信息
+
+==============定制springMVC===============
+@EnableWebMvc 开启springMVC定制配置功能
+ <mvc:annotation-driven/>
+
+视图解析，视图映射，静态资源映射，等等

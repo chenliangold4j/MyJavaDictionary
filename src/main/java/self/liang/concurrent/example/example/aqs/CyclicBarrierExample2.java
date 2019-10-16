@@ -1,7 +1,7 @@
 package self.liang.concurrent.example.example.aqs;
 
 
-import jdk.internal.instrumentation.Logger;
+import org.slf4j.Logger;
 import self.liang.log.example.TestLogger;
 
 import java.util.concurrent.CyclicBarrier;
