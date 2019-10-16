@@ -1,6 +1,8 @@
 package self.liang.concurrent.example.example.lock;
 
-import lombok.extern.slf4j.Slf4j;
+import jdk.internal.instrumentation.Logger;
+
+import self.liang.log.example.TestLogger;
 
 import java.util.Map;
 import java.util.Set;
@@ -8,8 +10,10 @@ import java.util.TreeMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-@Slf4j
+
 public class LockExample3 {
+
+    private static Logger log= new TestLogger();
 
     private final Map<String, Data> map = new TreeMap<>();
 

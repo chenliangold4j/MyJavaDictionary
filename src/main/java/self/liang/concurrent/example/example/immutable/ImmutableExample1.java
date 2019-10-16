@@ -1,15 +1,18 @@
 package self.liang.concurrent.example.example.immutable;
 
 import com.google.common.collect.Maps;
+import jdk.internal.instrumentation.Logger;
 import self.liang.concurrent.example.annoations.NotThreadSafe;
-import lombok.extern.slf4j.Slf4j;
+
+import self.liang.log.example.TestLogger;
 
 import java.util.Map;
 
-@Slf4j
+
 @NotThreadSafe
 public class ImmutableExample1 {
 
+    private static Logger log= new TestLogger();
     private final static Integer a = 1;
     private final static String b = "2";
     private final static Map<Integer, Integer> map = Maps.newHashMap();
@@ -25,7 +28,7 @@ public class ImmutableExample1 {
 //        b = "3";
 //        map = Maps.newHashMap();
         map.put(1, 3);
-        log.info("{}", map.get(1));
+        log.info("{}"+ map.get(1));
     }
 
     private void test(final int a) {

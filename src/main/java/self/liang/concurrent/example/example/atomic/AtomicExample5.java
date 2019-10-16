@@ -1,33 +1,32 @@
 package self.liang.concurrent.example.example.atomic;
 
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import jdk.internal.instrumentation.Logger;
 import self.liang.concurrent.example.annoations.ThreadSafe;
+import self.liang.log.example.TestLogger;
 
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
-@Slf4j
 @ThreadSafe
 public class AtomicExample5 {
 
+    private static Logger log= new TestLogger();
     private static AtomicIntegerFieldUpdater<AtomicExample5> updater =
             AtomicIntegerFieldUpdater.newUpdater(AtomicExample5.class, "count");
 
-    @Getter
-    public volatile int count = 100;
+    public static volatile int count = 100;
 
     public static void main(String[] args) {
 
         AtomicExample5 example5 = new AtomicExample5();
 
         if (updater.compareAndSet(example5, 100, 120)) {
-            log.info("update success 1, {}", example5.getCount());
+            log.info("update success 1, {}"+count);
         }
 
         if (updater.compareAndSet(example5, 100, 120)) {
-            log.info("update success 2, {}", example5.getCount());
+            log.info("update success 2, {}"+count);
         } else {
-            log.info("update failed, {}", example5.getCount());
+            log.info("update failed, {}"+count);
         }
     }
 }

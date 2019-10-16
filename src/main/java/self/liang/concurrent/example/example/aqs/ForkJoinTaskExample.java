@@ -1,14 +1,14 @@
 package self.liang.concurrent.example.example.aqs;
 
-import lombok.extern.slf4j.Slf4j;
+import jdk.internal.instrumentation.Logger;
+import self.liang.log.example.TestLogger;
 
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.RecursiveTask;
 
-@Slf4j
 public class ForkJoinTaskExample extends RecursiveTask<Integer> {
-
+    private static Logger log= new TestLogger();
     public static final int threshold = 2;
     private int start;
     private int end;
@@ -58,7 +58,7 @@ public class ForkJoinTaskExample extends RecursiveTask<Integer> {
         Future<Integer> result = forkjoinPool.submit(task);
 
         try {
-            log.info("result:{}", result.get());
+            log.info("result:{}"+result.get());
         } catch (Exception e) {
             log.error("exception", e);
         }

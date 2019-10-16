@@ -1,6 +1,6 @@
 package self.liang.concurrent.example.example.lock;
 
-import lombok.extern.slf4j.Slf4j;
+
 import self.liang.concurrent.example.annoations.ThreadSafe;
 
 import java.util.concurrent.CountDownLatch;
@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.StampedLock;
 
-@Slf4j
+
 @ThreadSafe
 public class LockExample5 {
 

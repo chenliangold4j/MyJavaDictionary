@@ -1,7 +1,9 @@
 package self.liang.concurrent.example.example.syncContainer;
 
+import jdk.internal.instrumentation.Logger;
 import self.liang.concurrent.example.annoations.ThreadSafe;
-import lombok.extern.slf4j.Slf4j;
+
+import self.liang.log.example.TestLogger;
 
 import java.util.Hashtable;
 import java.util.Map;
@@ -10,10 +12,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 
-@Slf4j
+
 @ThreadSafe
 public class HashTableExample {
 
+    private static Logger log= new TestLogger();
     // 请求总数
     public static int clientTotal = 5000;
 
@@ -41,7 +44,7 @@ public class HashTableExample {
         }
         countDownLatch.await();
         executorService.shutdown();
-        log.info("size:{}", map.size());
+        log.info("size:{}"+ map.size());
     }
 
     private static void update(int i) {

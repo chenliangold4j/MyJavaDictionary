@@ -1,14 +1,15 @@
 package self.liang.concurrent.example.example.atomic;
 
-import lombok.extern.slf4j.Slf4j;
+import jdk.internal.instrumentation.Logger;
 import self.liang.concurrent.example.annoations.ThreadSafe;
+import self.liang.log.example.TestLogger;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-@Slf4j
 @ThreadSafe
 public class AtomicExample4 {
 
+    private static Logger log= new TestLogger();
     private static AtomicReference<Integer> count = new AtomicReference<>(0);
 
     public static void main(String[] args) {

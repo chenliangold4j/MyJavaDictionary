@@ -1,12 +1,16 @@
 package self.liang.concurrent.example.example.threadPool;
 
-import lombok.extern.slf4j.Slf4j;
+import jdk.internal.instrumentation.Logger;
+
+import self.liang.log.example.TestLogger;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Slf4j
+
 public class ThreadPoolExample3 {
+
+    private static Logger log= new TestLogger();
 
     public static void main(String[] args) {
 
@@ -17,7 +21,7 @@ public class ThreadPoolExample3 {
             executorService.execute(new Runnable() {
                 @Override
                 public void run() {
-                    log.info("task:{}", index);
+                    log.info("task:{}"+ index);
                 }
             });
         }

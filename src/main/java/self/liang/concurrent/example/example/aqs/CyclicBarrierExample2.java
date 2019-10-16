@@ -1,15 +1,16 @@
 package self.liang.concurrent.example.example.aqs;
 
-import lombok.extern.slf4j.Slf4j;
+
+import jdk.internal.instrumentation.Logger;
+import self.liang.log.example.TestLogger;
 
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-@Slf4j
 public class CyclicBarrierExample2 {
-
+    private static Logger log= new TestLogger();
     private static CyclicBarrier barrier = new CyclicBarrier(5);
 
     public static void main(String[] args) throws Exception {
@@ -32,12 +33,12 @@ public class CyclicBarrierExample2 {
 
     private static void race(int threadNum) throws Exception {
         Thread.sleep(1000);
-        log.info("{} is ready", threadNum);
+        log.info("{} is ready"+threadNum);
         try {
             barrier.await(2000, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
-            log.warn("BarrierException", e);
+            log.warn("BarrierException"+ e);
         }
-        log.info("{} continue", threadNum);
+        log.info("{} continue"+threadNum);
     }
 }

@@ -1,6 +1,6 @@
 package self.liang.concurrent.example.example.deadLock;
 
-import lombok.extern.slf4j.Slf4j;
+
 
 /**
  * 一个简单的死锁类
@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
  * td1、td2相互等待，都需要得到对方锁定的资源才能继续执行，从而死锁。
  */
 
-@Slf4j
+
 public class DeadLock implements Runnable {
     public int flag = 1;
     //静态对象是类的所有对象共享的

@@ -1,15 +1,16 @@
 package self.liang.concurrent.example.example.aqs;
 
-import lombok.extern.slf4j.Slf4j;
+import jdk.internal.instrumentation.Logger;
+import self.liang.log.example.TestLogger;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-@Slf4j
 public class FutureExample {
 
+    private static Logger log= new TestLogger();
     static class MyCallable implements Callable<String> {
 
         @Override
@@ -26,6 +27,6 @@ public class FutureExample {
         log.info("do something in main");
         Thread.sleep(1000);
         String result = future.get();
-        log.info("result：{}", result);
+        log.info("result：{}"+result);
     }
 }

@@ -1,7 +1,8 @@
 package self.liang.concurrent.example.example.count;
 
+import jdk.internal.instrumentation.Logger;
 import self.liang.concurrent.example.annoations.ThreadSafe;
-import lombok.extern.slf4j.Slf4j;
+import self.liang.log.example.TestLogger;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -9,10 +10,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Slf4j
 @ThreadSafe
 public class CountExample2 {
 
+    private static Logger log= new TestLogger();
     // 请求总数
     public static int clientTotal = 5000;
 
@@ -39,7 +40,7 @@ public class CountExample2 {
         }
         countDownLatch.await();
         executorService.shutdown();
-        log.info("count:{}", count.get());
+        log.info("count:{}"+ count.get());
     }
 
     private static void add() {

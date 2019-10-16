@@ -1,12 +1,17 @@
 package self.liang.concurrent.example.example.lock;
 
-import lombok.extern.slf4j.Slf4j;
+
+
+import jdk.internal.instrumentation.Logger;
+import self.liang.log.example.TestLogger;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-@Slf4j
+
 public class LockExample6 {
+
+    private static Logger log= new TestLogger();
 
     public static void main(String[] args) {
         ReentrantLock reentrantLock = new ReentrantLock();

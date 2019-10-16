@@ -2,7 +2,7 @@ package self.liang.concurrent.example.example.syncContainer;
 
 import com.google.common.collect.Lists;
 import self.liang.concurrent.example.annoations.ThreadSafe;
-import lombok.extern.slf4j.Slf4j;
+
 
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 
-@Slf4j
+
 @ThreadSafe
 public class CollectionsExample1 {
 

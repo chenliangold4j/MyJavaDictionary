@@ -1,8 +1,10 @@
 package self.liang.concurrent.example.example.syncContainer;
 
 import com.google.common.collect.Sets;
+import jdk.internal.instrumentation.Logger;
 import self.liang.concurrent.example.annoations.ThreadSafe;
-import lombok.extern.slf4j.Slf4j;
+
+import self.liang.log.example.TestLogger;
 
 import java.util.Collections;
 import java.util.Set;
@@ -11,10 +13,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 
-@Slf4j
+
 @ThreadSafe
 public class CollectionsExample2 {
 
+    private static Logger log= new TestLogger();
     // 请求总数
     public static int clientTotal = 5000;
 
@@ -42,7 +45,7 @@ public class CollectionsExample2 {
         }
         countDownLatch.await();
         executorService.shutdown();
-        log.info("size:{}", set.size());
+        log.info("size:{}"+set.size());
     }
 
     private static void update(int i) {

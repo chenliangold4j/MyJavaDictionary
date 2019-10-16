@@ -1,7 +1,9 @@
 package self.liang.concurrent.example.example.lock;
 
-import lombok.extern.slf4j.Slf4j;
+import jdk.internal.instrumentation.Logger;
+
 import self.liang.concurrent.example.annoations.ThreadSafe;
+import self.liang.log.example.TestLogger;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -10,10 +12,11 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-@Slf4j
+
 @ThreadSafe
 public class LockExample2 {
 
+    private static Logger log= new TestLogger();
     // 请求总数
     public static int clientTotal = 5000;
 
@@ -42,7 +45,7 @@ public class LockExample2 {
         }
         countDownLatch.await();
         executorService.shutdown();
-        log.info("count:{}", count);
+        log.info("count:{}"+count);
     }
 
     private static void add() {

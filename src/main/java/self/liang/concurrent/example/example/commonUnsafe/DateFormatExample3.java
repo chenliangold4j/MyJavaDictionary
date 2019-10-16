@@ -1,20 +1,21 @@
 package self.liang.concurrent.example.example.commonUnsafe;
 
-import self.liang.concurrent.example.annoations.ThreadSafe;
-import lombok.extern.slf4j.Slf4j;
+import jdk.internal.instrumentation.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import self.liang.concurrent.example.annoations.ThreadSafe;
+import self.liang.log.example.TestLogger;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 
-@Slf4j
 @ThreadSafe
 public class DateFormatExample3 {
 
+    private static Logger log= new TestLogger();
     // 请求总数
     public static int clientTotal = 5000;
 
@@ -45,6 +46,6 @@ public class DateFormatExample3 {
     }
 
     private static void update(int i) {
-        log.info("{}, {}", i, DateTime.parse("20180208", dateTimeFormatter).toDate());
+        log.info("{}, {}"+ i+ DateTime.parse("20180208", dateTimeFormatter).toDate());
     }
 }

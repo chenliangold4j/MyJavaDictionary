@@ -1,7 +1,8 @@
 package self.liang.concurrent.example.example.commonUnsafe;
 
-import lombok.extern.slf4j.Slf4j;
+import jdk.internal.instrumentation.Logger;
 import self.liang.concurrent.example.annoations.NotThreadSafe;
+import self.liang.log.example.TestLogger;
 
 import java.text.SimpleDateFormat;
 import java.util.concurrent.CountDownLatch;
@@ -9,10 +10,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 
-@Slf4j
 @NotThreadSafe
 public class DateFormatExample1 {
 
+    private static Logger log= new TestLogger();
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
 
     // 请求总数

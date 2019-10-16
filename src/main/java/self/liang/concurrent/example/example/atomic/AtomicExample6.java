@@ -1,7 +1,8 @@
 package self.liang.concurrent.example.example.atomic;
 
-import lombok.extern.slf4j.Slf4j;
+import jdk.internal.instrumentation.Logger;
 import self.liang.concurrent.example.annoations.ThreadSafe;
+import self.liang.log.example.TestLogger;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -9,10 +10,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@Slf4j
 @ThreadSafe
 public class AtomicExample6 {
 
+    private static Logger log= new TestLogger();
     private static AtomicBoolean isHappened = new AtomicBoolean(false);
 
     // 请求总数
@@ -39,7 +40,7 @@ public class AtomicExample6 {
         }
         countDownLatch.await();
         executorService.shutdown();
-        log.info("isHappened:{}", isHappened.get());
+        log.info("isHappened:{}"+isHappened.get());
     }
 
     private static void test() {

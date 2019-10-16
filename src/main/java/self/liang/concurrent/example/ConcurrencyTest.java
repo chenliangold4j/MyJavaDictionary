@@ -1,6 +1,6 @@
 package self.liang.concurrent.example;
 
-import lombok.extern.slf4j.Slf4j;
+
 import self.liang.concurrent.example.annoations.NotThreadSafe;
 
 import java.util.concurrent.CountDownLatch;
@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 
-@Slf4j
+
 @NotThreadSafe
 public class ConcurrencyTest {
 

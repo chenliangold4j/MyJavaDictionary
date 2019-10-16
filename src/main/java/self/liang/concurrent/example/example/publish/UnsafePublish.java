@@ -1,14 +1,17 @@
 package self.liang.concurrent.example.example.publish;
 
-import lombok.extern.slf4j.Slf4j;
+import jdk.internal.instrumentation.Logger;
+
 import self.liang.concurrent.example.annoations.NotThreadSafe;
+import self.liang.log.example.TestLogger;
 
 import java.util.Arrays;
 
-@Slf4j
+
 @NotThreadSafe
 public class UnsafePublish {
 
+    private static Logger log= new TestLogger();
     private String[] states = {"a", "b", "c"};
 
     public String[] getStates() {
@@ -17,9 +20,9 @@ public class UnsafePublish {
 
     public static void main(String[] args) {
         UnsafePublish unsafePublish = new UnsafePublish();
-        log.info("{}", Arrays.toString(unsafePublish.getStates()));
+        log.info("{}"+Arrays.toString(unsafePublish.getStates()));
 
         unsafePublish.getStates()[0] = "d";
-        log.info("{}", Arrays.toString(unsafePublish.getStates()));
+        log.info("{}"+ Arrays.toString(unsafePublish.getStates()));
     }
 }

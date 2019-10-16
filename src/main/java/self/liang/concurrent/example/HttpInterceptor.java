@@ -1,15 +1,17 @@
 package self.liang.concurrent.example;
 
-import lombok.extern.slf4j.Slf4j;
+
+import jdk.internal.instrumentation.Logger;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import self.liang.concurrent.example.example.threadLocal.RequestHolder;
+import self.liang.log.example.TestLogger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@Slf4j
-public class HttpInterceptor extends HandlerInterceptorAdapter {
 
+public class HttpInterceptor extends HandlerInterceptorAdapter {
+    private static Logger log= new TestLogger();
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("preHandle");
