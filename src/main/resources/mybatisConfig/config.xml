@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--
+        1 mybatis可以使用properties来引入properties配置文件的内容
+            resource:类路径下配置文件
+            url：网络路径下的配置文件
+            交由spring管理后很少用了
+    -->
+    <properties resource="mybatisConfig/config.properties">
+
+    </properties>
+    <!--
+         mapUnderscoreToCamelCase   设置驼峰转换
+
+    -->
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true" />
+    </settings>
+
+    <!--
+        typeAliases 别名处理器   基本类型别名见mybatis文档
+     -->
+    <typeAliases>
+        <!--
+              typeAlias 为某个类型起别名  默认是类名小写employee
+              别名不区分大小写
+           -->
+        <typeAlias type="self.liang.mybatis.example.base.Employee" alias="emp"/>
+
+        <!--
+          package 为某个包批量起别名  为所有类起一个默认别名  或者类有@Alias注解
+       -->
+        <!--        <package name=""/>-->
+
+    </typeAliases>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper resource="mybatisConfig/mapper/employeeMapper.xml"/>
+    </mappers>
+
+
+</configuration>
