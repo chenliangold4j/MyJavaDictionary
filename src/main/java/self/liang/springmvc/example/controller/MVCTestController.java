@@ -14,7 +14,8 @@ public class MVCTestController {
 
     @RequestMapping("/testSuccess")
     @ResponseBody
-    public String test() {
+    public String test()
+    {
         return mvcTestService.goSuccess();
     }
 
