@@ -12,4 +12,10 @@ public interface EmployeeMapper {
 
     public Employee getEmpById(Integer id);
 
+    public int addEmp(Employee employee);
+
+    public int update(Employee employee);
+
+    public int delete(Integer id);
+
 }

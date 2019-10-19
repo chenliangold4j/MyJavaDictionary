@@ -10,8 +10,9 @@ import self.liang.mybatis.example.base.dao.EmployeeMapperAnnotation;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class CreateSqlSessionByXml {
+public class MapperTest {
 
+    public static volatile Integer id = null;
     public static void main(String[] args) throws IOException {
 
         SqlSessionFactory sqlSessionFactory = getFactory();
@@ -26,25 +27,47 @@ public class CreateSqlSessionByXml {
          */
 
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        test1(sqlSession);
-        test2(sqlSession);
-        test3(sqlSession);
+
+        //这是自动提交的sqlsession
+//        SqlSession sqlSession = sqlSessionFactory.openSession(true);
+
+//        add(sqlSession);
+        modify(sqlSession);
+//        delete(sqlSession);
+        sqlSession.commit();
         sqlSession.close();
 
 
     }
 
-    private static void  test1( SqlSession sqlSession){
-        //直接通过语句id进行调用，公司用的就是这种再加上封装
-        Employee employee =  sqlSession.selectOne("self.liang.mybatis.example.base.dao.EmployeeMapper.getEmpById",1);
-        System.out.println(employee);
+    private static void  add( SqlSession sqlSession){
+        Employee employee = new Employee();
+        employee.setLastName("tom");
+        employee.setGender("2");
+        employee.setEmail("tom@13.com");
+        int count =  sqlSession.insert("self.liang.mybatis.example.base.dao.EmployeeMapper.addEmp",employee);
+        id = employee.getId();
+        System.out.println("insert"+count);
     }
 
-    private static void  test2( SqlSession sqlSession){
-        //通过mapper进行查询。mmall用的就是这种。由生成器生成的
+    private static void  modify( SqlSession sqlSession){
+        Employee employee = new Employee();
+        employee.setLastName("jerry");
+        employee.setGender("2");
+        employee.setEmail("tom@13.com");
+        employee.setId(4);
+
         EmployeeMapper employeeMapper =  sqlSession.getMapper(EmployeeMapper.class);
-         Employee employee =  employeeMapper.getEmpById(1);
-        System.out.println(employee);
+        int count =  employeeMapper.update(employee);
+        System.out.println("update:"+count);
+    }
+
+
+
+    private static void  delete( SqlSession sqlSession){
+        EmployeeMapper employeeMapper =  sqlSession.getMapper(EmployeeMapper.class);
+        int count =  employeeMapper.delete(id);
+        System.out.println("delete:"+count);
     }
 
     private static SqlSessionFactory getFactory() throws IOException {
@@ -54,13 +77,4 @@ public class CreateSqlSessionByXml {
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         return sqlSessionFactory;
     }
-
-    private static void  test3( SqlSession sqlSession){
-        //通过注解类来查询
-        EmployeeMapperAnnotation employeeMapper =  sqlSession.getMapper(EmployeeMapperAnnotation.class);
-        Employee employee =  employeeMapper.getEmpById(1);
-        System.out.println(employee);
-    }
-
-
 }

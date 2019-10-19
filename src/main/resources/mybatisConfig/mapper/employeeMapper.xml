@@ -3,7 +3,34 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="self.liang.mybatis.example.base.dao.EmployeeMapper"><!-- 指定接口的全类名，这样就可以映射到接口 -->
-    <select id="getEmpById" resultType="emp">
+    <select id="getEmpById" resultType="emp" databaseId="mysql">
         select * from tbl_employee where id = #{id}
     </select>
+
+    <!--  有databaseID来区分用哪个语句   id是由mybatis获取到数据库的元数据类型来匹配的。。。所有现在无法测试 -->
+    <select id="getEmpById" resultType="emp" databaseId="oracle">
+        select id, ls_name, gender, email from tbl_employee where id = #{id}
+    </select>
+
+<!--   public void addEmp(Employee employee);
+
+    public void update(Employee employee);
+
+    public void delete(Integer id);
+    -->
+
+    <!-- parameterType可以省略 这里指定为别名  -->
+    <insert id="addEmp" parameterType="emp">
+        insert into tbl_employee(last_name, gender, email) values(#{lastName},#{gender},#{email})
+    </insert>
+
+
+    <update id="update">
+        update tbl_employee set last_name = #{lastName},gender = #{gender},email = #{email} where id=#{id}
+    </update>
+
+    <delete id="delete">
+        delete from tbl_employee where id=#{id}
+    </delete>
+
 </mapper>
