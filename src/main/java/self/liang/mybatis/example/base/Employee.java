@@ -5,6 +5,15 @@ public class Employee {
     private String lastName;
     private String email;
     private String gender;
+    private Department department;
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
 
     public Integer getId() {
         return id;
@@ -45,6 +54,7 @@ public class Employee {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", gender='" + gender + '\'' +
+                ", department=" + department +
                 '}';
     }
 }

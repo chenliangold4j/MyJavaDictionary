@@ -31,8 +31,9 @@ public class CreateSqlSessionByXml {
         test3(sqlSession);
         sqlSession.close();
 
-
     }
+
+
 
     private static void  test1( SqlSession sqlSession){
         //直接通过语句id进行调用，公司用的就是这种再加上封装

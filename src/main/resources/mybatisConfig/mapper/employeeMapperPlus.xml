@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="self.liang.mybatis.example.base.dao.EmployeeMapperPlus"><!-- 指定接口的全类名，这样就可以映射到接口 -->
+
+    <!-- resultMap自定义规则， type java类型   id唯一引用id -->
+    <resultMap id="MyEmp" type="emp">
+
+        <!--   id 定义主键底层会有优化
+                -->
+        <id column="id" property="id"/>
+        <!-- result 普通列封装规则-->
+        <result column="last_name" property="lastName"/>
+        <!-- 其他不指定的列会自动封装，一般写全部-->
+        <result column="email" property="email"/>
+        <result column="gender" property="gender"/>
+    </resultMap>
+
+    <resultMap id="MyEmpDifficult" type="self.liang.mybatis.example.base.Employee">
+        <!--   id 定义主键底层会有优化
+                -->
+        <id column="id" property="id"/>
+        <!-- result 普通列封装规则-->
+        <result column="lastName" property="lastName"/>
+        <!-- 其他不指定的列会自动封装，一般写全部-->
+        <result column="email" property="email"/>
+        <result column="gender" property="gender"/>
+        <result column="did" property="department.id"/>
+        <result column="departmentName" property="department.departmentName"/>
+    </resultMap>
+
+    <resultMap id="MyEmpDifficult2" type="self.liang.mybatis.example.base.Employee">
+        <!--   id 定义主键底层会有优化
+                -->
+        <id column="id" property="id"/>
+        <!-- result 普通列封装规则-->
+        <result column="lastName" property="lastName"/>
+        <!-- 其他不指定的列会自动封装，一般写全部-->
+        <result column="email" property="email"/>
+        <result column="gender" property="gender"/>
+        <!--    association 指定联合javabean对象
+               property指定哪个属性为联合对象
+               javaType 指定该属性对象的类型-->
+        <association property="department" javaType="self.liang.mybatis.example.base.Department">
+            <id column="did" property="id"/>
+            <id column="departmentName" property="departmentName"/>
+        </association>
+    </resultMap>
+
+    <select id="getEmpById" resultMap="MyEmp">
+        select * from tbl_employee where id = #{id}
+    </select>
+
+    <!-- 场景一：
+            employee：带部门
+             public Employee getEmpAndDept(Integer id);-->
+    <select id="getEmpAndDept" resultMap="MyEmpDifficult2">
+        select e.id id,e.last_name lastName,e.gender gender,e.email email,e.depart_id d_id,d.id did,d.department_name departmentName from tbl_employee e,tbl_dept d where e.depart_id = d.id and e.id = 1
+    </select>
+
+    <!--   association 分布查询
+            1.先查员工信息
+            2.根据部门id查询部门信息
+            3.将部门信息设置到员工中
+     -->
+
+    <resultMap id="MyEmpByStep" type="self.liang.mybatis.example.base.Employee">
+        <!--   id 定义主键底层会有优化
+                -->
+        <id column="id" property="id"/>
+        <!-- result 普通列封装规则-->
+        <result column="last_name" property="lastName"/>
+        <!-- 其他不指定的列会自动封装，一般写全部-->
+        <result column="email" property="email"/>
+        <result column="gender" property="gender"/>
+        <!--    association 指定联合javabean对象
+               property指定哪个属性为联合对象
+               select 表明当前属性是调用当前select方法返回的
+               column 需要的列名-->
+        <association property="department" select="self.liang.mybatis.example.base.dao.DepartmentMapper.getDeptByIdPlus" column="depart_id" >
+        </association>
+    </resultMap>
+
+    <select id="getEmpByIdStep" resultMap="MyEmpByStep">
+        select  * from tbl_employee where id=#{id}
+    </select>
+
+<!--    延迟查询
+        settings有一个<setting name="lazyLoadingEnabled" value="true"/>开启
+-->
+
+<!--    public List<Employee> getEmpsByDeptId(Integer deptId);-->
+
+    <select id="getEmpsByDeptId" resultType="emp">
+        select  * from tbl_employee where depart_id = #{id}
+    </select>
+
+<!--  discriminator javaType=""
+    鉴别器：mybatis可以使用discriminator判断某列的值，更具值改变封装行为
+     测试： 如果名字是test。则把test名字给email-->
+    <resultMap id="MyEmpByTestDis" type="self.liang.mybatis.example.base.Employee">
+        <!--   id 定义主键底层会有优化
+                -->
+        <id column="id" property="id"/>
+        <!-- result 普通列封装规则-->
+        <result column="last_name" property="lastName"/>
+        <!-- 其他不指定的列会自动封装，一般写全部-->
+        <result column="email" property="email"/>
+        <result column="gender" property="gender"/>
+        <!--    association 指定联合javabean对象
+               property指定哪个属性为联合对象
+               select 表明当前属性是调用当前select方法返回的
+               column 需要的列名-->
+        <association property="department" select="self.liang.mybatis.example.base.dao.DepartmentMapper.getDeptById" column="depart_id" >
+        </association>
+    </resultMap>
+
+
+</mapper>

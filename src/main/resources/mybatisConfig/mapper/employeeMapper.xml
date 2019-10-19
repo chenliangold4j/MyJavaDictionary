@@ -12,15 +12,17 @@
         select id, ls_name, gender, email from tbl_employee where id = #{id}
     </select>
 
-<!--   public void addEmp(Employee employee);
+    <!--   public void addEmp(Employee employee);
 
-    public void update(Employee employee);
+        public void update(Employee employee);
 
-    public void delete(Integer id);
-    -->
+        public void delete(Integer id);
+        -->
 
-    <!-- parameterType可以省略 这里指定为别名  -->
-    <insert id="addEmp" parameterType="emp">
+    <!-- parameterType可以省略 这里指定为别名
+         useGeneratedKeys="true" 使用自动生成的主键策略
+         keyProperty 指定主键对应属性，mybatis获取到主键后，封装给javabean    -->
+    <insert id="addEmp" parameterType="emp" useGeneratedKeys="true" keyProperty="id">
         insert into tbl_employee(last_name, gender, email) values(#{lastName},#{gender},#{email})
     </insert>
 
@@ -32,5 +34,47 @@
     <delete id="delete">
         delete from tbl_employee where id=#{id}
     </delete>
+
+    <!--  多个参数，会被封装成一个map
+            key：param1....paramN
+            value：值
+
+            也可以传入map或者pojo-->
+    <select id="getEmpByIdAndLastName" resultType="emp">
+        <!--  select * from tbl_employee where id = #{id} and last_name = #{lastName} 这个是可以的 ，但是视频里面不行，可能是版本问题-->
+        <!--    select * from tbl_employee where id = #{param1} and last_name = #{param2} 这个也是可以的
+                原来的做法是@Param注解来注释参数-->
+        select * from tbl_employee where id = ${id} and last_name = #{param2}
+
+        <!-- # 是预编译
+             $ 是sql拼装，会有安全问题
+             大多数用#
+
+             但是比如分表
+                select * from 2016_record  ....  表名由参数传入  原生jdbc不支持这个字段的占位符
+             #用法更丰富
+                规定参数规则：
+                  #{age,javaType=int,jdbcType=NUMERIC,typeHandler=MyTypeHandler} 以指定一个特殊的类型处理器类（或别名
+                  #{height,javaType=double,jdbcType=NUMERIC,numericScale=2}小数保留位数的设置，来指定小数点后保留的位数。
+                  #{middleInitial,jdbcType=VARCHAR}
+             -->
+    </select>
+
+<!--    List<Employee> getEmpsByLastNameLike(String lastName);-->
+    <select id="getEmpsByLastNameLike" resultType="emp">
+        select * from  tbl_employee where last_name like #{lastName}
+    </select>
+
+
+<!--    public Map<String,Object> getEmpMapById(Integer id);-->
+
+    <select id="getEmpMapById" resultType="map">
+        select * from tbl_employee where id = #{id}
+    </select>
+<!--    public Map<Integer,Employee> findAll();-->
+
+    <select id="findAll" resultType="emp">
+        select * from tbl_employee
+    </select>
 
 </mapper>

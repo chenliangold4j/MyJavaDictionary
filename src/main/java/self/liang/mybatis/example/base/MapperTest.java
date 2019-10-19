@@ -9,7 +9,17 @@ import self.liang.mybatis.example.base.dao.EmployeeMapperAnnotation;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 
+/**
+ *
+ * ParamNameResolver.getNamedParams 来解析参数
+ *
+ *
+ *
+ *
+ */
 public class MapperTest {
 
     public static volatile Integer id = null;
@@ -31,9 +41,13 @@ public class MapperTest {
         //这是自动提交的sqlsession
 //        SqlSession sqlSession = sqlSessionFactory.openSession(true);
 
-//        add(sqlSession);
-        modify(sqlSession);
+        add(sqlSession);
+//        modify(sqlSession);
 //        delete(sqlSession);
+//        getEmpByIdAndLastName(sqlSession);
+//        getEmpsByLastNameLike(sqlSession);
+//        getEmpMapById(sqlSession);
+//        findAll(sqlSession);
         sqlSession.commit();
         sqlSession.close();
 
@@ -42,9 +56,9 @@ public class MapperTest {
 
     private static void  add( SqlSession sqlSession){
         Employee employee = new Employee();
-        employee.setLastName("tom");
+        employee.setLastName("魔法");
         employee.setGender("2");
-        employee.setEmail("tom@13.com");
+        employee.setEmail("cmmmmf@1213.com");
         int count =  sqlSession.insert("self.liang.mybatis.example.base.dao.EmployeeMapper.addEmp",employee);
         id = employee.getId();
         System.out.println("insert"+count);
@@ -52,10 +66,10 @@ public class MapperTest {
 
     private static void  modify( SqlSession sqlSession){
         Employee employee = new Employee();
-        employee.setLastName("jerry");
+        employee.setLastName("jack");
         employee.setGender("2");
-        employee.setEmail("tom@13.com");
-        employee.setId(4);
+        employee.setEmail("jack@13.com");
+        employee.setId(id);
 
         EmployeeMapper employeeMapper =  sqlSession.getMapper(EmployeeMapper.class);
         int count =  employeeMapper.update(employee);
@@ -70,11 +84,34 @@ public class MapperTest {
         System.out.println("delete:"+count);
     }
 
+    private static void getEmpByIdAndLastName(SqlSession sqlSession){
+        EmployeeMapper employeeMapper =  sqlSession.getMapper(EmployeeMapper.class);
+        Employee employee =  employeeMapper.getEmpByIdAndLastName(5,"tom");
+        System.out.println("getEmpByIdAndLastName:"+employee);
+    }
+
     private static SqlSessionFactory getFactory() throws IOException {
         //全局配置文件
         String resource = "mybatisConfig/config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         return sqlSessionFactory;
+    }
+
+    private static void getEmpsByLastNameLike(SqlSession sqlSession){
+        EmployeeMapper employeeMapper =  sqlSession.getMapper(EmployeeMapper.class);
+        List<Employee> list =  employeeMapper.getEmpsByLastNameLike("%e%");
+        System.out.println("getEmpsByLastNameLike:"+list);
+    }
+    private static void getEmpMapById(SqlSession sqlSession){
+        EmployeeMapper employeeMapper =  sqlSession.getMapper(EmployeeMapper.class);
+        Map<String,Object> map =  employeeMapper.getEmpMapById(4);
+        System.out.println("getEmpMapById:"+map);
+    }
+
+    private static void findAll(SqlSession sqlSession){
+        EmployeeMapper employeeMapper =  sqlSession.getMapper(EmployeeMapper.class);
+        Map<Integer,Employee>  map =  employeeMapper.findAll();
+        System.out.println("getEmpMapById:"+map);
     }
 }
