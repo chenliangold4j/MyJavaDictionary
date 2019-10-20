@@ -115,6 +115,7 @@
         <mapper resource="mybatisConfig/mapper/employeeMapper.xml"/>
         <mapper resource="mybatisConfig/mapper/employeeMapperPlus.xml"/>
         <mapper resource="mybatisConfig/mapper/DepartmentMapper.xml"/>
+        <mapper resource="mybatisConfig/mapper/EmployeeMapperDynamicSQL.xml"/>
 <!--        <mapper url=""></mapper>-->
         <mapper class="self.liang.mybatis.example.base.dao.EmployeeMapperAnnotation"/>
 

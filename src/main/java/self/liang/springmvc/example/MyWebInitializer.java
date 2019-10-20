@@ -1,9 +1,28 @@
 package self.liang.springmvc.example;
 
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import java.util.EnumSet;
 
 //
 public class MyWebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        super.onStartup(servletContext);
+        //添加编码器
+        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+        characterEncodingFilter.setEncoding("UTF-8");
+        characterEncodingFilter.setForceEncoding(true);
+        FilterRegistration.Dynamic dynamic =  servletContext.addFilter("characterEncodingFilter",characterEncodingFilter);
+        dynamic.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST),true,"/*");
+    }
+
 
     /**
      * 获取根容器的配置类
@@ -11,7 +30,7 @@ public class MyWebInitializer extends AbstractAnnotationConfigDispatcherServletI
      */
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{MyRootConfig.class};
+        return new Class[]{RootConfig.class};
     }
 
     /**

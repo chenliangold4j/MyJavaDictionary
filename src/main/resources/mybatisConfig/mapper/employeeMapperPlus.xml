@@ -96,25 +96,13 @@
         select  * from tbl_employee where depart_id = #{id}
     </select>
 
-<!--  discriminator javaType=""
-    鉴别器：mybatis可以使用discriminator判断某列的值，更具值改变封装行为
-     测试： 如果名字是test。则把test名字给email-->
-    <resultMap id="MyEmpByTestDis" type="self.liang.mybatis.example.base.Employee">
-        <!--   id 定义主键底层会有优化
-                -->
-        <id column="id" property="id"/>
-        <!-- result 普通列封装规则-->
-        <result column="last_name" property="lastName"/>
-        <!-- 其他不指定的列会自动封装，一般写全部-->
-        <result column="email" property="email"/>
-        <result column="gender" property="gender"/>
-        <!--    association 指定联合javabean对象
-               property指定哪个属性为联合对象
-               select 表明当前属性是调用当前select方法返回的
-               column 需要的列名-->
-        <association property="department" select="self.liang.mybatis.example.base.dao.DepartmentMapper.getDeptById" column="depart_id" >
-        </association>
-    </resultMap>
+<!--   鉴别器
+<discriminator javaType="int" column="draft">
+  <case value="1" resultType="DraftPost"/>
+</discriminator>
+详情见mybatis文档
+有时候，一个数据库查询可能会返回多个不同的结果集（但总体上还是有一定的联系的）。 鉴别器（discriminator）元素就是被设计来应对这种情况的，另外也能处理其它情况，例如类的继承层次结构。 鉴别器的概念很好理解——它很像 Java 语言中的 switch 语句。-->
 
 
 </mapper>
+

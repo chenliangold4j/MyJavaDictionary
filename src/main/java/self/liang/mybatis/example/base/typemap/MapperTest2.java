@@ -1,9 +1,11 @@
-package self.liang.mybatis.example.base;
+package self.liang.mybatis.example.base.typemap;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import self.liang.mybatis.example.base.Department;
+import self.liang.mybatis.example.base.Employee;
 import self.liang.mybatis.example.base.dao.DepartmentMapper;
 import self.liang.mybatis.example.base.dao.EmployeeMapper;
 import self.liang.mybatis.example.base.dao.EmployeeMapperPlus;
@@ -81,6 +83,7 @@ public class MapperTest2 {
         Department department =  departmentMapper.getDeptByIdPlus(1);
         System.out.println("getEmpAndDept:"+department);
     }
+
 
 
 
