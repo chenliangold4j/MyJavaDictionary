@@ -1,5 +1,6 @@
 package self.liang.mybatis.example.base.dynamic;
 
+import org.apache.ibatis.annotations.Param;
 import self.liang.mybatis.example.base.Employee;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface EmployeeMapperDynamicSQL {
     public Integer  updateEmp(Employee employee);
 
     List<Employee> getEmpsByConditionForeach(List<Integer> ids);
+
+    public void addEmps(@Param("emps") List<Employee> emps);
 }

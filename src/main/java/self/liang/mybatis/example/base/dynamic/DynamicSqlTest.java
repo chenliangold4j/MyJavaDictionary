@@ -4,6 +4,7 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import self.liang.mybatis.example.base.Department;
 import self.liang.mybatis.example.base.Employee;
 
 import java.io.IOException;
@@ -21,7 +22,8 @@ public class DynamicSqlTest {
 //        getEmpsByConditionTrim(sqlSession);
 //        getEmpsByConditionChoose(sqlSession);
 //        updateEmp(sqlSession);
-        getEmpsByConditionForeach(sqlSession);
+//        getEmpsByConditionForeach(sqlSession);
+        addEmps(sqlSession);
         sqlSession.close();
     }
 
@@ -69,6 +71,34 @@ public class DynamicSqlTest {
         employee.setGender("1");
         System.out.println( employeeMapperDynamicSQL.getEmpsByConditionChoose(employee));
     }
+
+    public static void addEmps( SqlSession sqlSession ){
+        EmployeeMapperDynamicSQL employeeMapperDynamicSQL =  sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
+        Employee employee = new Employee();
+        employee.setLastName("user1");
+        employee.setGender("1");
+        employee.setEmail("user1@132.com");
+        employee.setDepartment(new Department(1));
+        Employee employee1 = new Employee();
+        employee1.setLastName("user2");
+        employee1.setGender("1");
+        employee1.setEmail("user2@132.com");
+        employee1.setDepartment(new Department(1));
+        Employee employee2 = new Employee();
+        employee2.setLastName("user3");
+        employee2.setGender("1");
+        employee2.setEmail("user3@132.com");
+        employee2.setDepartment(new Department(1));
+
+        List<Employee> list = new ArrayList<>();
+        list.add(employee);
+        list.add(employee1);
+        list.add(employee2);
+
+        employeeMapperDynamicSQL.addEmps(list);
+
+    }
+
 
     private static SqlSessionFactory getFactory() throws IOException {
         //全局配置文件

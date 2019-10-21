@@ -1,11 +1,27 @@
 package self.liang.mybatis.example.base;
 
-public class Employee {
+import java.io.Serializable;
+
+public class Employee implements Serializable {
+
+    static final long serialVersionUID = 121212L;
+
     private Integer id;
     private String lastName;
     private String email;
     private String gender;
     private Department department;
+
+
+    public Employee() {
+    }
+
+    public Employee(Integer id, String lastName, String email, String gender) {
+        this.id = id;
+        this.lastName = lastName;
+        this.email = email;
+        this.gender = gender;
+    }
 
     public Department getDepartment() {
         return department;

@@ -4,6 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="self.liang.mybatis.example.base.dynamic.EmployeeMapperDynamicSQL"><!-- 指定接口的全类名，这样就可以映射到接口 -->
     <!--    List<Employee>  getEmpsByConditionIf(Employee employee);
+
              if
              where 会去掉多的and 或者or 只会去掉第一个-->
     <select id="getEmpsByConditionIf" resultType="emp">
@@ -102,4 +103,44 @@
             #{item_id}
         </foreach>
     </select>
+
+<!--    public void addEmps(@Param("emps") List<Employee> emps);-->
+    <insert id="addEmps" >
+        insert into tbl_employee(last_name, email, gender,depart_id)
+        values
+        <foreach collection="emps" item="emp" separator=",">
+            (#{emp.lastName},#{emp.email},#{emp.gender},#{emp.department.id})
+        </foreach>
+    </insert>
+
+<!--  mybatis又两个默认参数
+        _parameter:代表整个参数
+            单个参数，_parameter:就是这个参数
+            多个参乎：参数会被封装为一个map，parameter就是这个map
+        _databaseId：如果配置databaseIdProvider标签
+            databaseId就时代表当前数据库id
+
+         like的时候 '%${}%'}不安全  可以用bind将OGNL表达式绑定到一个变量中-->
+    <select id="这只是示例" resultType="emp">
+        <if test="_databaseId=='mysql'">
+            <if test="_parameter.lastName != null">
+                ....
+            </if>
+        </if>
+        <if test="_databaseId=='oracle'">
+            <bind name="_lastName" value="'%'+lastName+'%'"/>
+            #{_lastName}
+        </if>
+    </select>
+
+<!--    重用sql片段
+        编写之后include-->
+    <sql id="实例">
+            <if test="_databaseId=='mysql'">
+                ....
+            </if>
+    </sql>
+
+
+
 </mapper>

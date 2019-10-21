@@ -1,12 +1,23 @@
 package self.liang.mybatis.example.base;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Department {
+public class Department implements Serializable {
+
+    static final long serialVersionUID = 2222L;
 
     private Integer id;
     private String departmentName;
     private List<Employee> employees;
+
+    public Department() {
+    }
+
+
+    public Department(Integer id) {
+        this.id = id;
+    }
 
     public List<Employee> getEmployees() {
         return employees;
