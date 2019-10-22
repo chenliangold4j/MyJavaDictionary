@@ -18,12 +18,12 @@ public class DynamicSqlTest {
 
         SqlSession sqlSession = sqlSessionFactory.openSession(true);
 
-//        getEmpsByConditionIf(sqlSession);
+        getEmpsByConditionIf(sqlSession);
 //        getEmpsByConditionTrim(sqlSession);
 //        getEmpsByConditionChoose(sqlSession);
 //        updateEmp(sqlSession);
 //        getEmpsByConditionForeach(sqlSession);
-        addEmps(sqlSession);
+//        addEmps(sqlSession);
         sqlSession.close();
     }
 

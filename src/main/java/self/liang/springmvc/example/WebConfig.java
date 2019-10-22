@@ -1,22 +1,32 @@
 package self.liang.springmvc.example;
 
+import org.apache.ibatis.datasource.pooled.PooledDataSource;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.mapper.MapperScannerConfigurer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.support.FormattingConversionServiceFactoryBean;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.validation.MessageCodesResolver;
 import org.springframework.validation.Validator;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.*;
+import self.liang.mybatis.example.base.Employee;
 import self.liang.springmvc.example.controller.bindparams.StringToDateConvert;
 
+import javax.sql.DataSource;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -29,6 +39,60 @@ import java.util.Set;
 },useDefaultFilters = false)
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
+
+    @Bean
+    Config config(){
+        return  new Config();
+    }
+
+    @Bean
+    DataSource dataSource(@Autowired Config config){
+
+        System.out.println(">>>>>>>>>>>>"+config.getDriver()+":"+config.getUrl());
+        PooledDataSource pooledDataSource = new PooledDataSource();
+        pooledDataSource.setDriver(config.getDriver());
+        pooledDataSource.setUrl(config.getUrl());
+        pooledDataSource.setUsername(config.getUsername());
+        pooledDataSource.setPassword(config.getPassword());
+        return pooledDataSource;
+    }
+
+    /**
+     * 配置mybatis的SqlSessionFactoryBean
+     *
+     * @param dataSource
+     * @return
+     */
+    @Bean
+    public SqlSessionFactoryBean sqlSessionFactoryBean(@Autowired DataSource dataSource) throws IOException {
+        SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+        PathMatchingResourcePatternResolver classPathResource = new PathMatchingResourcePatternResolver();
+        sqlSessionFactoryBean.setDataSource(dataSource);
+        Class<?>[] typeAliases = new Class[1];
+        typeAliases[0] = Employee.class;
+        sqlSessionFactoryBean.setTypeAliases(typeAliases);
+        sqlSessionFactoryBean.setMapperLocations(classPathResource.getResources("classpath:mybatisConfig/mapper2/*.xml"));
+        return sqlSessionFactoryBean;
+    }
+
+    @Bean
+    MapperScannerConfigurer mapperScannerConfigurer() {
+        MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
+        mapperScannerConfigurer.setBasePackage("self.liang.springmvc.example.dao");
+        return mapperScannerConfigurer;
+    }
+
+    /**
+     * 配置spring的声明式事务
+     * @return
+     */
+
+    @Bean
+    public PlatformTransactionManager transactionManager(DataSource dataSource) {
+        DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager(dataSource);
+        return dataSourceTransactionManager;
+    }
+
 
 
     @Override

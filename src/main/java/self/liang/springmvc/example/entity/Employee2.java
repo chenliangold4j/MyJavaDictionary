@@ -1,11 +1,8 @@
-package self.liang.mybatis.example.base;
+package self.liang.springmvc.example.entity;
 
-import org.apache.ibatis.type.Alias;
+import self.liang.mybatis.example.base.Department;
 
-import java.io.Serializable;
-
-@Alias("emp")
-public class Employee implements Serializable {
+public class Employee2 {
 
     static final long serialVersionUID = 121212L;
 
@@ -13,26 +10,17 @@ public class Employee implements Serializable {
     private String lastName;
     private String email;
     private String gender;
-    private Department department;
 
-
-    public Employee() {
+    public Employee2() {
     }
 
-    public Employee(Integer id, String lastName, String email, String gender) {
+    public Employee2(Integer id, String lastName, String email, String gender) {
         this.id = id;
         this.lastName = lastName;
         this.email = email;
         this.gender = gender;
     }
 
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
 
     public Integer getId() {
         return id;
@@ -68,12 +56,11 @@ public class Employee implements Serializable {
 
     @Override
     public String toString() {
-        return "Employee{" +
+        return "Employee2{" +
                 "id=" + id +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", gender='" + gender + '\'' +
-                ", department=" + department +
                 '}';
     }
 }

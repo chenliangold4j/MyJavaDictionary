@@ -11,7 +11,6 @@
     <!--    public Department getDeptByIdPlus(Integer id);
             collection 嵌套结果集合-->
 
-
     <resultMap id="MyDept" type="self.liang.mybatis.example.base.Department">
         <id column="depart_id" property="id"/>
         <!-- result 普通列封装规则-->

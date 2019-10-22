@@ -19,7 +19,6 @@ public class CreateSqlSessionInCode {
         TransactionFactory transactionFactory = new JdbcTransactionFactory();
         Environment environment = new Environment("development", transactionFactory, dataSource);
         Configuration configuration = new Configuration(environment);
-//        configuration("/mybatisConfig/mapper/employeeMapper.xml",Employee.class);//
         //config错误暂时不指定要怎么办  TODO
 
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);

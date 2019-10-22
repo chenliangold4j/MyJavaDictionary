@@ -5,13 +5,8 @@
 <mapper namespace="self.liang.mybatis.example.base.dao.EmployeeMapper">
     <cache></cache>
 
-    <select id="getEmpById" resultType="emp" databaseId="mysql">
+    <select id="getEmpById" resultType="emp">
         select * from tbl_employee where id = #{id}
-    </select>
-
-    <!--  有databaseID来区分用哪个语句   id是由mybatis获取到数据库的元数据类型来匹配的。。。所有现在无法测试 -->
-    <select id="getEmpById" resultType="emp" databaseId="oracle">
-        select id, ls_name, gender, email from tbl_employee where id = #{id}
     </select>
 
     <!--   public void addEmp(Employee employee);

@@ -42,11 +42,11 @@ public class MapperTest {
         //这是自动提交的sqlsession
 //        SqlSession sqlSession = sqlSessionFactory.openSession(true);
 
-        add(sqlSession);
+//        add(sqlSession);
 //        modify(sqlSession);
 //        delete(sqlSession);
 //        getEmpByIdAndLastName(sqlSession);
-//        getEmpsByLastNameLike(sqlSession);
+        getEmpsByLastNameLike(sqlSession);
 //        getEmpMapById(sqlSession);
 //        findAll(sqlSession);
         sqlSession.commit();
