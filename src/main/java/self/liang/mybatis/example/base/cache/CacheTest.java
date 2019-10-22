@@ -53,6 +53,8 @@ import java.io.InputStream;
  *          4.sqlSession的clearCache（）；只是清除当前session的一级缓存
  *          5.setting的localCacheScope：本地缓存作用域：Session，当前会话的保存
  *                                                    STATEMENT：不保存
+ *
+ * 第三方缓存：需要扩展的时候看看吧
  */
 public class CacheTest {
     public static void main(String[] args) throws IOException {
