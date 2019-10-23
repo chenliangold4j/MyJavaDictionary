@@ -110,6 +110,7 @@
         <!--  mapper：注册一个sql映射
               url:磁盘路径或网络路径
               class：引用接口
+
               package 批量注册 类和xml要放同一路径-->
         <mapper resource="mybatisConfig/mapper/employeeMapper.xml"/>
         <mapper resource="mybatisConfig/mapper/employeeMapperPlus.xml"/>
