@@ -32,7 +32,6 @@ public class MVCTestController {
         return mvcTestService.goSuccess();
     }
 
-
 //    @RequestMapping("/testMybatis")
 //    @ResponseBody
 //    public Employee testMybatis() {

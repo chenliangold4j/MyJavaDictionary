@@ -40,60 +40,6 @@ import java.util.Set;
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
-    @Bean
-    Config config(){
-        return  new Config();
-    }
-
-    @Bean
-    DataSource dataSource(@Autowired Config config){
-
-        System.out.println(">>>>>>>>>>>>"+config.getDriver()+":"+config.getUrl());
-        PooledDataSource pooledDataSource = new PooledDataSource();
-        pooledDataSource.setDriver(config.getDriver());
-        pooledDataSource.setUrl(config.getUrl());
-        pooledDataSource.setUsername(config.getUsername());
-        pooledDataSource.setPassword(config.getPassword());
-        return pooledDataSource;
-    }
-
-    /**
-     * 配置mybatis的SqlSessionFactoryBean
-     *
-     * @param dataSource
-     * @return
-     */
-    @Bean
-    public SqlSessionFactoryBean sqlSessionFactoryBean(@Autowired DataSource dataSource) throws IOException {
-        SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
-        PathMatchingResourcePatternResolver classPathResource = new PathMatchingResourcePatternResolver();
-        sqlSessionFactoryBean.setDataSource(dataSource);
-        Class<?>[] typeAliases = new Class[1];
-        typeAliases[0] = Employee.class;
-        sqlSessionFactoryBean.setTypeAliases(typeAliases);
-        sqlSessionFactoryBean.setMapperLocations(classPathResource.getResources("classpath:mybatisConfig/mapper2/*.xml"));
-        return sqlSessionFactoryBean;
-    }
-
-    @Bean
-    MapperScannerConfigurer mapperScannerConfigurer() {
-        MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
-        mapperScannerConfigurer.setBasePackage("self.liang.springmvc.example.dao");
-        return mapperScannerConfigurer;
-    }
-
-    /**
-     * 配置spring的声明式事务
-     * @return
-     */
-
-    @Bean
-    public PlatformTransactionManager transactionManager(DataSource dataSource) {
-        DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager(dataSource);
-        return dataSourceTransactionManager;
-    }
-
-
 
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {

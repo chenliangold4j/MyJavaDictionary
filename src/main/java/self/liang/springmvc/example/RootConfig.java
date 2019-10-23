@@ -33,6 +33,65 @@ import java.io.IOException;
 @EnableTransactionManagement
 public class RootConfig {
 
+    /**
+     * 配置spring的声明式事务
+     * @return
+     */
+    @Bean
+    public PlatformTransactionManager transactionManager(DataSource dataSource) {
+        DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager(dataSource);
+        return dataSourceTransactionManager;
+    }
+
+    @Bean
+    Config config(){
+        return  new Config();
+    }
+
+    @Bean
+    DataSource dataSource(@Autowired Config config){
+
+        System.out.println(">>>>>>>>>>>>"+config.getDriver()+":"+config.getUrl());
+        PooledDataSource pooledDataSource = new PooledDataSource();
+        pooledDataSource.setDriver(config.getDriver());
+        pooledDataSource.setUrl(config.getUrl());
+        pooledDataSource.setUsername(config.getUsername());
+        pooledDataSource.setPassword(config.getPassword());
+        return pooledDataSource;
+    }
+
+    /**
+     * 配置SqlSessionFactoryBean
+     * @param dataSource
+     * @return
+     */
+    @Bean
+    public SqlSessionFactoryBean sqlSessionFactoryBean(@Autowired DataSource dataSource) throws IOException {
+        SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+        PathMatchingResourcePatternResolver classPathResource = new PathMatchingResourcePatternResolver();
+        sqlSessionFactoryBean.setDataSource(dataSource);//设置数据源
+        Class<?>[] typeAliases = new Class[1];
+        typeAliases[0] = Employee.class;
+        sqlSessionFactoryBean.setTypeAliases(typeAliases);//有alias注解的类
+
+//        sqlSessionFactoryBean.setConfigLocation();设置本地配置文件。。只有少数如setting 和provider等起作用
+
+        sqlSessionFactoryBean.setMapperLocations(classPathResource.getResources("classpath:mybatisConfig/mapper2/*.xml"));//设置mapper的路径
+        return sqlSessionFactoryBean;
+    }
+
+    /**
+     * 扫描所有mapper接口的实现。让这些mapper能够直接自动注入
+     * @return
+     */
+    @Bean
+    MapperScannerConfigurer mapperScannerConfigurer() {
+        MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
+        mapperScannerConfigurer.setBasePackage("self.liang.springmvc.example.dao");
+        return mapperScannerConfigurer;
+    }
+
+
     @Bean
     Car cartest() {
         Car car = new Car();
