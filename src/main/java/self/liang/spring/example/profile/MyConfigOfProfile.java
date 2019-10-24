@@ -33,6 +33,7 @@ public class MyConfigOfProfile implements EmbeddedValueResolverAware {
     @Profile("test")
     @Bean("testDataSource")
     public DataSource dataSourceTest(@Value("${db.password}") String pwd){
+
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
         dataSource.setUser(username);
         dataSource.setPassword(pwd);

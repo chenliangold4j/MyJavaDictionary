@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="self.liang.mybatis.example.base.dao.DepartmentMapper"><!-- 指定接口的全类名，这样就可以映射到接口 -->
+
+    <select id="getDeptById" resultType="self.liang.mybatis.example.base.Department">
+        select  * from tbl_dept where id=#{id}
+    </select>
+
+    <!--    public Department getDeptByIdPlus(Integer id);
+            collection 嵌套结果集合-->
+
+    <resultMap id="MyDept" type="self.liang.mybatis.example.base.Department">
+        <id column="depart_id" property="id"/>
+        <!-- result 普通列封装规则-->
+        <result column="dept_name" property="departmentName"/>
+
+        <!--  collection 定义集合    property指定集合属性  ofType:集合中的类型  -->
+        <collection property="employees" ofType="emp">
+            <!-- 集合的封装规则-->
+            <id column="eid" property="id"/>
+            <result column="last_name" property="lastName"></result>
+            <result column="email" property="email"></result>
+            <result column="gender" property="gender"></result>
+        </collection>
+    </resultMap>
+
+    <select id="getDeptByIdPlus" resultMap="MyDept">
+      select d.id depart_id,d.department_name dept_name,e.id eid,e.last_name last_name,e.email email,e.gender gender
+      from tbl_dept d
+      left join tbl_employee e
+      on d.id=e.depart_id
+      where d.id = 1
+    </select>
+
+<!--    public Department getDeptByIdStep(Integer id);-->
+
+    <resultMap id="MyDeptStep" type="self.liang.mybatis.example.base.Department">
+        <id column="id" property="id"/>
+        <!-- result 普通列封装规则-->
+        <result column="department_name" property="departmentName"/>
+        <!--  collection 定义集合    property指定集合属性  ofType:集合中的类型  -->
+        <collection property="employees" select="self.liang.mybatis.example.base.dao.EmployeeMapperPlus.getEmpsByDeptId" column="id"></collection>
+    </resultMap>
+
+    <select id="getDeptByIdStep" resultMap="MyDeptStep">
+       select  * from tbl_dept where id=#{id}
+    </select>
+
+<!--   扩展：多列值封装map传递
+        column="{key1=column1,key2=column2}"
+        fetchType="lazy" 表示使用延迟加载，，在全局未开的情况下开启-->
+</mapper>

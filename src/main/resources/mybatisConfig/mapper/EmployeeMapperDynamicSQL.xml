@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="self.liang.mybatis.example.base.dynamic.EmployeeMapperDynamicSQL"><!-- 指定接口的全类名，这样就可以映射到接口 -->
+    <!--    List<Employee>  getEmpsByConditionIf(Employee employee);
+
+             if
+             where 会去掉多的and 或者or 只会去掉第一个-->
+    <select id="getEmpsByConditionIf" resultType="emp">
+        select * from tbl_employee
+        <where>
+            <if test="id != null">
+                id=#{id}
+            </if>
+
+            <if test="lastName != null and lastName != ''">
+                and last_name like #{lastName}
+            </if>
+            <if test="gender == 2 or gender == 1">
+                and gender = #{gender}
+            </if>
+        </where>
+    </select>
+
+    <!--    List<Employee>  getEmpsByConditionTrim(Employee employee);
+
+            trim
+
+            prefix 前缀 prefix给拼凑的字符串加值
+            prefixOverrides 前缀覆盖，去掉字符串多余的字符
+            suffix 后缀
+            suffixOverrides 后缀去除 -->
+
+    <select id="getEmpsByConditionTrim" resultType="emp">
+        select * from tbl_employee
+
+        <trim prefix="where" suffixOverrides="and">
+            <if test="id != null">
+                id=#{id} and
+            </if>
+
+            <if test="lastName != null and lastName != ''">
+                last_name like #{lastName} and
+            </if>
+            <if test="gender == 2 or gender == 1">
+                gender = #{gender}
+            </if>
+        </trim>
+    </select>
+
+    <!--    List<Employee>  getEmpsByConditionChoose(Employee employee);
+            choose-->
+
+    <select id="getEmpsByConditionChoose" resultType="emp">
+        select * from tbl_employee
+        <where>
+            <choose>
+                <when test="id != null">
+                    id=#{id}
+                </when>
+                <when test="lastName != null">
+                    last_name like #{lastName}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+
+        </where>
+    </select>
+
+    <!--    public Integer  updateEmp(Employee employee);
+            set
+              if-->
+
+    <update id="updateEmp">
+        update tbl_employee
+        <set>
+        <if test="lastName != null">
+            last_name = #{lastName},
+        </if>
+        <if test="email != null">
+            email = #{email},
+        </if>
+        <if test="gender != null">
+            gender = #{gender}
+        </if>
+        </set>
+        where  id = #{id}
+    </update>
+
+<!--    List<Employee> getEmpsByConditionForeach(List<Employee> list);
+           foreach: collection:集合名字  item：单项名字  separator：分割符号
+            open:开始字符串  close:结束字符串
+            index:索引
+            遍历list的时候是索引 item是当前值
+            遍历map的时候index表示是key item是map的值
+            collection可以 @param标记名字-->
+    <select id="getEmpsByConditionForeach" resultType="emp">
+        select * from tbl_employee
+        <foreach collection="list" item="item_id" separator="," open=" where id in (" close=")" >
+            #{item_id}
+        </foreach>
+    </select>
+
+<!--    public void addEmps(@Param("emps") List<Employee> emps);-->
+    <insert id="addEmps" >
+        insert into tbl_employee(last_name, email, gender,depart_id)
+        values
+        <foreach collection="emps" item="emp" separator=",">
+            (#{emp.lastName},#{emp.email},#{emp.gender},#{emp.department.id})
+        </foreach>
+    </insert>
+
+<!--  mybatis又两个默认参数
+        _parameter:代表整个参数
+            单个参数，_parameter:就是这个参数
+            多个参乎：参数会被封装为一个map，parameter就是这个map
+        _databaseId：如果配置databaseIdProvider标签
+            databaseId就时代表当前数据库id
+
+         like的时候 '%${}%'}不安全  可以用bind将OGNL表达式绑定到一个变量中-->
+    <select id="这只是示例" resultType="emp">
+        <if test="_databaseId=='mysql'">
+            <if test="_parameter.lastName != null">
+                ....
+            </if>
+        </if>
+        <if test="_databaseId=='oracle'">
+            <bind name="_lastName" value="'%'+lastName+'%'"/>
+            #{_lastName}
+        </if>
+    </select>
+
+<!--    重用sql片段
+        编写之后include-->
+    <sql id="实例">
+            <if test="_databaseId=='mysql'">
+                ....
+            </if>
+    </sql>
+
+
+
+</mapper>

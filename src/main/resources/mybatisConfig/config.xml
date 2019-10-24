@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--
+        1 mybatis可以使用properties来引入properties配置文件的内容
+            resource:类路径下配置文件
+            url：网络路径下的配置文件
+            交由spring管理后很少用了
+    -->
+    <properties resource="mybatisConfig/config.properties">
+
+    </properties>
+    <!--
+         mapUnderscoreToCamelCase   设置驼峰转换
+         lazyLoadingEnabled     懒加载
+    -->
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="lazyLoadingEnabled" value="true"/>
+<!--        aggressiveLazyLoading	当开启时，任何方法的调用都会加载该对象的所有属性。 否则，每个属性会按需加载（参考 lazyLoadTriggerMethods)。-->
+        <setting name="aggressiveLazyLoading" value="false"/>
+        <setting name="cacheEnabled" value="true"/>
+    </settings>
+
+    <!--
+        typeAliases 别名处理器   基本类型别名见mybatis文档
+     -->
+    <typeAliases>
+        <!--
+              typeAlias 为某个类型起别名  默认是类名小写employee
+              别名不区分大小写
+           -->
+        <typeAlias type="self.liang.mybatis.example.base.Employee" alias="emp"/>
+
+        <!--
+          package 为某个包批量起别名  为所有类起一个默认别名  或者类有@Alias注解
+       -->
+        <!--        <package name=""/>-->
+    </typeAliases>
+
+    <!--  类型处理器  用作类型映射   mybatis自带了很多java类型到数据库类型的匹配 -->
+    <typeHandlers>
+
+    </typeHandlers>
+
+
+    <!--  transactionManager  dataSource 必须有
+          environment id="development" 可以配置不一样的环境
+          default="development" 通过default切换环境
+
+            transactionManager 事务管理器。
+                    type：管理器类型 JDBC | MANAGED
+                    用spring之后。会由spring控制事务
+             dataSource:许多 MyBatis 的应用程序会按示例中的例子来配置数据源。虽然这是可选的，但为了使用延迟加载，数据源是必须配置的。
+                    type:
+                        有三种内建的数据源类型（也就是 type=”[UNPOOLED|POOLED|JNDI]”）：
+                        你可以通过实现接口 org.apache.ibatis.datasource.DataSourceFactory 来使用第三方数据源：
+     -->
+    <environments default="dev_mysql">
+
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+
+        <environment id="dev_mysql">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+
+        <environment id="dev_oracle">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!--  databaseIdProvider:支持多数据库厂商
+            DB_VENDOR 的 databaseIdProvider 实现会将 databaseId 设置为第一个数据库产品名与属性中的名称相匹配的值，如果没有匹配的属性将会设置为 “null”
+            VendorDatabaseIdProvider
+            在语句的databaseId属性中指定
+
+            id是由mybatis获取到数据库的元数据类型来匹配的。。。所有现在无法测试
+        -->
+    <databaseIdProvider type="DB_VENDOR">
+        <property name="MySQL" value="mysql"/>
+        <property name="SQL Server" value="sqlserver"/>
+        <property name="DB2" value="db2"/>
+        <property name="Oracle" value="oracle" />
+    </databaseIdProvider>
+
+    <!--  mapper：将sql映射到全局配置中 -->
+    <mappers>
+        <!--  mapper：注册一个sql映射
+              url:磁盘路径或网络路径
+              class：引用接口
+              package 批量注册 类和xml要放同一路径-->
+        <mapper resource="mybatisConfig/mapper/employeeMapper.xml"/>
+        <mapper resource="mybatisConfig/mapper/employeeMapperPlus.xml"/>
+        <mapper resource="mybatisConfig/mapper/departmentMapper.xml"/>
+        <mapper resource="mybatisConfig/mapper/EmployeeMapperDynamicSQL.xml"/>
+<!--        <mapper url=""></mapper>-->
+        <mapper class="self.liang.mybatis.example.base.dao.EmployeeMapperAnnotation"/>
+
+
+<!--        <package name=""/>-->
+
+    </mappers>
+
+
+
+</configuration>

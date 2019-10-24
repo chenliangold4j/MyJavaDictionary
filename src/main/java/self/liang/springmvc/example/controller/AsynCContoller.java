@@ -23,7 +23,6 @@ public class AsynCContoller {
                     e.printStackTrace();
                 }
                 deferredResult.setResult("123456");
-
             }
         }).start();
 
