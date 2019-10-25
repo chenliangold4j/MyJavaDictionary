@@ -12,8 +12,13 @@ import self.liang.mybatis.example.base.Employee;
 import self.liang.mybatis.example.base.dao.EmployeeMapper;
 import self.liang.springmvc.example.ConsoleAllBean;
 import self.liang.springmvc.example.dao.Employee2Mapper;
+import self.liang.springmvc.example.dao.EmployeeG2Mapper;
 import self.liang.springmvc.example.entity.Employee2;
+import self.liang.springmvc.example.entity.EmployeeG2;
+import self.liang.springmvc.example.entity.EmployeeG2Example;
 import self.liang.springmvc.example.otherbean.MVCTestService;
+
+import java.util.List;
 
 @Controller
 public class MVCTestController {
@@ -24,6 +29,10 @@ public class MVCTestController {
     @Autowired
     Employee2Mapper employee2Mapper;
 
+
+    @Autowired
+    EmployeeG2Mapper employeeG2Mapper;
+
     @RequestMapping("/testSuccess")
     @ResponseBody
     public String test() throws Exception {
@@ -32,11 +41,23 @@ public class MVCTestController {
         return mvcTestService.goSuccess();
     }
 
-//    @RequestMapping("/testMybatis")
-//    @ResponseBody
-//    public Employee testMybatis() {
-//        Employee employee = employeeMapper.getEmpById(1);
-//        return employee;
-//    }
+    /**
+     *
+     * @return
+     */
+    @RequestMapping("/testMybatis")
+    @ResponseBody
+    public List<EmployeeG2> testMybatis() {
+        EmployeeG2Example employeeG2Example = new EmployeeG2Example();
+        EmployeeG2Example.Criteria criteria = employeeG2Example.createCriteria();
+        criteria.andLastNameLike("%e%");
+        criteria.andGenderEqualTo("1");
+        EmployeeG2Example.Criteria criteria2 = employeeG2Example.createCriteria();
+        criteria2.andEmailLike("%e%");
+        employeeG2Example.or(criteria2);
+
+        List<EmployeeG2> employeeG2List = employeeG2Mapper.selectByExample(employeeG2Example);
+        return employeeG2List;
+    }
 
 }
