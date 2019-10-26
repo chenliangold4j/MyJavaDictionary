@@ -42,10 +42,9 @@ public class NioServer {
                             client = server.accept();
                             client.configureBlocking(false);
                             client.register(selector, SelectionKey.OP_READ);
-
                             String key = "【" + UUID.randomUUID().toString() + "】";
-
                             clientMap.put(key, client);
+
                         } else if (selectionKey.isReadable()) {
                             client = (SocketChannel) selectionKey.channel();
                             ByteBuffer readBuffer = ByteBuffer.allocate(1024);

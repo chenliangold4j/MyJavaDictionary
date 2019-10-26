@@ -17,7 +17,6 @@ public class NioTest1 {
         }
 
         System.out.println("before flip limit: " + buffer.limit());
-
         buffer.flip();
 
         System.out.println("after flip limit: " + buffer.limit());

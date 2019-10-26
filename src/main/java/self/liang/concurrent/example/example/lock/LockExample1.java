@@ -16,7 +16,7 @@ public class LockExample1 {
 
     private static Logger log= new TestLogger();
     // 请求总数
-    public static int clientTotal = 5000;
+    public static int clientTotal = 50000;
 
     // 同时并发执行的线程数
     public static int threadTotal = 200;
