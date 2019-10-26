@@ -46,6 +46,19 @@
     </typeHandlers>
 
 
+    <plugins>
+<!--        <plugin interceptor="self.liang.mybatis.example.base.MyFirstPlugin">-->
+<!--            <property name="username" value="test"/>-->
+<!--            <property name="password" value="test"/>-->
+<!--        </plugin>-->
+<!--        <plugin interceptor="self.liang.mybatis.example.base.MySecondPlugin">-->
+<!--        </plugin>-->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!-- 使用下面的方式配置参数，后面会有所有的参数介绍 -->
+        </plugin>
+    </plugins>
+    
+
     <!--  transactionManager  dataSource 必须有
           environment id="development" 可以配置不一样的环境
           default="development" 通过default切换环境
@@ -121,7 +134,6 @@
 
 
 <!--        <package name=""/>-->
-
     </mappers>
 
 
