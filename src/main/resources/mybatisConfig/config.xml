@@ -41,8 +41,9 @@
     </typeAliases>
 
     <!--  类型处理器  用作类型映射   mybatis自带了很多java类型到数据库类型的匹配 -->
-    <typeHandlers>
 
+    <typeHandlers>
+        <typeHandler handler="self.liang.mybatis.example.base.MyEnumEmpStatusTypeHandler" javaType="self.liang.mybatis.example.base.EnumEmps"/>
     </typeHandlers>
 
 
