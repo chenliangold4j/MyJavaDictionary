@@ -113,6 +113,6 @@ public class MapperTest {
     private static void findAll(SqlSession sqlSession){
         EmployeeMapper employeeMapper =  sqlSession.getMapper(EmployeeMapper.class);
         Map<Integer,Employee>  map =  employeeMapper.findAll();
-        System.out.println("getEmpMapById:"+map);
+        System.out.println("findAll:"+map);
     }
 }
