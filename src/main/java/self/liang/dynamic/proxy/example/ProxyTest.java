@@ -9,6 +9,7 @@ public class ProxyTest {
         System.out.println("CGLibProxy：");
         userManager.addUser(112, "root");
         System.out.println("JDKProxy：");
+
         JDKProxy jdkProxy = new JDKProxy();
         IUserManager userManagerJDK = (IUserManager)jdkProxy.newProxy(new UserMananger());
         userManagerJDK.addUser(112, "root");

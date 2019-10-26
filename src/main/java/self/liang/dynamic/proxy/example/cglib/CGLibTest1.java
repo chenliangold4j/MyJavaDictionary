@@ -18,11 +18,14 @@ public class CGLibTest1 {
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(SampleClass.class);
         enhancer.setCallback(new MethodInterceptor() {
+
+            int i = 1333;
+
             @Override
             public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
-                System.out.println("before method run...");
+                System.out.println("before method run..."+i);
                 Object result = proxy.invokeSuper(obj, args);
-                System.out.println("after method run...");
+                System.out.println("after method run..."+i);
                 return result;
             }
         });
