@@ -114,7 +114,10 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-
+        for(HttpMessageConverter httpMessageConverter:converters) {
+            System.out.println("------------------------:" + httpMessageConverter.getClass());
+            System.out.println("------------------------:" + httpMessageConverter.getSupportedMediaTypes());
+        }
 
     }
 
