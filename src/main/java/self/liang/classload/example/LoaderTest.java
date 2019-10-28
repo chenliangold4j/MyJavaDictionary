@@ -6,7 +6,7 @@ package self.liang.classload.example;
  */
 public class LoaderTest  {
     public static void main(String[] args) {
-       ClassLoader classLoader =   LoaderTest.class.getClassLoader();
+        ClassLoader classLoader =   LoaderTest.class.getClassLoader();
         System.out.println(ClassLoader.getSystemClassLoader());
         System.out.println(classLoader);
         System.out.println(classLoader.getParent());
