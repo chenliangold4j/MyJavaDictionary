@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -11,6 +12,7 @@ import self.liang.mybatis.example.base.dao.EmployeeMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.UUID;
 
 /**
  * 一
@@ -120,7 +122,18 @@ public class TheoryMybatis {
         System.out.println(employeeMapper.findAll());
         System.out.println(page.getTotal());
         System.out.println(page.getPages());
+        sqlSession.close();
 //   PageInfo更详细
+
+
+        //批量操作的sqlSession
+        sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
+        employeeMapper =  sqlSession.getMapper(EmployeeMapper.class);
+        employeeMapper.addEmp(new Employee(null, UUID.randomUUID().toString().substring(0,5),UUID.randomUUID().toString().substring(0,5),"2"));
+//        这里add一万条
+        sqlSession.commit();
+        //整合的时候。可以配置一个sqlSessionTemplate
+
     }
 
     private static SqlSessionFactory getFactory() throws IOException {
@@ -130,6 +143,7 @@ public class TheoryMybatis {
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         return sqlSessionFactory;
     }
+
 
 
     /**
