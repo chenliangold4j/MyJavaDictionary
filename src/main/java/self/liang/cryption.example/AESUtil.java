@@ -21,6 +21,17 @@ public class AESUtil {
     private static final String KEY_ALGORITHM = "AES";
     private static final String DEFAULT_CIPHER_ALGORITHM = "AES/CBC/PKCS5Padding";//默认的加密算法
 
+    private static final   byte[] default_iv = new byte[] { (byte) 0xe0, 0x4f, (byte) 0xd0, 0x20, (byte) 0xea, 0x3a, 0x69, 0x10, (byte) 0xa2, (byte) 0xd8, 0x08, 0x00, 0x2b, 0x30, 0x30,  (byte) 0x9d };
+    private static byte[] default_mkey = null;
+    private static Base64 coder = new Base64();
+    static {
+        try {
+            default_mkey = "1234567890ABCDEF".getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * AES 加密操作
      *
@@ -52,6 +63,20 @@ public class AESUtil {
         }
         return null;
     }
+
+    public static String defaultEncrypt(String str) throws UnsupportedEncodingException {
+        byte[] encodedata =  encrypt(str.getBytes("utf-8"),default_mkey,default_iv);
+        encodedata = coder.encode(encodedata);
+        String result = new String(encodedata,"utf-8");
+        return result;
+    }
+
+    public static  String defaultDecrypt(String str){
+        byte[] datas = coder.decode(str);
+        String result = decrypt(datas, default_mkey, default_iv);
+        return  result;
+    }
+
 
     /**
      * AES 解密操作
@@ -85,19 +110,23 @@ public class AESUtil {
         }
         return null;
     }
-    
-   public static void main(String[] args) throws UnsupportedEncodingException
+
+
+    public static byte[] getDefault_mkey() {
+        return default_mkey;
+    }
+
+    public static void setDefault_mkey(byte[] default_mkey) {
+        AESUtil.default_mkey = default_mkey;
+    }
+
+    public static void main(String[] args) throws UnsupportedEncodingException
    {
       String content= "9ZX3XeZxfAo5iAkN0Apj3b6fp68AWLKrKE52BYAzA25My+gJuZkeaTeRE4GvHbWvtv/Wl4gNXw5ZaZbUef0GUuajb38c9SjiaFj+hPl2L+wslB0FBXCbpUaf1KmyN1mtWjtcqRnYc5cvVyHaS4C4uTVmyjTfwZgwS6aO0QnI/IUYrsyzjUlDoKE71DENuLrzDeST68/tNDBB2HhSGqH59Jpck40ipmGpMIxjR88P6rUxpDAHYN5BFzbDxTPJHmBASdAZUAThv7TN8qzAfh+c4q3/9U+zIaKkZL5H+12YpkY0XUw2r1RPzw1TjV+bRfOfq2XojWOFQYSjxM4ldcpTirY1bWD3ZLnjW7MDihWzltbTyaP4AoBSDrRy/u9Yz5LwC4oos2adIjkh8kVnPQy/SstV6HKHdj+c/QeD0jKX9mDp53+FOGmiEvThXnLNlrzx4gL4+3mgmv0SQxivinBXjmFSDJOQcl8Y8chuJPUZhuo=";
-      Base64 decoder = new Base64();
-      byte[] datas = decoder.decode(content);
-      byte[] iv = new byte[] { (byte) 0xe0, 0x4f, (byte) 0xd0, 0x20, (byte) 0xea, 0x3a, 0x69, 0x10, (byte) 0xa2, (byte) 0xd8, 0x08, 0x00, 0x2b, 0x30, 0x30,  (byte) 0x9d };
-      byte[]  mkey = "1234567890ABCDEF".getBytes("UTF-8");
-      String result = decrypt(datas, mkey, iv);
+      String result =defaultDecrypt(content);
+
        System.out.println(result);
-       byte[] encodedata =  encrypt(result.getBytes("utf-8"),mkey,iv);
-       encodedata = decoder.encode(encodedata);
-       String str = new String(encodedata,"utf-8");
+       String str = defaultEncrypt(result);
        System.out.println(str);
    }
 
