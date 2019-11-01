@@ -10,20 +10,17 @@ public class WorkerClient {
 
     public static void main(String[] args) throws InterruptedException {
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
-
         try {
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class).
                     handler(new WorkerClientInitializer());
 
-            ChannelFuture channelFuture = bootstrap.connect("112.94.14.24", 8181).sync();
+            ChannelFuture channelFuture = bootstrap.connect("192.168.0.115", 9991).sync();
             channelFuture.channel().closeFuture().sync();
         } finally {
             eventLoopGroup.shutdownGracefully();
         }
     }
-
-
 
 
 }
