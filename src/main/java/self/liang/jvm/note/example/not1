@@ -1,0 +1,48 @@
+OOM解决思路
+    1.想办法拿到heap dump
+        -XX:+HeapDumpOnOutOfMemoryError
+        jmap -dump:live,format=b,file=<filepath><pid>
+              先jps看自己要打印的线程的pid  这个要先运行的时候使用
+    2. java -Xmx3550m -Xms3550m -Xmn2g -Xss128k
+       -Xmx3550m：设置JVM最大可用内存为3550M。
+       -Xms3550m：设置JVM促使内存为3550m。此值可以设置与-Xmx相同，以避免每次垃圾回收完成后JVM重新分配内存。
+       -Xmn2g：设置年轻代大小为2G。整个JVM内存大小=年轻代大小 + 年老代大小 + 持久代大小。持久代一般固定大小为64m，所以增大年轻代后，
+       将会减小年老代大小。此值对系统性能影响较大，Sun官方推荐配置为整个堆的3/8。
+       -Xss128k：设置每个线程的堆栈大小。JDK5.0以后每个线程堆栈大小为1M，以前每个线程堆栈大小为256K。
+       更具应用的线程所需内存大小进行调整。在相同物理内存下，减小这个值能生成更多的线程。
+       但是操作系统对一个进程内的线程数还是有限制的，不能无限生成，经验值在3000~5000左右。
+
+       java -Xmx3550m -Xms3550m -Xss128k -XX:NewRatio=4 -XX:SurvivorRatio=4 -XX:MaxPermSize=16m -XX:MaxTenuringThreshold=0
+       -XX:NewRatio=4:设置年轻代（包括Eden和两个Survivor区）与年老代的比值（除去持久代）。设置为4，则年轻代与年老代所占比值为1：4，年轻代占整个堆栈的1/5。
+       -XX:SurvivorRatio=4：设置年轻代中Eden区与Survivor区的大小比值。设置为4，则两个Survivor区与一个Eden区的比值为2:4，一个Survivor区占整个年轻代的1/6。（4：1：1）。
+       -XX:MaxPermSize=16m:设置持久代大小为16m。
+       -XX:MaxTenuringThreshold=0：设置垃圾最大年龄。大于这个年龄的都会进入老年代区。如果设置为0的话，则年轻代对象不经过Survivor区，直接进入年老代。
+       对于年老代比较多的应用，可以提高效率。如果将此值设置为一个较大值，则年轻代对象会在Survivor区进行多次复制，这样可以增加对象再年轻代的存活时间，增加在年轻代即被回收的概论。
+
+       可以通过设置  -Xmx 来主动触发oom
+
+    3.经验
+        50% 是代码问题
+        40% 是配置问题
+        10% 是内存不够
+            意味着。。绝大多数OOM不能通过加内存来解决
+
+
+     4.Heap Dump分析
+        1.用jvisualvm  文件  装入  再OOM示例中。。99%都是byte[]   但是信息很简略。无法直观的知道哪里出现了问题
+        2. Metaspace/PermGen 元空间/永久代  这种oom 瞄准class对象 类加载过多（有自定义classloader的时候可能性增高）
+           heap space  瞄准占空间最大的对象
+           path to GC roots  找到引发的对象元空间的。或者是堆空间的过多对象，，去看它的gc root为什么没有被回收
+           顺腾摸瓜
+        3.mat工具就强大很多，，有可能问题分析，，占用图示，，   其实能用熟悉这个工具。。知道每一个选项是什么意思。。对jvm就已经很熟了
+            示例一： 首先leak suspect 分析  之后用histogram 看class对象数量  由于是metaspace报的oom  找到膨胀的类对象
+                    定位到之后 用merge shortest paths to gc roots的 with All reference 看到大量类对象都是由okio watchdog线程这个gc root所引用的
+                    之后找代码，用google 搜索之后发现是老版本的okHttp会有这个bug，作者直接将此功能删除修复
+
+            示例二：首先leak suspect 分析 这次是heap space的oom，直接分析到对象占用过多，
+                    然后用List Objects 的with outgoing references 看她引用了什么对象 ，结合代码
+                    发现缓存就没有释放。知道用的是google的cache，对google的cache有所了解之后，找到key，发现大量key对象类似
+                    之后打条件断点  idea中在断点上右键(示例的条件为：patterns.toString().contains("jetified")),
+                    注意。这里又用到了远程debug（很重要！）;然后找到是
+
+        4.商业工具jProfiler

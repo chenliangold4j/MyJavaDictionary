@@ -12,9 +12,6 @@ public class ProfileMain {
         ctx.register(MyConfigOfProfile.class);
         ctx.refresh();
 
-
-
-
         //vm 参数  ： -Dspring.profiles.active=
         String[] names = ctx.getBeanDefinitionNames();
         for(String s:names){

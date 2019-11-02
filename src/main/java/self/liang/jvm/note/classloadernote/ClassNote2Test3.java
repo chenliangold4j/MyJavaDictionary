@@ -10,7 +10,10 @@ public class ClassNote2Test3 {
          *       助记符：ldc表示将int，float或是String类型的常量值从常量池中推送至栈顶
          *              bipush表示将单子接（-128~127）的常量推送至栈顶
          *              sipush表示将一个短整型（-32768~32767）常量推送至栈顶
-         *              iconst_1表示将int的数字1推送至栈顶  最多到5 自行验证
+         *              iconst_1表示将int的数字1推送至栈顶  最多-1到5 自行验证
+         *              iconst_m1 示将int的数字-1推送至栈顶 m代表minus
+         *
+         *              public class ICONST extends Instruction 这个类是java的类  其他的也有相关类进行操作
          */
         /**
          * 命令：javap -c self.liang.jvm.note.classloadernote.ClassNote2Test3
