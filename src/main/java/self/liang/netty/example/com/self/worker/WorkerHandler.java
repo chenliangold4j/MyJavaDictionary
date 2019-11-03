@@ -50,7 +50,6 @@ public class WorkerHandler extends SimpleChannelInboundHandler<String> {
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         super.channelReadComplete(ctx);
     }
-
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, String s) throws Exception {
         String value = AESUtil.defaultDecrypt(Dom4jUtil.getRootString(Dom4jUtil.parse(s)));
