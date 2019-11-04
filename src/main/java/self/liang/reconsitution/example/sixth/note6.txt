@@ -1,0 +1,14 @@
+1.extract method : 把一段代码从原先函数提取出来，放进一个单独函数中。
+    最大的困难是处理局部变量。
+    replace temp with query 去掉所有可去掉的临时变量。
+    如果很多地方用了某个临时变量。可以用split temporary variable将它变得容易替换。
+    临时变量太混乱：replace method with method object。引入新类。
+    不要在函数内赋值给参数，如果有。remove assignment to parameters;
+    查看算法。用substitute algorithm引入更清晰的算法。
+
+2.inline method：将一个函数调用动作替换为该函数本身。
+
+3.对临时变量运用重构的时候可以先用final修饰一下，，这样idea或者编译器可以提示哪里有最变量修改。。如果报错，那有的手法就不能用。
+
+
+
