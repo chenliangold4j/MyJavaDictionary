@@ -13,6 +13,7 @@ package self.liang.reconsitution.example.eighth;
  *      但在子类返回值需要加工时，必须使用方法。
  *
  *
+ *
  */
 public class SelfEncapsulateField {
 
