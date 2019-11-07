@@ -53,7 +53,7 @@ public class WorkerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, String s) throws Exception {
         String value = AESUtil.defaultDecrypt(Dom4jUtil.getRootString(Dom4jUtil.parse(s)));
-        System.out.println("-------"+value);
+        System.out.println("接到的消息:"+value);
         if(value.equals("<ping/>")){
             String content = AESUtil.defaultEncrypt("<pong/>");
             channelHandlerContext.write(content);
@@ -71,6 +71,7 @@ public class WorkerHandler extends SimpleChannelInboundHandler<String> {
                 login_id = xmlCommonBean.getDataMap().get("result").toString();
                 //测试消息
                 String data = getUpdateDeviceXml();
+                System.out.println("发送的update数据："+data);
                 String content = AESUtil.defaultEncrypt(data);
                 channelHandlerContext.write(content);
                 channelHandlerContext.flush();
@@ -80,22 +81,13 @@ public class WorkerHandler extends SimpleChannelInboundHandler<String> {
     }
 
 
-    //测试用的构造xml
-// <DeviceManager>
-//  <Update>
-//    <deviceNumber>HTV8-L400-BI40-0</deviceNumber>
-//    <login_id>1071000029735</login_id>
-//    <device_type_id>3</device_type_id>
-//    <name>test lock f</name>
-//    <valid_type>0</valid_type>
-//  </Update>
-//</DeviceManager>
     public String getUpdateDeviceXml(){
         Map<String,String> map = new HashMap<>();
         map.put("deviceNumber","HTV8-L400-BI40-0");
         map.put("login_id",login_id);
         map.put("device_type_id","3");
         map.put("valid_type","0");
+        map.put("remark","testetstest");
         Element element =  Dom4jUtil.createResponseXmlMonolayer("DeviceManager","Update",map);
         return  Dom4jUtil.asXML(element);
     }
