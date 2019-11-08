@@ -7,6 +7,7 @@ import self.liang.cryption.example.AESUtil;
 import self.liang.xml.example.Dom4jUtil;
 import self.liang.xml.example.XMLCommonBean;
 
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,13 +71,18 @@ public class WorkerHandler extends SimpleChannelInboundHandler<String> {
                 AESUtil.setDefault_mkey(key.getBytes("UTF-8"));
                 login_id = xmlCommonBean.getDataMap().get("result").toString();
                 //测试消息
-                String data = getUpdateDeviceXml();
-                System.out.println("发送的update数据："+data);
+                String data = getAppLogin();
+                System.out.println("发送的数据："+data);
+                String content = AESUtil.defaultEncrypt(data);
+                channelHandlerContext.write(content);
+                channelHandlerContext.flush();
+            }else if(xmlCommonBean.getMain().equals("Login") && xmlCommonBean.getRoot().equals("AppUserManage")){
+                String data = getUnlock();
+                System.out.println("发送的数据："+data);
                 String content = AESUtil.defaultEncrypt(data);
                 channelHandlerContext.write(content);
                 channelHandlerContext.flush();
             }
-
         }
     }
 
@@ -91,9 +97,42 @@ public class WorkerHandler extends SimpleChannelInboundHandler<String> {
         Element element =  Dom4jUtil.createResponseXmlMonolayer("DeviceManager","Update",map);
         return  Dom4jUtil.asXML(element);
     }
+    public String getStartHeartbeat(){
+        Map<String,String> map = new HashMap<>();
+        map.put("deviceNumber","HTV8-L400-BI40-0");
+        map.put("login_id",login_id);
+        Element element =  Dom4jUtil.createResponseXmlMonolayer("DSXClient","StartHeartbeat",map);
+        return  Dom4jUtil.asXML(element);
+    }
 
 
+    public String getAppLogin(){
+        Map<String,String> map = new HashMap<>();
+        map.put("phone_no","13538978846");
+        map.put("password",Base64.getEncoder().encodeToString("123456".getBytes()));
+        map.put("login_id",login_id);
+        Element element =  Dom4jUtil.createResponseXmlMonolayer("AppUserManage","Login",map);
+        return  Dom4jUtil.asXML(element);
+    }
 
+    public String getDeviceEvent(){
+        Map<String,String> map = new HashMap<>();
+        map.put("HeartBeat","true");
+        map.put("IdentifyHistoryUpload","true");
+        map.put("PersonInfoUpload","true");
+        map.put("UploadAlert","true");
+        map.put("app_user_id","13");
+        map.put("login_id",login_id);
+        Element element =  Dom4jUtil.createResponseXmlMonolayer("AppUserDeviceMananger","DeviceEvent",map);
+        return  Dom4jUtil.asXML(element);
+    }
 
+    public String getUnlock(){
+        Map<String,String> map = new HashMap<>();
+        map.put("deviceNumber","556G-TMOC-UAA6-A");
+        map.put("login_id",login_id);
+        Element element =  Dom4jUtil.createResponseXmlMonolayer("DeviceManager","Unlock",map);
+        return  Dom4jUtil.asXML(element);
+    }
 
 }
