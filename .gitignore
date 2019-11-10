@@ -30,3 +30,6 @@ hs_err_pid*
 /.idea
 *.iml
 *.index
+*.jpg
+*.jpeg
+*.ico

@@ -34,6 +34,10 @@ import java.util.Set;
 
 
 //springMVC只扫描controller,需要禁用默认过滤规则
+
+/**
+ *  子容器的的配置可以参考springboot的WebMvcAutoConfigurationAdapter这个类的写法。看每个方法都是注册什么的。
+ */
 @ComponentScan(value = "self.liang.springmvc.example",includeFilters = {
         @ComponentScan.Filter(type = FilterType.ANNOTATION,classes = {Controller.class})
 },useDefaultFilters = false)
