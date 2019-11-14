@@ -13,8 +13,6 @@ import java.io.InputStream;
 
 public class TestXmlMethodArumentResolver implements HandlerMethodArgumentResolver {
 
-
-
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
 

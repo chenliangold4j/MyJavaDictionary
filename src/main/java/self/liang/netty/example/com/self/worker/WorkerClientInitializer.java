@@ -8,6 +8,7 @@ import java.nio.charset.Charset;
 
 public class WorkerClientInitializer extends ChannelInitializer<SocketChannel> {
 
+
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         ChannelPipeline pipeline = socketChannel.pipeline();
