@@ -14,8 +14,6 @@ public class MyAbstractQueuedSynchronizer extends  MyAbstractSynchronizer {
     static final class Node {
         /** 指示节点在共享模式下等待的标记 */
         static final Node SHARED = new Node();
-        /**表示后继结点在等待当前结点唤醒。后继结点入队时，
-         * 会将前继结点的状态更新为SIGNAL */
         static final Node EXCLUSIVE = null;
         /** 表示线程已取消的等待状态值 */
         static final int CANCELLED =  1;
@@ -26,6 +24,7 @@ public class MyAbstractQueuedSynchronizer extends  MyAbstractSynchronizer {
         /**
          共享模式下，前继结点不仅会唤醒其后继结点，
          同时也可能会唤醒后继的后继结点
+         propagate:传播
          */
         static final int PROPAGATE = -3;
 
@@ -40,11 +39,11 @@ public class MyAbstractQueuedSynchronizer extends  MyAbstractSynchronizer {
 
         Node nextWaiter;
 
-        //是不是共享的。如果是共享，按代码来说，只能传入Node.SHARED这个节点.
         final boolean isShared() {
             return nextWaiter == SHARED;
         }
 
+        //predecessor :n. 前任，前辈    返回节点的前节点
         final Node predecessor() throws NullPointerException {
             Node p = prev;
             if (p == null)
@@ -71,6 +70,7 @@ public class MyAbstractQueuedSynchronizer extends  MyAbstractSynchronizer {
     /*尾巴节点*/
     private transient volatile Node tail;
 
+    //这个状态？
     private volatile int state;
     protected final int getState() {
         return state;
@@ -85,6 +85,7 @@ public class MyAbstractQueuedSynchronizer extends  MyAbstractSynchronizer {
 
     //将节点插入队列，必要时进行初始化
     //插入操作利用unsafe的cas变为原子操作。
+    //在链表尾部添加了一个节点。
     private Node enq(final Node node) {
         for (;;) {
             Node t = tail;
@@ -92,7 +93,7 @@ public class MyAbstractQueuedSynchronizer extends  MyAbstractSynchronizer {
                 if (compareAndSetHead(new Node()))
                     tail = head;
             } else {
-                node.prev = t;
+                node.prev = t;//将尾节点设置为新节点的前驱，并用cas更换尾节点。
                 if (compareAndSetTail(t, node)) {
                     t.next = node;
                     return t;
@@ -102,6 +103,15 @@ public class MyAbstractQueuedSynchronizer extends  MyAbstractSynchronizer {
     }
 
 //    为当前线程和给定模式创建和排队节点
+    /**  新建节点，设置了节点的nextWaiter和thread
+     *   并把节点插入链表尾部。
+     *
+     *   Node的共享判断。
+     *    final boolean isShared() {
+     *             return nextWaiter == SHARED;
+     *         }
+     *
+     */
     private Node addWaiter(Node mode) {
         Node node = new Node(Thread.currentThread(), mode);
         // Try the fast path of enq; backup to full enq on failure
@@ -112,11 +122,12 @@ public class MyAbstractQueuedSynchronizer extends  MyAbstractSynchronizer {
                 pred.next = node;
                 return node;
             }
-        }
+        }//
         enq(node);
         return node;
     }
 
+    //设置头节点。并将node的前驱和thread设置为空。
     private void setHead(Node node) {
         head = node;
         node.thread = null;
@@ -140,17 +151,20 @@ public class MyAbstractQueuedSynchronizer extends  MyAbstractSynchronizer {
      *
      * 0：新结点入队时的默认状态。
      *
+     * 唤醒node之后最近的可以唤醒的节点。
      */
     private void unparkSuccessor(Node node) {
         // unparkSuccessor()来唤醒该线程的继任节点。
         // 在unparkSuccessor()方法中通过LockSupport.unpark()来唤醒。
         // unpark():如果给定线程的许可尚不可用，则使其可用
+
+        //判断waitStatus是否小于0，不是则置为0
         int ws = node.waitStatus;
         if (ws < 0)
             compareAndSetWaitStatus(node, ws, 0);
 
         Node s = node.next;
-        //这里其实就是说。节点为空或者当前结点已取消调度
+        //2 这里其实就是说。节点的后继为空或者节点的后继已取消调度
         if (s == null || s.waitStatus > 0) {
             s = null;
             //这时候，从后向前寻找  离node最近的可以唤醒的节点。
@@ -158,12 +172,13 @@ public class MyAbstractQueuedSynchronizer extends  MyAbstractSynchronizer {
                 if (t.waitStatus <= 0)
                     s = t;
         }
+        //用unpard唤醒节点。
         if (s != null)
             LockSupport.unpark(s.thread);
     }
 
     /**
-     *     此方法主要用于唤醒后继
+     *     此方法主要用于唤醒后继，头结点的后继。
      *     判断头节点的状态，-1(SIGNAL)则唤醒后继。
      *     ws == 0 && !compareAndSetWaitStatus(h, 0, Node.PROPAGATE) 状态为0 且
      */
@@ -179,7 +194,7 @@ public class MyAbstractQueuedSynchronizer extends  MyAbstractSynchronizer {
                         continue;            // loop to recheck cases
                     unparkSuccessor(h);
                 }
-    //如果是0 则改为-3
+                //如果是0 则改为-3 具体-3作用还不知道
                 else if (ws == 0 &&
                         !compareAndSetWaitStatus(h, 0, Node.PROPAGATE))
                     continue;                // loop on failed CAS
@@ -190,14 +205,16 @@ public class MyAbstractQueuedSynchronizer extends  MyAbstractSynchronizer {
     }
 
     /**
-     此方法在setHead()的基础上多了一步，就是自己苏醒的同时，
-     如果条件符合（比如还有剩余资源），还会去唤醒后继结点，毕竟是共享模式！
+     * 设置头节点。
+      如果条件符合（比如还有剩余资源），还会去唤醒后继结点
      */
     private void setHeadAndPropagate(Node node, int propagate) {
+        //1.将头节点设置为node
         Node h = head; // Record old head for check below
         setHead(node);
-        if (propagate > 0 || h == null || h.waitStatus < 0 ||
-                (h = head) == null || h.waitStatus < 0) {
+        //根据propagate的状态，和头结点waitStatus的状态，这么写很怪。。可能是为了双层校验？
+        if (propagate > 0 || h == null || h.waitStatus < 0 || (h = head) == null || h.waitStatus < 0) {
+            //node已经设置成了头，这里看头节点的后继，看是不是共享。然后调用doReleaseShared
             Node s = node.next;
             if (s == null || s.isShared())
                 doReleaseShared();
@@ -212,27 +229,40 @@ public class MyAbstractQueuedSynchronizer extends  MyAbstractSynchronizer {
         if (node == null)
             return;
         node.thread = null;
-
-        // Skip cancelled predecessors
+        // Skip cancelled predecessors  跳过取消的前驱。waitStatus>0就是cancelled；
         Node pred = node.prev;
         while (pred.waitStatus > 0)
             node.prev = pred = pred.prev;
 
+        //这时候predNext节点就是 最近没有取消的前驱的后继。
         Node predNext = pred.next;
+
+        //把node的状态设置为取消。
         node.waitStatus = Node.CANCELLED;
 
+
+        //设置为取消。那么下列就是善后工作
+
+        //如果node是尾节点  把pred设置为尾巴，因为pred是没有取消的最后一个节点。
+        //之后再把pred的next置为null;
         if (node == tail && compareAndSetTail(node, pred)) {
             compareAndSetNext(pred, predNext, null);
         } else {
+            //如果node不是尾节点 pred不是头节点   说明是中间节点。
+            // 且 (pred.waitStatus不是SIGNAL 或 waitStatus小于0且将waitStatus切换为SIGNAL成功。 要不是SIGNAl 要么同样小于0然后切换成SIGNAL
+            // 且pred的线程不是空。
+            //最后将pred的后继切换成node.next节点。
+            //一句话，将node不是尾，将node的后继设置为pred的后继。为了取消node节点。
             int ws;
             if (pred != head &&
-                    ((ws = pred.waitStatus) == Node.SIGNAL ||
-                            (ws <= 0 && compareAndSetWaitStatus(pred, ws, Node.SIGNAL))) &&
+                    ((ws = pred.waitStatus) == Node.SIGNAL || (ws <= 0 && compareAndSetWaitStatus(pred, ws, Node.SIGNAL))) &&
                     pred.thread != null) {
                 Node next = node.next;
                 if (next != null && next.waitStatus <= 0)
                     compareAndSetNext(pred, predNext, next);
             } else {
+                //不是上列的情况。唤醒node之后最近的可以唤醒的节点
+                //思考的话，就是node是当前应该unpark的节点，那么unpark node的后继。
                 unparkSuccessor(node);
             }
             node.next = node; // help GC
