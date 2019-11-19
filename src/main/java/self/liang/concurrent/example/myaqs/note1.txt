@@ -1,0 +1,48 @@
+aqs的设计和实现：
+     同步器背后的基本思想非常简单。
+     acquire操作如下：
+        while (synchronization state does not allow acquire) { //同步不允许获取
+            enqueue current thread if not already queued;//如果当前线程尚未排队，则加入队列;
+            possibly block current thread;//可能阻塞当前线程
+        }
+        dequeue current thread if it was queued;//如果当前线程正在排队，则退出队列;
+
+     release操作如下：
+        update synchronization state;
+        if (state may permit a blocked thread to acquire)//状态允许被阻塞的线程获取
+            unblock one or more queued threads;//取消阻塞一个或多个排队的线程
+
+    为了实现上述操作，需要下面三个基本组件的相互协作：
+
+    同步状态的原子性管理；
+    线程的阻塞与解除阻塞；
+    队列的管理；
+
+3.1 同步状态
+AQS类使用单个int（32位）来保存同步状态，并暴露出getState、setState以及compareAndSet操作来读取和更新这个状态。
+这些方法都依赖于j.u.c.atomic包的支持，这个包提供了兼容JSR133中volatile在读和写上的语义，并且通过使用本地的compare-and-swap或load-linked/store-conditional指令来实现compareAndSetState，
+使得仅当同步状态拥有一个期望值的时候，才会被原子地设置成新值。
+
+将同步状态限制为一个32位的整形是出于实践上的考量。虽然JSR166也提供了64位long字段的原子性操作，但这些操作在很多平台上还是使用内部锁的方式来模拟实现的，
+这会使同步器的性能可能不会很理想。当然，将来可能会有一个类是专门使用64位的状态的。然而现在就引入这么一个类到这个包里并不是一个很好的决定
+（译者注：JDK1.6中已经包含java.util.concurrent.locks.AbstractQueuedLongSynchronizer类，即使用 long 形式维护同步状态的一个 AbstractQueuedSynchronizer 版本）。
+目前来说，32位的状态对大多数应用程序都是足够的。
+在j.u.c包中，只有一个同步器类可能需要多于32位来维持状态，那就是CyclicBarrier类，所以，它用了锁（该包中大多数更高层次的工具亦是如此）。
+
+
+基于AQS的具体实现类必须根据暴露出的状态相关的方法定义tryAcquire和tryRelease方法，以控制acquire和release操作。
+当同步状态满足时，tryAcquire方法必须返回true，
+而当新的同步状态允许后续acquire时，tryRelease方法也必须返回true。
+这些方法都接受一个int类型的参数用于传递想要的状态。
+例如：可重入锁中，当某个线程从条件等待中返回，然后重新获取锁时，为了重新建立循环计数的场景。很多同步器并不需要这样一个参数，因此忽略它即可。
+
+
+//--
+3.2 阻塞
+在JSR166之前，阻塞线程和解除线程阻塞都是基于Java内置管程，
+没有其它非基于Java内置管程的API可以用来创建同步器。
+唯一可以选择的是Thread.suspend和Thread.resume，但是它们都有无法解决的竞态问题，所以也没法用：当一个非阻塞的线程在一个正准备阻塞的线程调用suspend前调用了resume，这个resume操作将不会有什么效果。
+
+j.u.c包有一个LockSuport类，这个类中包含了解决这个问题的方法。方法LockSupport.park阻塞当前线程除非/直到有个LockSupport.unpark方法被调用（unpark方法被提前调用也是可以的）。unpark的调用是没有被计数的，因此在一个park调用前多次调用unpark方法只会解除一个park操作。另外，它们作用于每个线程而不是每个同步器。一个线程在一个新的同步器上调用park操作可能会立即返回，因为在此之前可能有“剩余的”unpark操作。但是，在缺少一个unpark操作时，下一次调用park就会阻塞。虽然可以显式地消除这个状态（译者注：就是多余的unpark调用），但并不值得这样做。在需要的时候多次调用park会更高效。
+
+这个简单的机制与有些用法在某种程度上是相似的，例如Solaris-9的线程库，WIN32中的“可消费事件”，以及Linux中的NPTL线程库。因此最常见的运行Java的平台上都有相对应的有效实现。（但目前Solaris和Linux上的Sun Hotspot JVM参考实现实际上是使用一个pthread的condvar来适应目前的运行时设计的）。park方法同样支持可选的相对或绝对的超时设置，以及与JVM的Thread.interrupt结合 —— 可通过中断来unpark一个线程。
