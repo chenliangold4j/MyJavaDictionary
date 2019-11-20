@@ -8,7 +8,6 @@ public class ClassNote23 {
 
     public static final short s = 7;
 
-
     public static final short s1 = 128;
 
     public  static final  int m = 1;
