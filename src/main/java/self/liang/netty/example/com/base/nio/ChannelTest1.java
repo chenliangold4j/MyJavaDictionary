@@ -32,17 +32,16 @@ import java.nio.channels.FileChannel;
  */
 public class ChannelTest1 {
     public static void main(String[] args) throws IOException {
-        RandomAccessFile aFile = new RandomAccessFile("C:\\2.txt", "rw");
+        RandomAccessFile aFile = new RandomAccessFile("C:\\test.txt", "rw");
         FileChannel inChannel = aFile.getChannel();
 
         ByteBuffer buf = ByteBuffer.allocate(48);
 
         int bytesRead = inChannel.read(buf);
         while (bytesRead != -1) {
-
             System.out.println("Read " + bytesRead);
+//            注意 buf.flip() 的调用，首先读取数据到Buffer，然后反转Buffer,接着再从Buffer中读取数据
             buf.flip();
-
             while(buf.hasRemaining()){
                 System.out.print((char) buf.get());
             }
