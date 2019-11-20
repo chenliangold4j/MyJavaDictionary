@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import self.liang.springboot.example.collection.ioc.ColKeeper;
 import self.liang.springboot.example.entity.Person;
 
 @Controller
@@ -16,6 +17,8 @@ public class LogTestController {
     @Autowired
     Person person;
 
+    @Autowired
+    ColKeeper colKeeper;
 
     @RequestMapping("/a")
     @ResponseBody
@@ -32,5 +35,15 @@ public class LogTestController {
     @ResponseBody
     public Person test2() {
         return person;
+    }
+
+
+    @RequestMapping("/c")
+    @ResponseBody
+    public String test3() {
+        logger.info("注入的集合数量："+ colKeeper.getVipTypes().size());
+        logger.info(colKeeper.getVipTypes().get(0).getClass().toString());
+        logger.info(colKeeper.getVipTypes().get(1).getClass().toString());
+        return "test";
     }
 }

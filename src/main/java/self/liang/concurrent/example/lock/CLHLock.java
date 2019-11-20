@@ -1,6 +1,10 @@
 package self.liang.concurrent.example.lock;
 
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
 
 public class CLHLock {
     /**
@@ -18,17 +22,17 @@ public class CLHLock {
     /**
      * 隐式链表最末等待节点
      */
-    private volatile CLHNode                       tail              = null;
+    private volatile CLHNode tail = null;
 
     /**
      * 线程对应CLH节点映射
      */
-    private ThreadLocal<CLHNode>                   currentThreadNode = new ThreadLocal<>();
+    private ThreadLocal<CLHNode> currentThreadNode = new ThreadLocal<>();
 
     /**
      * 原子更新器
      */
-    private static final AtomicReferenceFieldUpdater UPDATER           = AtomicReferenceFieldUpdater
+    private static final AtomicReferenceFieldUpdater UPDATER = AtomicReferenceFieldUpdater
             .newUpdater(
                     CLHLock.class,
                     CLHNode.class,
@@ -39,6 +43,7 @@ public class CLHLock {
      */
     public void lock() {
 
+        //新建一个节点
         CLHNode cNode = currentThreadNode.get();
 
         if (cNode == null) {
@@ -47,14 +52,14 @@ public class CLHLock {
         }
 
         // 通过这个操作完成隐式链表的维护，后继节点只需要在前驱节点的locked状态上自旋
-        CLHNode predecessor = (CLHNode) UPDATER.getAndSet(this, cNode);
+        //将前驱节点get到，然后set进现在的节点。那么下一个人调用就会等待现在节点。
+        CLHNode predecessor = (CLHNode) UPDATER.getAndSet(this, cNode);//这里是队列对尾部进行操作。
         if (predecessor != null) {
             // 自旋等待前驱节点状态变更 - unlock中进行变更
-            while (predecessor.active) {
-
+            while (predecessor.active) {  //后继节点自旋检查前驱的状态
+                //如果前驱的活动状态为false  就得到锁。
             }
         }
-
         // 没有前驱节点表示可以直接获取到锁，由于默认获取锁状态为true，此时可以什么操作都不执行
         // 能够执行到这里表示已经成功获取到了锁
     }
@@ -100,7 +105,6 @@ public class CLHLock {
     private static Runnable generateTask(final CLHLock lock, final String taskId) {
         return () -> {
             lock.lock();
-
             try {
                 Thread.sleep(1000);
             } catch (Exception e) {
@@ -111,5 +115,76 @@ public class CLHLock {
             lock.unlock();
         };
     }
+}
 
+/**
+ * 另一篇文章的实现。
+ * 这里用myPre保存了前驱。
+ *
+ * 结点之间是通过隐形的链表相连，之所以叫隐形的链表是因为这些结点之间没有明显的next指针，而是通过myPred所指向的结点的变化情况来影响myNode的行为
+ * 。CLHLock上还有一个尾指针，始终指向队列的最后一个结点
+ *
+ */
+class CLHLock2 implements Lock {
+
+    class QNode {
+        public volatile boolean locked = false;
+    }
+
+    AtomicReference<QNode> tail = new AtomicReference<QNode>(new QNode());
+    ThreadLocal<QNode> myPred;
+    ThreadLocal<QNode> myNode;
+
+    public CLHLock2() {
+        tail = new AtomicReference<QNode>(new QNode());
+        myNode = new ThreadLocal<QNode>() {
+            protected QNode initialValue() {
+                return new QNode();
+            }
+        };
+        myPred = new ThreadLocal<QNode>() {
+            protected QNode initialValue() {
+                return null;
+            }
+        };
+    }
+
+    @Override
+    public void lock() {
+        QNode qnode = myNode.get();
+        qnode.locked = true;
+        QNode pred = tail.getAndSet(qnode);//将tail取出，作为当前线程的前驱
+        myPred.set(pred);
+        while (pred.locked) {
+
+        }
+    }
+
+    @Override
+    public void unlock() {
+        QNode qnode = myNode.get();
+        qnode.locked = false;
+        myNode.set(myPred.get());
+    }
+
+
+    @Override
+    public void lockInterruptibly() throws InterruptedException {
+
+    }
+
+    @Override
+    public boolean tryLock() {
+        return false;
+    }
+
+    @Override
+    public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
+        return false;
+    }
+
+    @Override
+    public Condition newCondition() {
+        return null;
+    }
 }

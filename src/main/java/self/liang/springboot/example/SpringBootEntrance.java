@@ -1,9 +1,11 @@
 package self.liang.springboot.example;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import self.liang.springboot.example.collection.ioc.ColKeeper;
 
 
 /**
@@ -120,6 +122,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
  */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})//这里配置不自动初始化datasource ，没有配置datasource的配置文件
 public class SpringBootEntrance {
+
     public static void main(String[] args) {
         SpringApplication.run(SpringBootEntrance.class);
     }
