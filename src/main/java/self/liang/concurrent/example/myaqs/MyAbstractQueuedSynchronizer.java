@@ -291,7 +291,7 @@ public class MyAbstractQueuedSynchronizer extends MyAbstractSynchronizer {
     }
 
     /**
-     * 看看自己是否真的可以去休息了（进入waiting状态，）
+     * 看看自己是否真的可以去（进入waiting状态，）
      * 如果前驱节点的状态为SIGNAL 则为true
      * <p>
      * 如果前驱已经被取消了 跳过前任并指示重试。
