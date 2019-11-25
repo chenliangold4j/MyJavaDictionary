@@ -11,6 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ *
+ *
+ 在实现了WebMvcConfigurerAdapter 的配置类中注册即可使用
+ public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+ argumentResolvers.add(tokenResolver);
+
+ */
 public class TestXmlMethodArumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
