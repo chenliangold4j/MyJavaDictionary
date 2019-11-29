@@ -1,0 +1,122 @@
+可以通过命令 docker command --help 更深入的了解指定的 Docker 命令使用方法。
+
+例如我们要查看 docker stats 指令的具体使用方法：
+
+runoob@runoob:~# docker stats --help
+
+查看所有的容器命令如下：
+
+$ docker ps -a
+这能查看所有的，包括已经停止的容器
+
+使用 docker start 启动一个已停止的容器：
+
+$ docker start b750bbbcfd88 （已经停止的容器id）
+
+1.基本
+后台运行
+在大部分的场景下，我们希望 docker 的服务是在后台运行的，我们可以过 -d 指定容器的运行模式。
+
+$ docker run -itd --name ubuntu-test ubuntu /bin/bash
+注：加了 -d 参数默认不会进入容器，想要进入容器需要使用指令 docker exec（下面会介绍到）。
+
+停止一个容器
+    停止容器的命令如下：
+    $ docker stop <容器 ID>
+
+    停止的容器可以通过 docker restart 重启：
+
+$ docker restart <容器 ID>进入容器
+    在使用 -d 参数时，容器启动后会进入后台。此时想要进入容器，可以通过以下指令进入：
+
+    docker attach
+
+    docker exec：推荐大家使用 docker exec 命令，因为此退出容器终端，不会导致容器的停止。
+
+    attach 命令
+
+    下面演示了使用 docker attach 命令。
+
+    $ docker attach 1e560fca3906
+
+注意： 如果从这个容器退出，会导致容器的停止。
+
+exec 命令
+
+    下面演示了使用 docker exec 命令。
+
+    docker exec -it 243c32535da7 /bin/bash
+
+
+    注意： 如果从这个容器退出，不会导致容器的停止，这就是为什么推荐大家使用 docker exec 的原因。
+
+    更多参数说明请使用 docker exec --help 命令查看。
+
+2.导出和导入容器
+导出容器
+
+如果要导出本地某个容器，可以使用 docker export 命令。
+
+$ docker export 1e560fca3906 > ubuntu.tar
+
+这样将导出容器快照到本地文件。
+
+3.导入容器快照
+
+可以使用 docker import 从容器快照文件中再导入为镜像，以下实例将快照文件 ubuntu.tar 导入到镜像 test/ubuntu:v1:
+cat docker/ubuntu.tar | docker import - test/ubuntu:v1
+
+此外，也可以通过指定 URL 或者某个目录来导入，例如：
+
+$ docker import http://example.com/exampleimage.tgz example/imagerepo
+
+导入之后。容器列表就有导出的ubuntu了
+# sudo docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+test/ubuntu         v1                  cd7437779569        31 seconds ago      119MB
+ubuntu              15.10               9b9cb95443b5        3 years ago         137MB
+
+4.删除容器
+删除容器使用 docker rm 命令：
+
+$ docker rm -f 1e560fca3906
+
+下面的命令可以清理掉所有处于终止状态的容器。
+
+$ docker container prune
+
+liang@liang-VirtualBox:~$ sudo docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+e45ac3bbaa84        ubuntu:15.10        "/bin/bash"         15 minutes ago      Up 15 minutes                           friendly_beaver
+liang@liang-VirtualBox:~$ sudo docker rm -f e45
+e45
+liang@liang-VirtualBox:~$ sudo docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+liang@liang-VirtualBox:~$
+
+5 拉取镜像
+docker pull [OPTIONS] NAME [:TAG]
+从远程库拉取镜像
+
+NAME：镜像名称
+
+TAG：版本
+
+OPTIONS：拉取参数
+
+6查找镜像
+sudo  docker search tomcat
+
+https://hub.docker.com/_/tomcat 可以查看有什么tomcat版本
+
+使用：
+sudo docker run -d -p 8889:8080 -v /home/liang/webapptest/:/usr/local/tomcat/webapps/  tomcat:8
+参数说明：
+
+-d 后台运行
+-p 指定访问主机的8888端口映射到8080端口。
+-v 指定我们容器的/usr/local/tomcat/webapps/目录为/root/tomcat/主机目录，后续我们要对tomcat进行操作直接在主机这个目录操作即可。
+
+我们不能直接在tomcat目录下直接创建hello.html文件
+curl -i http://127.0.0.1:8888/hello.html 访问的结果404.
+

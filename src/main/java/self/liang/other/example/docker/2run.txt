@@ -1,0 +1,88 @@
+1.基本运行
+docker run ubuntu:15.10 /bin/echo "Hello world"
+
+各个参数解析：
+
+docker: Docker 的二进制执行文件。
+
+run: 与前面的 docker 组合来运行一个容器。
+
+ubuntu:15.10 指定要运行的镜像，Docker 首先从本地主机上查找镜像是否存在，如果不存在，Docker 就会从镜像仓库 Docker Hub 下载公共镜像。
+
+/bin/echo "Hello world": 在启动的容器里执行的命令
+
+以上命令完整的意思可以解释为：Docker 以 ubuntu15.10 镜像创建一个新容器，然后在容器里执行 bin/echo "Hello world"，然后输出结果。
+
+
+2交互运行
+运行交互式的容器
+我们通过 docker 的两个参数 -i -t，让 docker 运行的容器实现"对话"的能力：
+
+runoob@runoob:~$ docker run -i -t ubuntu:15.10 /bin/bash
+root@0123ce188bd8:/#
+各个参数解析：
+
+-t: 在新容器内指定一个伪终端或终端。
+
+-i: 允许你对容器内的标准输入 (STDIN) 进行交互。
+
+3后台模式
+启动容器（后台模式）
+使用以下命令创建一个以进程方式运行的容器
+
+runoob@runoob:~$ docker run -d ubuntu:15.10 /bin/sh -c "while true; do echo hello world; sleep 1; done"
+2b1b7a428627c51ab8810d541d759f072b4fc75487eed05812646b8534a2fe63
+在输出中，我们没有看到期望的 "hello world"，而是一串长字符
+
+2b1b7a428627c51ab8810d541d759f072b4fc75487eed05812646b8534a2fe63
+
+这个长字符串叫做容器 ID，对每个容器来说都是唯一的，我们可以通过容器 ID 来查看对应的容器发生了什么。
+
+首先，我们需要确认容器有在运行，可以通过 docker ps 来查看：
+
+输出详情介绍：
+
+CONTAINER ID: 容器 ID。
+
+IMAGE: 使用的镜像。
+
+COMMAND: 启动容器时运行的命令。
+
+CREATED: 容器的创建时间。
+
+STATUS: 容器状态。
+
+状态有7种：
+
+created（已创建）
+restarting（重启中）
+running（运行中）
+removing（迁移中）
+paused（暂停）
+exited（停止）
+dead（死亡）
+PORTS: 容器的端口信息和使用的连接类型（tcp\udp）。
+
+NAMES: 自动分配的容器名称。
+
+在容器内使用 docker logs 命令，查看容器内的标准输出：
+docker logs 2b1b7a428627（容器id）
+
+这里会看到但是配置的输出。
+
+4 容器停止
+我们使用 docker stop 命令来停止容器:
+docker stop  容器id
+
+5.镜像基本
+获取一个新的镜像
+当我们在本地主机上使用一个不存在的镜像时 Docker 就会自动下载这个镜像。如果我们想预先下载这个镜像，我们可以使用 docker pull 命令来下载它
+
+我们可以从 Docker Hub 网站来搜索镜像，Docker Hub 网址为： https://hub.docker.com/
+
+我们也可以使用 docker search 命令来搜索镜像。比如我们需要一个 httpd 的镜像来作为我们的 web 服务。我们可以通过 docker search 命令搜索 httpd 来寻找适合我们的镜像。
+
+删除镜像
+镜像删除使用 docker rmi 命令，比如我们删除 hello-world 镜像：
+
+$ docker rmi hello-world

@@ -19,6 +19,6 @@ public class MyMvcConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
 //        resolvers.add(new TestXmlMethodArumentResolver());
-
     }
+
 }
