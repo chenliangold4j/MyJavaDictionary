@@ -33,6 +33,7 @@ public class CreateSqlSessionInCode {
 
     }
 
+
     static DataSource getBlogDataSource(){
 
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
@@ -55,4 +56,5 @@ public class CreateSqlSessionInCode {
         pooledDataSource.setDriver("com.mysql.jdbc.Driver");
         return pooledDataSource;
     }
+
 }

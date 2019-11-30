@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--
+        1 mybatis可以使用properties来引入properties配置文件的内容
+            resource:类路径下配置文件
+            url：网络路径下的配置文件
+            交由spring管理后很少用了
+    -->
+    <properties resource="local/config.properties">
+
+    </properties>
+    <!--
+         mapUnderscoreToCamelCase   设置驼峰转换
+         lazyLoadingEnabled     懒加载
+    -->
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="lazyLoadingEnabled" value="true"/>
+<!--        aggressiveLazyLoading	当开启时，任何方法的调用都会加载该对象的所有属性。 否则，每个属性会按需加载（参考 lazyLoadTriggerMethods)。-->
+        <setting name="aggressiveLazyLoading" value="false"/>
+        <setting name="cacheEnabled" value="true"/>
+    </settings>
+
+    <!--
+        typeAliases 别名处理器   基本类型别名见mybatis文档
+     -->
+    <typeAliases>
+        <!--
+              typeAlias 为某个类型起别名  默认是类名小写employee
+              别名不区分大小写
+           -->
+        <typeAlias type="self.liang.mybatis.example.base.Employee" alias="emp"/>
+
+        <!--
+          package 为某个包批量起别名  为所有类起一个默认别名  或者类有@Alias注解
+       -->
+        <!--        <package name=""/>-->
+    </typeAliases>
+
+    <!--  类型处理器  用作类型映射   mybatis自带了很多java类型到数据库类型的匹配 -->
+
+
+    <environments default="dev_mysql">
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+        <environment id="dev_mysql">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+        <environment id="dev_oracle">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+
+    <mappers>
+        <mapper resource="local/mapper/EmployeeMapper.xml"/>
+    </mappers>
+
+
+
+</configuration>
