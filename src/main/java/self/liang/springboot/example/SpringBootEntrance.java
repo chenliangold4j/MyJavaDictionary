@@ -1,11 +1,14 @@
 package self.liang.springboot.example;
 
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import self.liang.springboot.example.collection.ioc.ColKeeper;
+
+import javax.sql.DataSource;
 
 
 /**
@@ -119,8 +122,29 @@ import self.liang.springboot.example.collection.ioc.ColKeeper;
  *       @Bean(name = DEFAULT_DISPATCHER_SERVLET_REGISTRATION_BEAN_NAME)
  *                @ConditionalOnBean(value = DispatcherServlet.class, name = DEFAULT_DISPATCHER_SERVLET_BEAN_NAME)
  * 		   public ServletRegistrationBean<DispatcherServlet> dispatcherServletRegistration(  //就是注册dispatchServlet
+ *
+ * 配置数据源
+ *      先配置数据库properties的字段，并且有jdbc的starter ，即有可用的datasource
+ *      datasource初始化的时候，可以通过加载schema-*.sql（建表语句） 和 data-*.sql（数据插入语句）来初始化数据库。
+ *      详情见代码autoconfig里面的jdbc的datasourceInitializer   实际中暂时用不到。
+ *
+ *      druid（功能强大，性能不是最高）数据源
+ *      spring.datasource.type=com.alibaba.druid.pool.DruidDataSource
+ *      连接池配置：
+ *          需要自己写一个配置类。然后获取properties文件的配置 见DruidConfig.java  ResourceServlet
+ *          http://localhost:8080/druid/login.html 可以监控
+ *
+ * 整合mybatis
+ *     1.直接使用： 直接导入starter，原来配置了数据源，然后对于interface添加Mapper注解
+ *     2.添加配置。见config。MybatisConfig  添加自定义配置
+ *     3.MapperScan可以自动扫描
+ *
+ *     用配置文件进行配置
+ *     在properties文件中添加mybatis相关代码
  */
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})//这里配置不自动初始化datasource ，没有配置datasource的配置文件
+//@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})//这里配置不自动初始化datasource ，没有配置datasource的配置文件
+@SpringBootApplication
+@MapperScan(value = "self.liang.springboot.example.mapper")
 public class SpringBootEntrance {
 
     public static void main(String[] args) {

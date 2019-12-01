@@ -9,10 +9,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import self.liang.springboot.example.collection.ioc.ColKeeper;
 import self.liang.springboot.example.entity.Person;
 
+import javax.sql.DataSource;
+
 @Controller
 @RequestMapping("/Test")
 public class LogTestController {
     Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    DataSource dataSource;
+
 
     @Autowired
     Person person;
@@ -45,5 +51,12 @@ public class LogTestController {
         logger.info(colKeeper.getVipTypes().get(0).getClass().toString());
         logger.info(colKeeper.getVipTypes().get(1).getClass().toString());
         return "test";
+    }
+
+    @RequestMapping("/d")
+    @ResponseBody
+    public String test4() {
+        System.out.println(dataSource.getClass().toString());
+        return logger.getClass().toString();
     }
 }
