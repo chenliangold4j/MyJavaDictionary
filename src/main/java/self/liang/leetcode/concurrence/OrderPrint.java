@@ -52,20 +52,19 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class OrderPrint {
 
-    volatile int firstFlag = 0;
-    volatile int secondFlag = 0;
+    volatile int flag = 0;
 
     ReentrantLock reentrantLock = new ReentrantLock();
     Condition condition = reentrantLock.newCondition();
 
     public void first(Runnable printFirst) throws InterruptedException {
         reentrantLock.lock();
-        while(firstFlag == 1){
+        while(flag != 0){
             condition.await();
         }
         // printFirst.run() outputs "first". Do not change or remove this line.
         printFirst.run();
-        firstFlag = 1;
+        flag = 1;
         condition.signalAll();
         reentrantLock.unlock();
 
@@ -73,12 +72,12 @@ public class OrderPrint {
 
     public void second(Runnable printSecond) throws InterruptedException {
         reentrantLock.lock();
-        while (firstFlag == 0){
+        while (flag != 1){
             condition.await();
         }
         // printSecond.run() outputs "second". Do not change or remove this line.
         printSecond.run();
-        secondFlag = 1;
+        flag = 2;
         condition.signalAll();
         reentrantLock.unlock();
 
@@ -86,13 +85,12 @@ public class OrderPrint {
 
     public void third(Runnable printThird) throws InterruptedException {
         reentrantLock.lock();
-        while (firstFlag == 0 || secondFlag == 0){
+        while (flag != 2){
             condition.await();
         }
         // printThird.run() outputs "third". Do not change or remove this line.
         printThird.run();
-        firstFlag=0;
-        secondFlag = 0;
+        flag=0;
         condition.signalAll();
         reentrantLock.unlock();
     }
