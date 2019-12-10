@@ -1,0 +1,154 @@
+主从结构搭建.
+    docker  mysql5.7
+
+    核心在于二进制日志文件.
+
+    主从复制原理:
+        master将数据改变记录到binary log中,也即是配置文件log-bin指定的文件(也叫二进制日志事件)
+        slave将master的binary log events拷贝到他的中继日志(relay log)
+        slave重做中继日志中的事件,将改变反映它自己的数据(数据重演)
+
+    主从配置要注意的地方
+        主DB server和从DB server版本一致
+        主DB server和从DB server数据一致
+        主DB server开启二进制日志,主DB server和从DB server的server_id都必须一致.
+
+ 2.   my.conf文件.
+
+    #开启主从复制,主库的配置
+    log-bin=mysql-bin
+    #指定server_id
+    server-id=1
+    #指定同步的数据库,如果不指定则同步到全部数据库
+    binlog-do-db=my_test
+
+    #执行sql语句查询状态
+    SHOW MASTER STATUS
+
+ 3. 主库创建同步用户:
+    #授权用户salve01使用123456密码登录mysql
+    grant replication slave on *.* to 'slave01'@'127.0.0.1' identified by '123456';
+    #刷新配置
+    flush privileges;
+
+ 4. 从库配置文件my.conf
+    #指定server_id 只要不重复即可,从库也只有一个配置,其他都在sql语句中操作
+    server-id=2
+
+    #以下执行sql
+    CHANGE MASTER TO
+        master_host='127.0.0.1',
+        master_user='slave01',
+        master_password='123456',
+        master_port=3306,
+        master_log_file='mysql-bin.00006',//日志文件,通过  SHOW MASTER STATUS拿到的信息
+        master_log_pos=1120;//通过  SHOW MASTER STATUS拿到的信息
+
+    #启动slave同步
+    START SLAVE
+
+    #查看同步状态
+    SHOW SLAVE STATUS;
+
+  5.搭建主库.
+  #创建目录
+    mkdir /data/mysql/master01
+    cd /data/mysql/master01
+    mkdir conf data
+    chmod 777 * -R
+
+   #创建配置文件
+   cd /data/mysql/master01/conf
+   vim my.conf
+
+   #输入以下内容
+   [mysqld]
+   log-bin=mysql-bin#开启二进制日志
+   server-id=1#服务id 不可重复
+
+   #创建容器
+   #docker -v挂载宿主机的一个目录。  docker create ：创建一个新的容器但不启动它
+   docker create --name master01 -v /data/mysql/master/data:/var/lib/mysql -v /data/mysql/master01/conf:/etc/my.cnf.d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7.28
+   docker create --name master01 -v D:/docker/master01:/var/lib/mysql -v D:/docker/master01/conf:/etc/mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7.28
+   #启动
+                   # docker logs [OPTIONS] CONTAINER
+                      Options:
+                            --details        显示更多的信息
+                        -f, --follow         跟踪实时日志
+                            --since string   显示自某个timestamp之后的日志，或相对时间，如42m（即42分钟）
+                            --tail string    从日志末尾显示多少行日志， 默认是all
+                        -t, --timestamps     显示时间戳
+                            --until string   显示自某个timestamp之前的日志，或相对时间，如42m（即42分钟）
+   docker start master01 && docker logs -f master01
+
+   #创建同步账户以及授权
+   create user 'itcast'@'%' identified by 'itcast'
+   grant replication slave on *.* to 'itcast'@'%';
+   flush privileges;
+
+    #查看二进制log的配置项
+    show global variables like 'binlog%';
+    #查看server的相关信息. 这里能看server-id
+    show global variables like 'server%';
+
+6)搭建从库
+
+    #创建目录类似主
+
+    #编辑配置文件
+    [mysqld]
+    server-id=2
+    sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
+
+            #STRICT_TRANS_TABLES：
+
+              在该模式下，如果一个值不能插入到一个事务表中，则中断当前的操作，对非事务表不做任何限制
+
+             NO_ZERO_IN_DATE：
+
+              在严格模式，不接受月或日部分为0的日期。如果使用IGNORE选项，我们为类似的日期插入'0000-00-00'。在非严格模式，可以接受该日期，但会生成警告。
+
+             NO_ZERO_DATE：
+
+             在严格模式，不要将 '0000-00-00'做为合法日期。你仍然可以用IGNORE选项插入零日期。在非严格模式，可以接受该日期，但会生成警告
+
+             ERROR_FOR_DIVISION_BY_ZERO：
+
+             在严格模式，在INSERT或UPDATE过程中，如果被零除(或MOD(X，0))，则产生错误(否则为警告)。如果未给出该模式，被零除时MySQL返回NULL。如果用到INSERT IGNORE或UPDATE IGNORE中，MySQL生成被零除警告，但操作结果为NULL
+
+             NO_AUTO_CREATE_USER：
+
+             防止GRANT自动创建新用户，除非还指定了密码。
+
+             NO_ENGINE_SUBSTITUTION：
+
+             如果需要的存储引擎被禁用或未编译，那么抛出错误。不设置此值时，用默认的存储引擎替代，并抛出一个异常
+
+    #创建容器
+    docker create --name slave01  -v D:/docker/slave01/conf:/etc/mysql -p 3307:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7.28
+
+    #启动
+    docker start slave01
+
+    #设置master相关信息:
+       CHANGE MASTER TO
+           master_host='192.168.3.27',
+           master_user='itcast',
+           master_password='itcast',
+           master_port=3306,
+           master_log_file='mysql-bin.000004',
+           master_log_pos=154;
+
+    #启动同步
+    start slave;   #这个时修改配置时候的停止STOP SLAVE IO_THREAD;
+
+    #查看状态
+    show slave status;
+
+    记录  :出现了Slave_IO_Running 是connecting 发现是master_host配置的地址错误
+            出现了Slave_SQL_Running 是no  发现是master_log_pos和主不一致
+
+     Slave_IO_Running,Slave_SQL_Running都是yes说明成功了
+
+     验证,在master创建表,slave也有
+     添加人员也有
