@@ -1,0 +1,6 @@
+PXC 集群
+    Percona XtraDB Cluster
+
+
+    部署三节点 PXC
+

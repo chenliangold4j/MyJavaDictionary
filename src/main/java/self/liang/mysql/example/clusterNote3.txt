@@ -1,0 +1,59 @@
+ 看过一些文章之后发现这样使用的公司还是少数,,不知道为什么,,因为考虑架构的简单,以及mycat的一些评论似乎不好..
+        先去看看spring的数据库路由.
+
+MyCat中间件
+    1.MyCat数据库分库分表中间件
+        什么是MyCat-->
+        一个彻底开源的，面向企业应用开发的大数据库集群
+        支持事务、ACID、可以替代MySQL的加强版数据库
+        一个可以视为MySQL集群的企业级数据库，用来替代昂贵的Oracle集群
+        一个融合内存缓存技术、NoSQL技术、HDFS大数据的新型SQL Server
+        结合传统数据库和新型分布式数据仓库的新一代企业级数据库产品
+        一个新颖的数据库中间件产品
+
+    2.
+        基于阿里开源的Cobar产品研发.可靠,稳定.
+
+    3. 几个自己关注点:
+        基于心跳的故障切换,支持读写分离,支持主从,以及集群.
+        基于NIO,可以高并发
+        支持事务.
+
+
+    5.数据分片
+        应用系统-----》代理---->中间件----|----》读库(与写库弱一致)
+                         |---->中间件----|----》写库(主从架构)
+                                         |----》读库(与写库弱一致)
+                                         |----》写库(主从架构)
+                                         |----》读库(与写库弱一致)
+                                         |----》写库(主从架构)
+
+        多个主库储存不同的数据.
+
+       实践:
+        刚刚搭建了集群1  一主一副.
+        现在搭建集群2  也是一主一副
+        docker create --name master01 -v D:/docker/master02/conf:/etc/mysql -p 3316:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7.28
+        docker create --name slave02 -v D:/docker/slave02/conf:/etc/mysql -p 3317:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7.28
+
+        #master
+         create user 'itcast'@'%' identified by 'itcast'
+           grant replication slave on *.* to 'itcast'@'%';
+           flush privileges;
+
+        #slave
+        CHANGE MASTER TO
+            master_host='192.168.3.27',
+            master_user='itcast',
+            master_password='itcast',
+            master_port=3316,
+            master_log_file='mysql-bin.000003',
+            master_log_pos=786;
+
+         start slave ;
+         show slave status;
+
+         看到两个yes.基本没有问题
+
+
+

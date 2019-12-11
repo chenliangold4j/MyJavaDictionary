@@ -152,3 +152,28 @@
 
      验证,在master创建表,slave也有
      添加人员也有
+
+7)主从复制模式
+     show global variables like 'binlog%'; 可以看到当前的模式binlog_format 为 row
+
+     mysql提供了3种模式，默认的模式是ROW，基于sql语句的复制（statement-based replication SBR),基于行的复制(row-based replication,RBR)
+     混合模式复制(mixed-based replication,MBR) 对应的，binlog的格式也有三种:STATEMENT ,ROW,MIXED 分别对应以上三种。
+
+     STATEMENT（SBR）:
+        每一条会修改数据的sql会记录到binlog中
+            优点是：不需要记录每一行数据的变化，减少了binlog日志量，节约IO，提高性能。
+            缺点是：某些情况会导致数据不一致，如sleep（）函数 last_insert_id(),以及user-defined function 等会出现问题。
+     ROW(RBR)
+        不记录sql语句,记录哪条数据被修改了,修改成什么样.
+        优点:不会有特定情况的不一致
+        缺点:大量日志,尤其是alter table的时候会日志暴涨.
+
+      MIXED(MBR)
+        以上两种混合使用,一般的复制使用STATEMENT模式保存,STATEMENT无法复制的时候使用ROW模式,推荐这种模式.(但是为什么mysql默认不用这种呢)
+   步骤:
+      #修改主库配置文件
+      binlog_format=MIXED
+
+      #重启即可
+
+
