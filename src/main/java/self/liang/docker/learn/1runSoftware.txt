@@ -1,0 +1,103 @@
+对应docker实战的第二章，在容器中运行软件：
+https://blog.csdn.net/cblstc/article/details/97660212  这个网址，，书上有的没说清楚的命令可以看这个
+1.获取帮助：
+    docker help 显示那些命名可用
+    docker help cp  查看cp命令的用法
+2.控制容器：建立一个网站的监控器。
+    本例使用三个容器：1.nginx 2.邮件程序 3.监控器。
+    1）创建和启动一个新的容器：
+        docker run --detach --name web nginx:latest  //当我们启动容器的时候一定要加上--detach或者-d来保持容器在后台持续运行
+        a8433232fe19233831385af9fb5db34cec7423b6e597e1d3f60fd7e6c29abba7  唯一标识符。
+
+       docker run -d --name mailer  dockerinaction/ch2_mailer  //邮件程序
+    2）交互运行容器
+       1> docker run  --interactive(adj.交互的) --tty --link web:web --name web_test busybox:latest /bin/sh
+             --interactive 简写 -i  --tty简写 -t 表示分配一个虚拟终端。允许你发信号给容器。
+             docker run --interactive --tty --link web:web --name web_test busybox  /bin/sh
+
+            之后就可以用命令查看是否正确运行：
+            wget -O - http://web:80/  可以获取到nginx的网页。
+
+       2>安装并启动监听代理
+           docker run -it --name agent --link web:insideweb --link mailer:insidemailer dockerinaction/ch2_agent
+           代理监听的作用是监听nginx服务器，如果挂掉，那么通过mailer发送消息。
+            之后会不停的打印system up 之后按住 ctrl 然后按 p 再按q 就会返回主机shell。不会停止程序。
+
+       3>列举，停止，重新启动和查看容器输出：
+            docker ps  会列出，容器id，使用的镜像，容器中执行的命令 ，运行时长，暴露的网络端口，容器名。
+
+            docker restart 容器名  会重启容器。
+
+            docker logs 容器名 查看容器日志
+            这里用docker logs web打印了很多日志。这些日志都是监控器测试nginx的打印输出。程序标准输入和输出的信息会打印到日志。
+            并保存。但是写入的日志一直会增长，只要改容器还在。长期大的持久性的比较好的方式是使用储存卷来处理日志数据。这在后面的章节讨论。
+
+            docker logs 有一个 --follow或-f 来显示整个日志，然后回持续检测并更新日志。要推出的话，按ctrl+ C
+
+            docker top 容器名 停止容器。在示例中，停止容器之后查看mailer的log会有监控服务发来的邮件信息。
+
+     3）已解决的问题和pid命名空间。
+        每一个程序或进程，有一个唯一编号pid。一个pid是一组识别进程的数字。linux提供了工具创建多个pid命名空间。
+        每个命名空间有一套完整的pid。
+        为每一个容器创建一个pid命名空间，是docker的关键特征。
+        docker run -d --name namespaceA busybox /bin/sh -c "sleep 30000"
+        docker run -d --name namespaceB busybox /bin/sh -c "nc -l -p 0.0.0.0:80" //这里再windows的容器中启动失败，改命令扫描端口。可能是不行。
+
+        docker exec namespaceA ps
+        PID   USER     TIME  COMMAND
+            1 root      0:00 sleep 30000
+            6 root      0:00 ps
+        docker exec namespaceB ps
+
+        大体意思是docker通过linux的pid来隔离。
+
+        在同一个容器中运行两个docker，失败
+        docker run -d --name web nginx
+        docker logs web
+        docker exec web nginx -g 'daemon off;'
+        2019/12/12 14:58:26 [emerg] 9#9: bind() to 0.0.0.0:80 failed (98: Address already in use)
+        nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)
+
+        docker可以简化解决这个冲突。其实就是开启两个nginx
+        docker run -d --name web2 nginx
+
+        这里没有报错，是因为没有占用外部端口。他们各自占用自己容器中的80.
+
+      4）消除元数据冲突。
+            1） docker 的name 唯一。。可以用 docker rename web web-old 来修改名字
+            docker 生成的唯一id 特别适合自动化技术。
+
+            docker create nginx 创建但不运行 nginx 。这时候有些场景可以用来获取id，用于程序或者脚本。
+
+            docker create --cidfile /tmp/web.cid nginx :场景nginx，并将id写入 /tmp/web.cid文件中。
+
+            也可以用ps命令获取id
+            例如：docker ps --latest --quite 或者  docker ps -l -q 获取最后场景的哪个容器的id。
+            2）容器的状态和依赖。
+            有了id之后，新的系统可能是这样的：
+            MAILER_CID =$(docker run -d  dockerinaction/ch2_mailer)
+            WEB_CID = $((docker create nginx)
+            AGENT_CID = $(docker create --link $WEB_CID:insideweb --link $MAILER_CID:insidemailer dockerinaction/ch2_agent)
+            构建脚本。不必指定名字，即可创建真个程序。
+            创建的容器启动顺序要注意。例如上面要先启动web
+
+            ————》链接的内在机制：链接的机制将ip地址注入所依赖的容器，在运行的容器中得到改ip地址。
+                                循环依赖无法用docker创建。
+       5）构建与环境无关的系统：
+            docker有三个特定的功能，以帮助建立与环境无关的系统：
+                1.只读文件系统
+                2.环境变量注入
+                3.存储卷
+            1）只读文件系统
+             workpress案例
+             # 开启一个只读的workpress
+             docker run -d --name wp --read-only wordpress:4
+
+             查看是否开启workpress：结果为false
+             docker inspect --format "{{.State.Running}}" wp
+             docker inspect命令将显示docker为改容器的所有元数据。格式选项会改变元数据。这个示例中会滤除所有字段，简单输出错误。
+             检查日志：
+             docker logs wp;
+
+             Wordpress的文件锁机制（file locking mechanisms）发生了改变（ver4.2 -> ver4.3）
+
