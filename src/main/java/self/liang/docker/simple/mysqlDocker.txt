@@ -18,5 +18,4 @@
  3、安装成功
  通过 docker ps 命令查看是否安装成功：
 
-
  docker exec -it 3cd...  /bin/bash 进入bash操作
