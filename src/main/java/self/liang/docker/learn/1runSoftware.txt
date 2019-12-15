@@ -101,3 +101,74 @@ https://blog.csdn.net/cblstc/article/details/97660212  这个网址，，书上�
 
              Wordpress的文件锁机制（file locking mechanisms）发生了改变（ver4.2 -> ver4.3）
 
+             Wordpress因版本问题装不上。
+             简单的说就是  --read-only只读  以及 不明白--link具体怎么起作用。下一节
+
+            2）环境变量的注入
+                容器注入环境变量，如果容器已经有该环境变量，会覆盖
+                docker run --env MY_ENV_VAR="Helloworld"    （--env 简写 -e）
+                busybox
+                env    //在容器中执行env命令，，可以看到输出。
+                注入环境变量有什么用呢？假设我们的wordpress需要在连接另一台服务器的mysql，那么我们可以注入WORDPRESS_DB_HOST指向该服务器，我们也可以很方便的设置账密，WORDPRESS_DB_USER和WORDPRESS_DB_PASSWORD，当然还可以设置数据库的名称WORDPRESS_DB_NAME
+
+                docker create --link wpdb:mysql -e WORDPRESS_DB_NAME=db_name1 -e  WORDPRESS_DB_USER=cbl -e WORDPRESS_DB_PASSWORD=root wordpress:4
+                1
+                所以最终的命令为：
+
+                # 运行一个mysql容器
+                DB_CID=$(docker run -p 3306:3306 --name wpdb -v $PWD/logs:/logs -v $PWD/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -d mysql:5)
+                # 运行一个mailer容器
+                MAILER_CID=$(docker run -d dockerinaction/ch2_mailer)
+                # 将wordpress和mysql连接
+                WP_CID=$(docker create --link $DB_CID:mysql --name wp_5 -p 80 -v /run/lock/apache2/ -v /run/apache2/ -v --read-only wordpress:4)
+                docker start $WP_CID
+                # 运行一个agent，将wp和mailer连接
+                AGENT_CID=$(docker create --name agent_5 --link $WP_CID:insideweb --link $MAILER_CID:insidemailer dockerinaction/ch2_agent)
+                docker start $AGENT_CID
+        6)持久化容器
+                1）自动启动容器：
+                    创建容器时使用 --restart标志
+                     docker重启的指数补偿策略(exponential backoff strategy)：假设第一次2s后重启，第二次可能就4s，第三次就8s，以此类推。
+                     docker run -d --name test-always-restart --restart always busybox date
+
+                     docker logs -f test-always-restart  查看重启日志
+
+                   但是这个策略有个缺点：就是在重启等待阶段，容器是没有运行的，这时容器处于重启状态，于是，你执行下面命令，会报这样的错误is restarting, wait until the container is running
+                   docker exec test-always-restart echo Just a Test
+
+                2）使用init和supervisor（监督人，指导者；[管理] 管理人；检查员）进程维持容器的运行状态。
+                    详情在第八章。
+                    这里只看supervisord的容器
+
+                    案例：lamp使用supervisord重启容器
+                    docker run -d -p 80:80 --name lamp-test tutum/lamp
+
+                    使用docker top lamp-test 查看进程运行；会看到mysql apache都在运行。
+
+                    杀死某个容器，验证重启。首先查看PID，我们可以发现PID=1的进程为supervisord，apache2的PID为435
+                    docker exec lamp-test ps
+                      PID TTY          TIME CMD
+                        1 ?        00:00:00 supervisord
+                      434 ?        00:00:00 mysqld_safe
+                      435 ?        00:00:00 apache2
+                      816 ?        00:00:00 ps
+                     docker exec lamp-test kill <PID>
+                    然后再查看PID，我们发现apache2又复活了，只是这次的PID为827，说明已经重启了。
+                      docker exec lamp-test ps
+                     PID TTY          TIME CMD
+                        1 ?        00:00:00 supervisord
+                      434 ?        00:00:00 mysqld_safe
+                      827 ?        00:00:00 apache2
+                      834 ?        00:00:00 ps
+                    同时日志也有信息  docker logs lamp-test
+                    2019-12-15 08:06:28,570 INFO exited: apache2 (exit status 0; expected)
+                    2019-12-15 08:06:29,573 INFO spawned: 'apache2' with pid 827
+                    2019-12-15 08:06:30,592 INFO success: apache2 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+         7)清理：
+            docker ps -a 找到容器  没有停止要停止
+            docker rm 容器
+            docker rm -f 删除运行的容器
+
+            docker  run  --rm  （  --rm指定容器退出就清理。
+            
+

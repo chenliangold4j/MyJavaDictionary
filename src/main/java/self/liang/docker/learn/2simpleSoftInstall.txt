@@ -1,0 +1,39 @@
+第三章,软件安装的简化
+    软件安装分3步:
+        1.我该如何选择所需的软件,2.我去哪找,3.安装了什么,以及如何隔离.
+
+
+        1) 选择所需的软件
+            1)仓库
+                quay.io/dockerinaction/ch3_hello_registry
+                仓库主机     用户名        容器短名
+                仓库是一个有名字的镜像桶,名字类似url.
+            2)标签
+                既尾巴上的版本好  mysql:5.7.28
+        2)查找和安装
+            1)查找:docker hub
+            可以用命令行在docker hub上搜索仓库.
+            镜像作者可以公开自己的镜像.
+
+            查找命令:docker search mysql
+            其中AUTOMATED 有[ok]标签的话,就是用公开的脚本构建的.
+
+            2)可以用网站找,直接搜即可
+            3)使用替代注册服务器.
+                例如: docker pull quay.io/dockerinaction/ch3_hello_registry:latest
+                直接到quay.io去找.
+            4)镜像文件
+               为了演示方便，我们需要先保存一个镜像文件
+               docker pull busybox
+               docker save -o my-busybox.tar busybox
+               docker rmi busybox
+
+               加载镜像文件
+               docker load -i my-busybox.tar  / 如果不使用 -i 参数，docker会使用标准输入流，而不是从文件读取。
+
+                使用dockerfile
+                git clone https://github.com/dockerinaction/ch3_dockerfile.git
+                docker build -t dia_ch3/dockerfile ch3_dockerfile
+                # 删除
+                docker rmi dia_ch3/dockerfile
+                rm -rf ch3_dockerfile
