@@ -1,0 +1,28 @@
+第四章：持久化存储和卷间状态共享。
+    1）存储卷的简介：
+        存储卷时容器目录树上的挂载点。大多书人只熟悉一点点文件系统和挂载点，比起其他的docker话题，存储卷会更难一点。这与挂载点的缺乏了解有关。
+        Union文件系统适用于构建和分享镜像，但对于持久化或共享数据 而言，并不是理想的方法。存储卷填补了这些用例。
+
+        1）存储卷提供容器无关的数据管理方式
+        2）NoSQL数据库使用存储卷
+            示例：apache Cassandra
+            安装cassandra数据库并启动命令行
+
+                                    (容器中指定储存卷的挂载点。)
+            docker run -d --volume /var/lib/cassandra/data --name my-cass alpine echo Data Container
+            docker run -d --volume D:/docker/cassandra/data --name my-cass alpine echo Data Container
+
+            #Alpine 操作系统是一个面向安全的轻型 Linux 发行版。它不同于通常 Linux 发行版，Alpine 采用了 musl libc 和 busybox
+            #以减小系统的体积和运行时资源消耗，但功能上比 busybox 又完善的多，因此得到开源社区越来越多的青睐
+
+            #BusyBox 是一个集成了三百多个最常用Linux命令和工具的软件。BusyBox 包含了一些简单的工具，例如ls、cat和echo等等，
+            #还包含了一些更大、更复杂的工具，例grep、find、mount以及telnet。有些人将 BusyBox 称为 Linux 工具里的瑞士军刀。
+            #简单的说BusyBox就好像是个大工具箱，它集成压缩了 Linux 的许多工具和命令，也包含了 Android 系统的自带的shell。
+
+            #BusyBox 将许多具有共性的小版本的UNIX工具结合到一个单一的可执行文件。这样的集合可以替代大部分常用工具比如的GNU fileutils ，
+            # shellutils等工具，BusyBox提供了一个比较完善的环境，可以适用于任何小的嵌入式系统。
+
+            # 安装cass
+            docker run -d --volumes-from my-cass --name cass cassandra
+            # 连接cqlsh命令行
+            docker run -it --rm --link cass:cass cassandra cqlsh cass

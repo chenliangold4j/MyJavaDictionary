@@ -37,3 +37,37 @@
                 # 删除
                 docker rmi dia_ch3/dockerfile
                 rm -rf ch3_dockerfile
+        3)安装文件和隔离
+            一些复杂的问题：
+                什么样的镜像因素会影响下载和安装速度
+                docker images 列出了哪些未命名的镜像
+                dicker pull 为什么包含 相关依赖的下载消息
+                我写入容器文件系统中的文件放在哪
+
+                1）镜像层：
+                    镜像层次就是镜像依赖的其他镜像，如果已经下载，那么就跳过。
+                    docker pull dockerinaction/ch3_myapp
+                    docker pull dockerinaction/ch3_myotherapp
+
+                    都依赖java6，这样第二个就快
+                    docker images显示安装的镜像
+
+                    docker rmi 删除镜像
+
+                2）分层关系：
+                    镜像维护者父子关系。
+                    容器中的文件是镜像创建容器的所有层集合。
+                3）容器文件隔离和抽象：
+                    容器中运行的程序对镜像分层一无所知。
+                    Union文件系统：
+                        Union文件系统是创建有效文件隔离极为关键的工具。其他工具还有MNT命名空间和chroot系统调用。
+                        该文件系统在你的主机系统上创建挂载点，对分层使用进行了封装。所创建的分层都捆绑到docker镜像层。
+                        linux内核提供了MNT系统命名空间，当docker创建一个容器时，这个新的容器会有自己的MNT命名空间，以及为镜像创建新的挂载点。
+                        最后chroot通过容器上下文构建镜像的根文件系统。这可以防止运行于容器内的任何程序和主机其他部分有所关联。
+                4）
+
+
+
+
+
+
