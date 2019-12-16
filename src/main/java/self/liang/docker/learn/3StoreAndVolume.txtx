@@ -23,6 +23,56 @@
             # shellutils等工具，BusyBox提供了一个比较完善的环境，可以适用于任何小的嵌入式系统。
 
             # 安装cass
+                            (继承了存储卷定义)
             docker run -d --volumes-from my-cass --name cass cassandra
             # 连接cqlsh命令行
             docker run -it --rm --link cass:cass cassandra cqlsh cass
+
+            删库跑路（其实只是删除数据库，不删数据）
+            quit
+            docker stop cass
+            docker rm -vf cass
+
+            这里我没跑起来，版本似乎不一致导致命令用不了。
+                搜到的回答：（他最后使用了虚拟机来运行docker。en 。。。。）
+                一个比较麻烦的问题是，如果你需要使用-v参数来加载（mount）一个磁盘目录（volume）的时候，就会出现问题，
+                至少我在MongoDB中使用-v参数来将MongoDB的数据文件映射到主机目录时，就会导致MongoDB无法正常启动。
+                这个问题在Hyper-V出现之前，在Virtual Box时代就有，而且根据社区的讨论，似乎在Hyper-V的版本中也还是没有解决。
+
+
+            再搞一个cass容器，测试数据是否存在，经测试已经存在
+
+            docker run -d --volumes-from my-cass --name cass2 cassandra
+            docker run -it --rm --link cass2:cass cassandra cqlsh cass
+            describe keyspaces
+            quit
+            docker stop cass2
+            docker rm -vf cass2
+
+            该案例结束，毁尸灭迹
+
+            docker rm -vf my-cass
+
+            docker rm [OPTIONS] CONTAINER [CONTAINER...]
+            OPTIONS说明：
+            -f :通过 SIGKILL 信号强制删除一个运行中的容器。
+
+            -l :移除容器间的网络连接，而非容器本身。
+
+            -v :删除与容器关联的卷
+
+    2）存储卷的类型
+        绑定挂载卷：Bind mount volumes
+        用户可以自定义挂载点，不固定。
+        小案例：运行一个http容器，挂载主机的文件，我再temp目录下放了一个home.html文件，ro表示只读，容器没有权限修改主机的文件。
+
+        docker run -d --name myweb -v /home/cbl/Develop/temp:/usr/local/apache2/htdocs:ro -p 7788:7788 httpd
+        管理卷：Managed volumes
+        docker守护进程指定的路径，固定的：/var/lib/docker/vfs/dir/
+        使用-v命令如果不指定目录，表示使用管理卷。
+
+        docker run -d -v /var/lib/cassandra/data --name my-cass-shared alpine echo Data Container
+        查看卷的位置
+
+        docker inspect -f "{{json .Volumes}}" my-cass-shared
+
