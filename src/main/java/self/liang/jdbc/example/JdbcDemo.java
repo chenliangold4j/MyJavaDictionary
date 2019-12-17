@@ -6,7 +6,7 @@ import java.util.Random;
 public class JdbcDemo {
     // MySQL 8.0 以下版本 - JDBC 驱动名及数据库 URL
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://192.168.3.4:3306/test";
+    static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/test";
 
     // MySQL 8.0 以上版本 - JDBC 驱动名及数据库 URL
     //static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -14,7 +14,7 @@ public class JdbcDemo {
 
 
     // 数据库的用户名与密码，需要根据自己的设置
-    static final String USER = "liang";
+    static final String USER = "root";
     static final String PASS = "123456";
 
     public static void main(String[] args) {
@@ -35,15 +35,15 @@ public class JdbcDemo {
             Random rand = new Random(25);
             int i;
             i = rand.nextInt(10000);
-            for(int j=0;j<9000;j++) {
-                sql = new StringBuilder("INSERT INTO user(account,password,status) values");
-                for (int k = 1; k <= 10000; k++) {
-                    sql.append("(" + "'user" + i + k + "'," + "'pass" + i + k + "'," + "1),");
-                }
-                sql.replace(sql.length() - 1, sql.length(), "");
-                stmt.execute(sql.toString());
-                conn.commit();
-            }
+//            for(int j=0;j<9000;j++) {
+//                sql = new StringBuilder("INSERT INTO user(account,password,status) values");
+//                for (int k = 1; k <= 10000; k++) {
+//                    sql.append("(" + "'user" + i + k + "'," + "'pass" + i + k + "'," + "1),");
+//                }
+//                sql.replace(sql.length() - 1, sql.length(), "");
+//                stmt.execute(sql.toString());
+//                conn.commit();
+//            }
 
 
 //            //这种方式测试下来一万条数据插入需要20秒
@@ -63,7 +63,7 @@ public class JdbcDemo {
 //            stmt.executeBatch();
 //            conn.commit();
 //            System.out.println(System.currentTimeMillis() - time);
-
+            System.out.println("准备close");
             stmt.close();
             conn.close();
         } catch (SQLException se) {

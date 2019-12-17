@@ -7,10 +7,8 @@
         2）NoSQL数据库使用存储卷
             示例：apache Cassandra
             安装cassandra数据库并启动命令行
-
                                     (容器中指定储存卷的挂载点。)
             docker run -d --volume /var/lib/cassandra/data --name my-cass alpine echo Data Container
-            docker run -d --volume D:/docker/cassandra/data --name my-cass alpine echo Data Container
 
             #Alpine 操作系统是一个面向安全的轻型 Linux 发行版。它不同于通常 Linux 发行版，Alpine 采用了 musl libc 和 busybox
             #以减小系统的体积和运行时资源消耗，但功能上比 busybox 又完善的多，因此得到开源社区越来越多的青睐
@@ -33,13 +31,6 @@
             docker stop cass
             docker rm -vf cass
 
-            这里我没跑起来，版本似乎不一致导致命令用不了。
-                搜到的回答：（他最后使用了虚拟机来运行docker。en 。。。。）
-                一个比较麻烦的问题是，如果你需要使用-v参数来加载（mount）一个磁盘目录（volume）的时候，就会出现问题，
-                至少我在MongoDB中使用-v参数来将MongoDB的数据文件映射到主机目录时，就会导致MongoDB无法正常启动。
-                这个问题在Hyper-V出现之前，在Virtual Box时代就有，而且根据社区的讨论，似乎在Hyper-V的版本中也还是没有解决。
-
-
             再搞一个cass容器，测试数据是否存在，经测试已经存在
 
             docker run -d --volumes-from my-cass --name cass2 cassandra
@@ -50,7 +41,6 @@
             docker rm -vf cass2
 
             该案例结束，毁尸灭迹
-
             docker rm -vf my-cass
 
             docker rm [OPTIONS] CONTAINER [CONTAINER...]
@@ -61,18 +51,92 @@
 
             -v :删除与容器关联的卷
 
+        2) 普通文件示例：
+
+
     2）存储卷的类型
-        绑定挂载卷：Bind mount volumes
-        用户可以自定义挂载点，不固定。
-        小案例：运行一个http容器，挂载主机的文件，我再temp目录下放了一个home.html文件，ro表示只读，容器没有权限修改主机的文件。
+        Docker的数据持久化主要有两种方式：
+        bind mount   用主机目录绑定  和路径强关联
+        volume      用docker管理的卷绑定   和主机路径无关联
+        1）首先是bind mount
+          docker run -it -v /home/liang/data:/container-data alpine sh
+             这里我在alpine 中的container-data 新增文件反映在了我的ubuntu上。。
+                bind mount自docker早期便开始为人们使用了，用于将host机器的目录mount到container中。但是bind mount在不同的宿主机系统时不可移植的，
+                比如Windows和Linux的目录结构是不一样的，bind mount所指向的host目录也不能一样。
+                这也是为什么bind mount不能出现在Dockerfile中的原因，因为这样Dockerfile就不可移植了。
 
-        docker run -d --name myweb -v /home/cbl/Develop/temp:/usr/local/apache2/htdocs:ro -p 7788:7788 httpd
-        管理卷：Managed volumes
-        docker守护进程指定的路径，固定的：/var/lib/docker/vfs/dir/
-        使用-v命令如果不指定目录，表示使用管理卷。
+                将host机器上当前目录下的host-data目录mount到container中的/container-data目录：
+                docker run -it -v $(pwd)/host-dava:/container-data alpine sh
+                有几点需要注意：
+                host机器的目录路径必须为全路径(准确的说需要以/或~/开始的路径)，不然docker会将其当做volume而不是volume处理
+                如果host机器上的目录不存在，docker会自动创建该目录
+                如果container中的目录不存在，docker会自动创建该目录
+                如果container中的目录已经有内容，那么docker会使用host上的目录将其覆盖掉
 
-        docker run -d -v /var/lib/cassandra/data --name my-cass-shared alpine echo Data Container
-        查看卷的位置
+        2）volume也是绕过container的文件系统，直接将数据写到host机器上，
+          只是volume是被docker管理的，docker下所有的volume都在host机器上的指定目录下/var/lib/docker/volumes。
 
-        docker inspect -f "{{json .Volumes}}" my-cass-shared
+          将my-volume挂载到container中的/mydata目录：
+          docker run -it -v my-volume:/mydata alpine sh
+
+          docker volume inspect my-volume
+          [
+              {
+                  "CreatedAt": "2019-12-17T15:01:38+08:00",
+                  "Driver": "local",
+                  "Labels": null,
+                  "Mountpoint": "/var/lib/docker/volumes/my-volume/_data",
+                  "Name": "my-volume",
+                  "Options": null,
+                  "Scope": "local"
+              }
+          ]
+        可以看到，volume在host机器的目录为/var/lib/docker/volumes/my-volume/_data。此时，如果my-volume不存在，那么docker会自动创建my-volume，然后再挂载。
+
+        也可以不指定host上的volume：
+
+        docker run -it -v /mydata alpine sh
+        此时docker将自动创建一个匿名的volume，并将其挂载到container中的/mydata目录。匿名volume在host机器上的目录路径类似于：
+        /var/lib/docker/volumes/300c2264cd0acfe862507eedf156eb61c197720f69e7e9a053c87c2182b2e7d8/_data。
+
+        除了让docker帮我们自动创建volume，我们也可以自行创建：
+
+        docker volume create my-volume-2
+        然后将这个已有的my-volume-2挂载到container中:
+
+        docker run -it -v my-volume-2:/mydata alpine sh
+        需要注意的是，与bind mount不同的是，如果volume是空的而container中的目录有内容，
+        那么docker会将container目录中的内容拷贝到volume中，
+        但是如果volume中已经有内容，则会将container中的目录覆盖
+
+        3)容器共享数据
+          一个容器引用另一个容器的volume，比如之前的cass容器引用my-cass-shared容器的volume，语法是volumes-from
+    3)管理卷的生命周期
+        1）管理卷的删除
+        删除容器时，使用docker rm -v命令，-v命令会删除容器依赖的卷，但是如果卷被其他容器所依赖，就不会被删除。
+        如果删除容器时，不使用-v命令，会导致卷成为孤立的块，虽然可以用命令删除，但是很麻烦。所以建议在删除容器的时候使用-v命令。
+        删除所有的在停止状态的容器
+
+        docker rm -v $(docker ps -aq)
+        2）卷的高级模式
+            1)卷容器模式
+            创建一个依赖主机卷的容器，让其他容器依赖该容器，使用–volumes-from
+            卷容器模式的进阶版：数据卷容器
+            其实就是卷容器把另一个区域的数据拷贝到卷指向的位置，其他容器就能够共享这些数据。
+
+            docker run --name my-shared -v /config dockerinaction/ch4_packed /bin/sh -c 'cp /packed/* /config/'
+            docker run --rm --volumes-from my-shared alpine ls /config
+            \
+            2)多态容器模式
+            编程语言中的多态表示一种规范，多种实现。容器的多态指的是你创建一个容器的同时还可以额外增加一些命令，比如之前的echo ‘Helloworld’, /bin/sh -c 'xxx’等。
+            我们使用数据卷容器来模拟开发和生产环境配置的打包
+
+            # 本地配置
+            docker run --name dev-conf -v /config dockerinaction/ch4_packed_config /bin/sh -c 'cp /development/* /config/'
+            # 生产配置
+            docker run --name prod-conf -v /config dockerinaction/ch4_packed_config /bin/sh -c 'cp /production/* /config/'
+            # 加载本地配置
+            docker run --name dev-app --volumes-from dev-conf dockerinaction/ch4_polyapp
+            # 加载生产配置
+            docker run --name prod-app --volumes-from prod-conf dockerinaction/ch4_polyapp
 
