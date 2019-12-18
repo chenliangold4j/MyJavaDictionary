@@ -1,0 +1,6 @@
+以下是cli的命令
+1.ls [-s] [-w] [-R] path
+    [zk: localhost:2181(CONNECTED) 3] ls /
+    [zookeeper]
+
+2.

@@ -1,0 +1,6 @@
+docker run -d  -p 2181:2181 --name=zookeeper --privileged zookeeper
+
+docker exec -it zookeeper /bin/bash
+
+cd bin
+./zkCli.sh
