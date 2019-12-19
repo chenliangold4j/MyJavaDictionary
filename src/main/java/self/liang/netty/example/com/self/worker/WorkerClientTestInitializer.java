@@ -4,9 +4,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 
-import java.nio.charset.Charset;
-
-public class WorkerClientInitializer extends ChannelInitializer<SocketChannel> {
+public class WorkerClientTestInitializer  extends ChannelInitializer<SocketChannel> {
 
 
     @Override

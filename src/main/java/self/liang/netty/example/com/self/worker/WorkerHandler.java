@@ -56,5 +56,4 @@ public class WorkerHandler extends SimpleChannelInboundHandler<String> {
         }
     }
 
-
 }

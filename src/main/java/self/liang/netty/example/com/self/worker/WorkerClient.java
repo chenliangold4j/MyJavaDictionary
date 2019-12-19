@@ -13,9 +13,10 @@ public class WorkerClient {
         try {
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class).
-                    handler(new WorkerClientInitializer());
+//                    handler(new WorkerClientInitializer());
+                    handler(new WorkerClientTestInitializer());
 
-            ChannelFuture channelFuture = bootstrap.connect("192.168.0.116", 9999).sync();
+            ChannelFuture channelFuture = bootstrap.connect("192.168.10.60", 9999).sync();
             channelFuture.channel().closeFuture().sync();
         } finally {
             eventLoopGroup.shutdownGracefully();
