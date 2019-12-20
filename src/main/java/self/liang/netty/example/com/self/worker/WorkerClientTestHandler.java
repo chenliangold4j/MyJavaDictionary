@@ -117,6 +117,5 @@ public class WorkerClientTestHandler extends SimpleChannelInboundHandler<String>
         return Dom4jUtil.asXML(element);
     }
 
-
 }
 
