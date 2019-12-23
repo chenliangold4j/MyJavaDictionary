@@ -9,6 +9,8 @@
    2） ZK 镜像的基本使用
     启动 ZK 镜像
     >>> docker run --name my_zookeeper -d zookeeper:latest
+    或者
+    docker run --privileged=true -d --name zookeeper --publish 2181:2181  -d zookeeper
 
     这个命令会在后台运行一个 zookeeper 容器, 名字是 my_zookeeper, 并且它默认会导出 2181 端口.
     接着我们使用:

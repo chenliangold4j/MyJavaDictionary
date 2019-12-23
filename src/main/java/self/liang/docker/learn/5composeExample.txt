@@ -1,0 +1,61 @@
+version: "3.1"
+services:
+  zoo1:
+    image: zookeeper:3.4.14
+    restart: always
+    hostname: zoo1
+    ports:
+      - 2181:2181
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+
+  zoo2:
+    image: zookeeper:3.4.14
+    restart: always
+    hostname: zoo2
+    ports:
+      - 2182:2181
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+
+  zoo3:
+    image: zookeeper:3.4.14
+    restart: always
+    hostname: zoo3
+    ports:
+      - 2183:2181
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+
+
+构建了一个zookeeper的集群用于测试实验
+没有指定网络，用了docker自动配置的网络。
+docker exec -it ee15 /bin/bash
+root@zoo3:/zookeeper-3.4.14# cd bin
+root@zoo3:/zookeeper-3.4.14/bin# ./zkServer.sh status
+ZooKeeper JMX enabled by default
+Using config: /conf/zoo.cfg
+Mode: leader
+
+PS C:\Users\phantom> docker exec -it 8838 /bin/bash
+root@zoo2:/zookeeper-3.4.14# cd bin
+root@zoo2:/zookeeper-3.4.14/bin# ./zkServer.sh status
+ZooKeeper JMX enabled by default
+Using config: /conf/zoo.cfg
+Mode: follower
+
+> docker exec -it a0fe /bin/bash
+root@zoo1:/zookeeper-3.4.14# cd bi
+bash: cd: bi: No such file or directory
+root@zoo1:/zookeeper-3.4.14# cd bin
+root@zoo1:/zookeeper-3.4.14/bin# ./zkServer.sh status
+ZooKeeper JMX enabled by default
+Using config: /conf/zoo.cfg
+Mode: follower
+
+一个leader 两个follower
+
+
