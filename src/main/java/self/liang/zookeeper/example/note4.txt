@@ -1,0 +1,68 @@
+1.watcher机制：
+    1.针对每一个节点的操作，都一个监督者：watcher
+    2.当监控的某个对象（znode）发生了变化，则触发watcher事件
+    3.zk中的watcher是一次性的，触发后立即销毁
+    4.父节点，子节点，增删改都能够触发watcher
+    5.针对不同类型的操作，触发的watcher事件也不同：
+        1）（子）节点创建事件
+        2）（子）节点删除事件
+        3）（子）节点数据变化
+2.watcher命令行
+    1.设置watcher   //可以通过help看那些选项有watcher事件
+    2.父节点增删改触发watcher
+    3.子节点增删改触发watcher
+
+
+    1）[zk: localhost:2181(CONNECTED) 26] stat /imooc3 watch //设置watch
+    Node does not exist: /imooc3 //虽然没有这个节点，也可以设置成功
+    [zk: localhost:2181(CONNECTED) 27] create /imooc3 123 //创建
+
+    WATCHER::                     //触发watch
+    WatchedEvent state:SyncConnected type:NodeCreated path:/imooc3   //type：类型   路径path
+    Created /imooc3
+
+    2）[zk: localhost:2181(CONNECTED) 30] get /imooc3 watch  //获取同时  设置watch
+    345
+    cZxid = 0x100000016
+    ctime = Mon Dec 23 15:18:06 UTC 2019
+    mZxid = 0x100000017
+    mtime = Mon Dec 23 15:19:58 UTC 2019
+    pZxid = 0x100000016
+    cversion = 0
+    dataVersion = 1
+    aclVersion = 0
+    ephemeralOwner = 0x0
+    dataLength = 3
+    numChildren = 0
+    [zk: localhost:2181(CONNECTED) 31] set /imooc3 456
+
+    WATCHER::
+
+    WatchedEvent state:SyncConnected type:NodeDataChanged path:/imooc3
+    cZxid = 0x100000016
+    ctime = Mon Dec 23 15:18:06 UTC 2019
+    mZxid = 0x100000018
+    mtime = Mon Dec 23 15:20:34 UTC 2019
+    pZxid = 0x100000016
+    cversion = 0
+    dataVersion = 2
+    aclVersion = 0
+    ephemeralOwner = 0x0
+    dataLength = 3
+    numChildren = 0
+
+    3）[zk: localhost:2181(CONNECTED) 33]  ls /imooc3 watch
+    []
+    [zk: localhost:2181(CONNECTED) 34] delete /imooc3
+
+    WATCHER::
+
+    WatchedEvent state:SyncConnected type:NodeDeleted path:/imooc3
+
+3.watcher事件类型
+    1.创建父节点触发NodeCreated
+         WatchedEvent state:SyncConnected type:NodeCreated path:/imooc3   //type：类型   path：路径
+    2 修改父节点触发NodeDataChanged
+          WatchedEvent state:SyncConnected type:NodeDataChanged path:/imooc3
+    3 删除父节点NodeDeleted
+         WatchedEvent state:SyncConnected type:NodeDeleted path:/imooc3

@@ -1,0 +1,176 @@
+1.常用的命令行操作：
+    1） zkCli.sh
+    2) ls 与 ls2    ls2 = ls + stat
+
+      [zk: localhost:2181(CONNECTED) 1] ls /
+      [zookeeper]
+      [zk: localhost:2181(CONNECTED) 2] ls2 /
+      [zookeeper]
+      cZxid = 0x0
+      ctime = Thu Jan 01 00:00:00 UTC 1970
+      mZxid = 0x0
+      mtime = Thu Jan 01 00:00:00 UTC 1970
+      pZxid = 0x0
+      cversion = -1
+      dataVersion = 0
+      aclVersion = 0
+      ephemeralOwner = 0x0
+      dataLength = 0
+      numChildren = 1
+
+    3) stat 与 get
+       [zk: localhost:2181(CONNECTED) 3] stat /
+       cZxid = 0x0   //为当前节点分配的id
+       ctime = Thu Jan 01 00:00:00 UTC 1970  //创建的时间
+       mZxid = 0x0 //修改后的id
+       mtime = Thu Jan 01 00:00:00 UTC 1970 //修改的时间
+       pZxid = 0x0 //子节点id
+       cversion = -1 //子节点版本号
+       dataVersion = 0 //当前版本号
+       aclVersion = 0 //权限版本
+       ephemeralOwner = 0x0  //临时节点标志
+       dataLength = 0 //数据长度
+       numChildren = 1 //子节点的数量
+
+    4) create 命令  create [-s] [-e] path data acl    （-e 临时节点   -s 永久节点）
+        1）[zk: localhost:2181(CONNECTED) 8] create /imooc2 imooc-0data
+        Created /imooc2
+        [zk: localhost:2181(CONNECTED) 10] get /imooc2
+        imooc-0data
+        cZxid = 0x100000004
+        ctime = Mon Dec 23 14:20:40 UTC 2019
+        mZxid = 0x100000004
+        mtime = Mon Dec 23 14:20:40 UTC 2019
+        pZxid = 0x100000004
+        cversion = 0
+        dataVersion = 0
+        aclVersion = 0
+        ephemeralOwner = 0x0
+        dataLength = 11
+        numChildren = 0
+
+        2）[zk: localhost:2181(CONNECTED) 12] create -e /imooc2/tmp data
+        Created /imooc2/tmp
+        [zk: localhost:2181(CONNECTED) 15] get /imooc2
+        imooc-0data
+        cZxid = 0x100000004
+        ctime = Mon Dec 23 14:20:40 UTC 2019
+        mZxid = 0x100000004
+        mtime = Mon Dec 23 14:20:40 UTC 2019
+        pZxid = 0x100000006
+        cversion = 1  //子节点版本号加一
+        dataVersion = 0
+        aclVersion = 0
+        ephemeralOwner = 0x0
+        dataLength = 11
+        numChildren = 1
+
+        3）[zk: localhost:2181(CONNECTED) 16] get /imooc2/tmp
+        data
+        cZxid = 0x100000006
+        ctime = Mon Dec 23 14:30:31 UTC 2019
+        mZxid = 0x100000006
+        mtime = Mon Dec 23 14:30:31 UTC 2019
+        pZxid = 0x100000006
+        cversion = 0
+        dataVersion = 0
+        aclVersion = 0
+        ephemeralOwner = 0x100003465510001 // 0x0是持久，有值则为临时
+        dataLength = 4
+        numChildren = 0
+        断开链接之后，此节点消失
+
+        4）[zk: localhost:2181(CONNECTED) 5] create -s /imooc2/sec seq   //创建顺序节点
+        Created /imooc2/sec0000000002
+        [zk: localhost:2181(CONNECTED) 6] ls /imooc2
+        [sec, sec0000000002]
+        [zk: localhost:2181(CONNECTED) 7] create -s /imooc2/sec seq
+        Created /imooc2/sec0000000003
+        [zk: localhost:2181(CONNECTED) 8] ls /imooc2
+        [sec, sec0000000003, sec0000000002]
+
+    5）set 命令 set path data [version]
+        1)[zk: localhost:2181(CONNECTED) 10] set /imooc2 new-data
+        cZxid = 0x100000004
+        ctime = Mon Dec 23 14:20:40 UTC 2019
+        mZxid = 0x10000000c
+        mtime = Mon Dec 23 14:45:12 UTC 2019
+        pZxid = 0x10000000b
+        cversion = 5
+        dataVersion = 1
+        aclVersion = 0
+        ephemeralOwner = 0x0
+        dataLength = 8
+        numChildren = 3
+        [zk: localhost:2181(CONNECTED) 11] get /imooc2
+        new-data
+        cZxid = 0x100000004
+        ctime = Mon Dec 23 14:20:40 UTC 2019
+        mZxid = 0x10000000c
+        mtime = Mon Dec 23 14:45:12 UTC 2019
+        pZxid = 0x10000000b
+        cversion = 5
+        dataVersion = 1 //修改了数据版本号
+        aclVersion = 0
+        ephemeralOwner = 0x0
+        dataLength = 8
+
+        2)[zk: localhost:2181(CONNECTED) 12] set /imooc2 123 1   这里添加了版本号
+        cZxid = 0x100000004
+        ctime = Mon Dec 23 14:20:40 UTC 2019
+        mZxid = 0x10000000d
+        mtime = Mon Dec 23 14:54:19 UTC 2019
+        pZxid = 0x10000000b
+        cversion = 5
+        dataVersion = 2
+        aclVersion = 0
+        ephemeralOwner = 0x0
+        dataLength = 3
+        numChildren = 3
+        [zk: localhost:2181(CONNECTED) 13] get /imooc2
+        123
+        cZxid = 0x100000004
+        ctime = Mon Dec 23 14:20:40 UTC 2019
+        mZxid = 0x10000000d
+        mtime = Mon Dec 23 14:54:19 UTC 2019
+        pZxid = 0x10000000b
+        cversion = 5
+        dataVersion = 2
+        aclVersion = 0
+        ephemeralOwner = 0x0
+        dataLength = 3
+        numChildren = 3
+
+        [zk: localhost:2181(CONNECTED) 14] set /imooc2 123 1  这时候如果别人版本不一致，则无法set，这里常用作乐观锁。
+        version No is not valid : /imooc2
+
+    6） delete path [version]  类似set的版本号
+        [zk: localhost:2181(CONNECTED) 18] delete /imooc2 1
+        version No is not valid : /imooc2  //版本号不对。
+        [zk: localhost:2181(CONNECTED) 19] delete /imooc2 2
+        Node not empty: /imooc2 //子节点非空无法删除
+
+        [zk: localhost:2181(CONNECTED) 23] set /imooc2/sec 123
+        cZxid = 0x100000009
+        ctime = Mon Dec 23 14:35:07 UTC 2019
+        mZxid = 0x100000014
+        mtime = Mon Dec 23 14:57:38 UTC 2019
+        pZxid = 0x100000009
+        cversion = 0
+        dataVersion = 1
+        aclVersion = 0
+        ephemeralOwner = 0x0
+        dataLength = 3
+        numChildren = 0
+        [zk: localhost:2181(CONNECTED) 24] delete /imooc2/sec 1
+        //没有输出，成功。
+
+    7）
+
+
+2.zk特性：session的基本原理
+    1.客户端和服务端之间的连接存在会话
+    2.每个会话都可以设置一个超时时间
+    3.心跳结束，session则过期
+    4.session过期，则临时节点znode会被抛弃
+    5.心跳机制：客户端向服务端发送ping包请求
