@@ -1,0 +1,146 @@
+1.acl （access control lists）权限控制：
+    1.针对节点设置相关读写权限，保证数据安全性。
+    2.权限permissions可以指定不同的权限范围以及角色
+2.acl命令
+    getAcl：获取某个节点的权限 getAcl path
+    setAcl：设置权限   setAcl path acl
+    addauth:注册用户  addauth scheme auth
+3.实验与说明：
+    1.[zk: localhost:2181(CONNECTED) 23] getAcl /imooc
+    'world,'anyone
+    : cdrwa
+
+    zk的 acl通过[scheme:id:permissions] 来构成权限列表
+    scheme:代表采用的权限机制
+    id：代表允许访问的用户
+    permissions: 权限组合字符串
+
+        1)scheme:
+            1.world: world下只有一个id，也就是anyone，那么组合的写法就是  world:anyone:[permissions]
+            2.auth: 代表认证登录，需要注册用户有权限就可以，形式为： auth:user:password:[permissions]
+            3.digest:需要对密码加密才能访问，组合形式为： digest:username:BASE64(SHA1(password)):[permissions]
+
+            auth和digest区别就是：前者明文，后者密文
+            setAcl /path auth:lee:lee:cdrwa
+            与
+            setAcl /path digest:lee:BASE64(SHA1(password)) cdrwa是等价的，在通过
+            addauth digest  lee:lee 后都能操作指定节点的权限
+
+            4.ip 当设置为ip时，限制ip进行访问，比如:ip:192.168.1.1:[permissions]
+            5 super :代表超级管理员，有所有权限，，需要文档配置。
+
+        2）permission
+            权限字符串缩写：crdwa
+                c:create   创建子节点
+                r：read    读取 节点和子节点
+                w：write   写入
+                d：delete  删除子节点
+                a：admin   设置权限
+
+
+    2. world:anyone
+    [zk: localhost:2181(CONNECTED) 31] getAcl /imooc/abc
+      'world,'anyone
+      : cdrwa
+      [zk: localhost:2181(CONNECTED) 32] setAcl  /imooc/abc world:anyone:crwa   //设置没有子节点的删除权限
+      cZxid = 0x20000000b
+      ctime = Tue Dec 24 13:49:18 UTC 2019
+      mZxid = 0x20000000b
+      mtime = Tue Dec 24 13:49:18 UTC 2019
+      pZxid = 0x20000000b
+      cversion = 0
+      dataVersion = 0
+      aclVersion = 1
+      ephemeralOwner = 0x0
+      dataLength = 2
+      numChildren = 0
+      [zk: localhost:2181(CONNECTED) 33] create  /imooc/abc/xyz 123
+      Created /imooc/abc/xyz
+      [zk: localhost:2181(CONNECTED) 34] delete /imooc/abc/xyz
+      Authentication is not valid : /imooc/abc/xyz  //无法删除子节点。。
+
+    3.auth
+      [zk: localhost:2181(CONNECTED) 44] setAcl  /names/imooc auth:imooc:imooc:cdrwa
+      Acl is not valid : /names/imooc  //未注册，
+      [zk: localhost:2181(CONNECTED) 45] addauth digest imooc:imooc  //添加用户
+      [zk: localhost:2181(CONNECTED) 46] setAcl  /names/imooc auth:imooc:imooc:cdrwa  //设置成功
+      cZxid = 0x200000016
+      ctime = Tue Dec 24 14:04:04 UTC 2019
+      mZxid = 0x200000016
+      mtime = Tue Dec 24 14:04:04 UTC 2019
+      pZxid = 0x200000016
+      cversion = 0
+      dataVersion = 0
+      aclVersion = 1
+      ephemeralOwner = 0x0
+      dataLength = 2
+      numChildren = 0
+      [zk: localhost:2181(CONNECTED) 47] getAcl /names/imooc
+      'digest,'imooc:XwEDaL3J0JQGkRQzM0DpO6zMzZs=
+      : cdrwa
+
+       setAcl  /names/imooc auth::cdrwa //这样设置，意思是使用默认的第一个。也是就刚刚创建的imooc
+
+    4.digest
+      [zk: localhost:2181(CONNECTED) 12] setAcl /names/test digest:imooc:XwEDaL3J0JQGkRQzM0DpO6zMzZs=:cdra  //加密的权限
+      cZxid = 0x20000001f
+      ctime = Tue Dec 24 14:11:04 UTC 2019
+      mZxid = 0x20000001f
+      mtime = Tue Dec 24 14:11:04 UTC 2019
+      pZxid = 0x20000001f
+      cversion = 0
+      dataVersion = 0
+      aclVersion = 1
+      ephemeralOwner = 0x0
+      dataLength = 2
+      numChildren = 0
+      [zk: localhost:2181(CONNECTED) 13] get /names/test  //这时候未登录无法获取
+      Authentication is not valid : /names/test
+      [zk: localhost:2181(CONNECTED) 14] getAcl /names/test
+      Authentication is not valid : /names/test
+      [zk: localhost:2181(CONNECTED) 15] addauth digest imooc:imooc   //注册登录
+      [zk: localhost:2181(CONNECTED) 16] get /names/test  //这时候就可以获取了
+      tt
+      cZxid = 0x20000001f
+      ctime = Tue Dec 24 14:11:04 UTC 2019
+      mZxid = 0x20000001f
+      mtime = Tue Dec 24 14:11:04 UTC 2019
+      pZxid = 0x20000001f
+      cversion = 0
+      dataVersion = 0
+      aclVersion = 1
+      ephemeralOwner = 0x0
+      dataLength = 2
+      numChildren = 0
+      [zk: localhost:2181(CONNECTED) 17] getAcl /names/test
+      'digest,'imooc:XwEDaL3J0JQGkRQzM0DpO6zMzZs=
+      : cdra
+
+    5.ip
+      [zk: localhost:2181(CONNECTED) 20] setAcl /names/ip  ip:192.168.3.123:cdrwa
+      cZxid = 0x200000021
+      ctime = Tue Dec 24 14:17:57 UTC 2019
+      mZxid = 0x200000021
+      mtime = Tue Dec 24 14:17:57 UTC 2019
+      pZxid = 0x200000021
+      cversion = 0
+      dataVersion = 0
+      aclVersion = 1
+      ephemeralOwner = 0x0
+      dataLength = 4
+      numChildren = 0
+      [zk: localhost:2181(CONNECTED) 21] get  /names/ip  //设置ip权限之后，当前ip无法使用
+      Authentication is not valid : /names/ip
+
+    6.super
+      1. 修改zkServer.sh增加super管理员
+      2. 重启zkServer.sh
+      vim zkServer.sh
+      找到  nohup "$JAVA" "-Dzookeeper.log.dir=${ZOO_LOG_DIR}" "-Dzookeeper.root.logger=${ZOO_LOG4J_PROP}" \
+             -cp "$CLASSPATH" $JVMFLAGS $ZOOMAIN "$ZOOCFG" > "$_ZOO_DAEMON_OUT" 2>&1 < /dev/null &
+      在其中加上：-Dzookeeper.DigestAuthenticationProvider.superDigest=imooc:(BASE64(SHA1(passwrod))
+
+4.acl使用场景：
+    1.开发/测试环境分离。开发者无权操作测试库的节点，只能看。
+    2.生成环境上控制指定ip的服务可以访问相关节点，防止混乱
+

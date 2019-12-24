@@ -11,7 +11,7 @@
     1.设置watcher   //可以通过help看那些选项有watcher事件
     2.父节点增删改触发watcher
     3.子节点增删改触发watcher
-
+    4.事件类型和下一节一一对应。
 
     1）[zk: localhost:2181(CONNECTED) 26] stat /imooc3 watch //设置watch
     Node does not exist: /imooc3 //虽然没有这个节点，也可以设置成功
@@ -59,6 +59,20 @@
 
     WatchedEvent state:SyncConnected type:NodeDeleted path:/imooc3
 
+
+    4）[zk: localhost:2181(CONNECTED) 7] ls  /imooc2  watch
+    [sec0000000003, sec0000000002]
+    [zk: localhost:2181(CONNECTED) 8] create /imooc2/abc  88
+    WATCHER::
+    WatchedEvent state:SyncConnected type:NodeChildrenChanged path:/imooc2
+    Created /imooc2/abc
+
+    5）[zk: localhost:2181(CONNECTED) 9] ls  /imooc2  watch
+    [sec0000000003, abc, sec0000000002]
+    [zk: localhost:2181(CONNECTED) 10] delete /imooc2/abc
+    WATCHER::
+    WatchedEvent state:SyncConnected type:NodeChildrenChanged path:/imooc2
+
 3.watcher事件类型
     1.创建父节点触发NodeCreated
          WatchedEvent state:SyncConnected type:NodeCreated path:/imooc3   //type：类型   path：路径
@@ -66,3 +80,17 @@
           WatchedEvent state:SyncConnected type:NodeDataChanged path:/imooc3
     3 删除父节点NodeDeleted
          WatchedEvent state:SyncConnected type:NodeDeleted path:/imooc3
+    4.ls为父节点设置watcher，创建子节点触发：NodeChildrenChanged
+         WatchedEvent state:SyncConnected type:NodeChildrenChanged path:/imooc2
+    5.ls为父节点设置watcher,删除子节点触发：NodeChildrenChanged
+         WatchedEvent state:SyncConnected type:NodeChildrenChanged path:/imooc2
+    6.ls为父节点这只watcher，修改 子节点不触发事件。
+
+4.watcher使用场景：
+    1.统一资源配置。
+        例如：
+           /config/sqlConfig, /config/sqlConfig,/config/sqlConfig.
+        1）主机更新新的配置信息。
+        2）更新监听了的客户端的配置，所有客户端的配置 都会相应的更新。
+        3）zookeeper在这里保证了配置中心的高可用
+    2.

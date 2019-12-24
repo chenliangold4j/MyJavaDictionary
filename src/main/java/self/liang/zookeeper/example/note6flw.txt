@@ -1,0 +1,29 @@
+1.zk四字命令 four letter words
+    1）zk可以通过它自身提供的简写命令来和服务器进行交互
+    2）需要使用到nc命令，安装：yum install nc
+    3）echo [commond] | nc [ip][port]
+
+    例如：echo stat | nc localhost 2181
+
+    1.stat  查看zk状态信息
+    2.ruok 查看zk是否启动
+    3.dump 列出未经处理的会话和临时节点
+    4.conf 查看服务配置
+    5.cons 查看链接到服务器的客户端信息
+    6.envi  环境变量
+    7.mntr 监控信息
+    8.wchs 查看watch信息
+    9.wchc与wchp session与watch 及 path与watch信息
+
+2。集群搭建和注意点，我通过网上 的docker来搭建的，但是这里也做一下笔记
+    配置：
+        其他config也提到了
+         clientPort=2181
+         server.1=192.168.1.100:2888:3888
+         server.2=192.168.1.101:2888:3888
+         server.3=192.168.1.102:2888:3888
+    检查
+        zkCli.sh -server 192.168.1.100:2181
+
+        root@zoo3:/zookeeper-3.4.14/bin# ./zkCli.sh  -server 172.18.0.3:2181
+        Connecting to 172.18.0.3:2181
