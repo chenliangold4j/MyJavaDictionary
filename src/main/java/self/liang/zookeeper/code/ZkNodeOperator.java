@@ -40,7 +40,9 @@ public class ZkNodeOperator implements Watcher {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
+
 
 
     @Override
@@ -50,7 +52,7 @@ public class ZkNodeOperator implements Watcher {
 
     public static void main(String[] args) {
         ZkNodeOperator zkNodeOperator = new ZkNodeOperator(zkServerPath);
-        zkNodeOperator.createZKNode();
+//        zkNodeOperator.createZKNode();
     }
 
 }
