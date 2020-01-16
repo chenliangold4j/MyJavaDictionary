@@ -1,0 +1,11 @@
+1)命令： show processlist;
+如果是root帐号，你能看到所有用户的当前连接。如果是其它普通帐号，只能看到自己占用的连接。
+show processlist;只列出前100条，如果想全列出请使用show full processlist;
+
+3	root	localhost	test	Sleep	2422	""
+22	root	172.17.0.1:39536	test	Sleep	796	""
+26	root	172.17.0.1:39546	test	Query	0	starting	/* ApplicationName=IntelliJ IDEA 2019.3 */ show processlist
+32	root	172.17.0.1:39560	test	Sleep	0	""
+
+
+
