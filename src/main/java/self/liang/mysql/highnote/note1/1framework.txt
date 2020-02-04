@@ -124,6 +124,8 @@
         mvcc只在repeatable read和read committed下工作.
 
 
+5.存储引擎：用innoDB就行了
+            MyISAM
 
 
 
