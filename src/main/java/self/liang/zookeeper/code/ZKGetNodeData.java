@@ -27,7 +27,7 @@ public class ZKGetNodeData implements Watcher {
 
     public ZKGetNodeData(String connectString) {
         try {
-            zooKeeper = new ZooKeeper(connectString, timeout, new ZkNodeOperator());
+            zooKeeper = new ZooKeeper(connectString, timeout, new ZKGetNodeData());
         } catch (IOException e) {
             e.printStackTrace();
             if (zooKeeper != null) {

@@ -26,7 +26,7 @@ public class ZKGetChildNodeData implements Watcher {
 
     public ZKGetChildNodeData(String connectString) {
         try {
-            zooKeeper = new ZooKeeper(connectString, timeout, new ZkNodeOperator());
+            zooKeeper = new ZooKeeper(connectString, timeout, new ZKGetChildNodeData());
         } catch (IOException e) {
             e.printStackTrace();
             if (zooKeeper != null) {
@@ -40,7 +40,7 @@ public class ZKGetChildNodeData implements Watcher {
     }
 
 
-    private static CountDownLatch countDownLatch = new CountDownLatch(1);
+    private static CountDownLatch countDownLatch = new CountDownLatch(10);
 
     @Override
     public void process(WatchedEvent event) {
@@ -49,7 +49,7 @@ public class ZKGetChildNodeData implements Watcher {
             if(event.getType()== Event.EventType.NodeChildrenChanged){
                 System.out.println("NodeChildrenChanged");
                 ZKGetChildNodeData zkServer = new ZKGetChildNodeData(zkServerPath);
-                List<String> strChildList = zkServer.getZooKeeper().getChildren(event.getPath(), false);
+                List<String> strChildList = zkServer.getZooKeeper().getChildren(event.getPath(), zkServer);
                 for (String s : strChildList) {
                     System.out.println(s);
                 }
@@ -74,8 +74,6 @@ public class ZKGetChildNodeData implements Watcher {
         String ctx = "{'callback':'ChildrenCallback'}";
 //		zkServer.getZookeeper().getChildren("/imooc", true, new ChildrenCallBack(), ctx);
         zkGetNodeData.getZooKeeper().getChildren("/imooc", zkGetNodeData, new AsyncCallback.Children2Callback() {
-
-
             @Override
             public void processResult(int rc, String path, Object ctx, List<String> children, Stat stat) {
                 System.out.println("path:"+path);
