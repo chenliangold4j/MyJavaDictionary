@@ -81,25 +81,25 @@ public class ZKNodeAcl implements Watcher {
 //		zkServer.createZKNode("/aclimooc/testdigest", "testdigest".getBytes(), acls);
 
         // 注册过的用户必须通过addAuthInfo才能操作节点，参考命令行 addauth
-		zkServer.getZookeeper().addAuthInfo("digest", "imooc1:123456".getBytes());
+//		zkServer.getZookeeper().addAuthInfo("digest", "imooc1:123456".getBytes());
 //		zkServer.createZKNode("/aclimooc/testdigest/childtest", "childtest".getBytes(), ZooDefs.Ids.CREATOR_ALL_ACL);
 //		Stat stat = new Stat();
 //		byte[] data = zkServer.getZookeeper().getData("/aclimooc/testdigest", false, stat);
 //		System.out.println(new String(data));
-		zkServer.getZookeeper().setData("/aclimooc/testdigest", "now".getBytes(), 0);
+//		zkServer.getZookeeper().setData("/aclimooc/testdigest", "now".getBytes(), 0);
 
         // ip方式的acl
 //		List<ACL> aclsIP = new ArrayList<ACL>();
-//		Id ipId1 = new Id("ip", "192.168.1.3");
-//		aclsIP.add(new ACL(Perms.ALL, ipId1));
+//		Id ipId1 = new Id("ip", "172.18.0.1");
+//		aclsIP.add(new ACL(ZooDefs.Perms.ALL, ipId1));
 //		zkServer.createZKNode("/iptest-2018", "iptest".getBytes(), aclsIP);
 
 //        // 验证ip是否有权限
-//        zkServer.getZookeeper().setData("/iptest-2018", "now".getBytes(), 1);
-//        Stat stat = new Stat();
-//        byte[] data = zkServer.getZookeeper().getData("/iptest-2018", false, stat);
-//        System.out.println(new String(data));
-//        System.out.println(stat.getVersion());
+        zkServer.getZookeeper().setData("/iptest-2018", "123456".getBytes(), 2);
+        Stat stat = new Stat();
+        byte[] data = zkServer.getZookeeper().getData("/iptest-2018", false, stat);
+        System.out.println(new String(data));
+        System.out.println(stat.getVersion());
     }
 
     public ZooKeeper getZookeeper() {
@@ -114,4 +114,5 @@ public class ZKNodeAcl implements Watcher {
     public void process(WatchedEvent event) {
 
     }
+
 }
