@@ -1,0 +1,64 @@
+1.基本步骤：
+    一个dockerfile
+    docker build
+    run
+2.构建过程：
+        1.基础知识：
+            1.每一条保留字指令都是大字指令加至少一条参数
+            2.指令从上到下顺序执行
+            3.# 注释
+            4.每条指令创建一个新的镜像层
+        2.docker执行dockerfile的大致流程
+            1.docker从基础镜像运行一个容器
+            2.执行一条指令并对容器做出修改
+            3.执行类似docker commit的操作提交一个新的镜像层
+            4.docker基于刚提交的镜像运行一个新的容器
+            5.执行dockerfile的下一条指定直到全部完成
+3.dockerfile体系结构
+        指令：
+            FROM：
+                FROM 基础镜像
+            MAINTAINER：
+                MAINTAINER：作者
+            RUN:
+                RUN 容器构建时需要运行的命令
+                RUN groupadd -r -g 999 redis && useradd -r -g redis -u 999 redis
+            EXPOSE
+                EXPOSE 容器暴露的端口
+            WORKDIR
+                WORKDIR 工作目录
+            ENV
+                EVN 环境变量
+                例如：ENV REDIS_VERSION 4.0.14
+            ADD
+                ADD  拷贝并且解压缩
+            COPY
+                COPY 拷贝
+                例如 COPY docker-entrypoint.sh /usr/local/bin/
+            VOLUME
+                VOLUME 容器数据卷
+            CMD
+                指定容器启动时运行的命令
+                例如：CMD ["redis-server"]
+                可以有多个CMD但是只有一个生效，会被docker run 之后的参数替换
+            ENTERPOINT
+                ENTRYPOINT 指定容器运行时命令，docker run 之后的参数会被当坐参数传递 给ENTERPOINT，之后形成新的命令组合
+                ENTRYPOINT ["docker-entrypoint.sh"]
+            ONBUILD
+                ONBUILD  但构建一个被继承的dockerfile时运行的命令
+
+3.编写
+    1.基本
+    FROM centos
+    MAINTAINER hahaha
+    ENV MYPATH=/usr/local
+    WORKDIR $MYPATH
+    RUN yum -y install vim
+    RUN yum -y install net-tools
+    EXPOSE 80
+    CMD /bin/bash
+
+    构建了一个有vim 和ifconfig的centos 并设置工作目录与环境变量
+
+    2.
+

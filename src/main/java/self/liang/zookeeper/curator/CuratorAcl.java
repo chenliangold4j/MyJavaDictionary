@@ -62,7 +62,6 @@ public class CuratorAcl {
 //		byte[] newData = "batman".getBytes();
 //		cto.client.setData().withVersion(0).forPath(nodePath, newData);
 
-
         // 删除节点
 //		cto.client.delete().guaranteed().deletingChildrenIfNeeded().withVersion(0).forPath(nodePath);
 
