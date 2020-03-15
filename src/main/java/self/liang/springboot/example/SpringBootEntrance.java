@@ -141,6 +141,8 @@ import javax.sql.DataSource;
  *
  *     用配置文件进行配置
  *     在properties文件中添加mybatis相关代码
+ *
+ *
  */
 //@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})//这里配置不自动初始化datasource ，没有配置datasource的配置文件
 @SpringBootApplication
