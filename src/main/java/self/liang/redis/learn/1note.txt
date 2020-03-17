@@ -1,9 +1,44 @@
-1.redis配置文件说明：
-    1.daemonize no
-        redis默认不是守护进程，可以通过该配置yes。开启守护进程
-    2.redis以守护进程运行，默认会把pid写入/var/run/redis.pid文件 可以通过pidfile指定
-        pidfile /var/run/redis.pid
-    3.指定redis监听端口,默认为6379
-        port 6379
-    4.绑定主机：
-        bind 127.0.0.1
+1.docker 安装redis
+    docker run -d --name redis6379 -p 6379:6379 redis --requirepass "123456"
+
+2.运行  redis-cli
+
+3.配置：
+    daemonize no 是否守护进程
+    pidfile /var/run/redis.pid
+    port 6379  端口
+    bind 127.0.0.1 可以连接的地址
+    timeout 3000  客户端闲置关闭连接时间
+    loglevel verbose 日志级别 分别为  debug verbose notice warning
+    logfile stdou 日志记录方式
+    databases 16 数据库数量
+    save 300 10  指定多长时间，有多少此更新，就将数据同步到数据文件。 这里表示 300秒内有10个修改
+    rdbcompression yes 是否压缩
+    dbfilename dump.rdb 指定本地数据库文件名
+    dir ./指定数据库存放位置
+    slaveof  masterip masterport 当本机为slav时。设置master服务的ip地址以及端口，再redis启动时，他会从master进行同步数据
+    masterauth master-password   当master设置了密码保护时，设置密码登录
+    requirepass foobared  设置连接密码
+    maxmemory bytes 设置redis最大内存
+    appendonly  on 指定是否每次更新操作后进行日志记录。默认为no  always 每次更新都将数据写到磁盘  everysec每秒同步一次
+    appendfilename appendonly.aof  指定日志文件名
+    vm-enable no 指定是否用虚拟内存限制  默认no
+    vm-swap-file /tmp/redis.swap 虚拟内存文件路径
+    vm-max-memory 09 将所有大于这个值的数据存入虚拟内存
+    vm-page-size 32 swap文件页大小
+    vm-max-threads 4 访问swap文件线程数
+    glueoutputbuf yes 是否把小包合并发送
+    hash-max-zipmap-enteries 64 hash-max-zipmap-value 512 超过数量或者元素超过临界值，采用特殊的哈希算法
+    activerehashing yes 是否充值哈希
+    include /path/to/local.conf 包含其他的配置文件
+
+5.内存维护策略
+    1.为数据设置超时时间
+        expire key time（秒） 常用
+        setex(String key ,int seconds,String value) 字符串独有
+    2.采用LRU算法动态将不用的数据删除
+        1.volatile-lru : 设置超时时间的数据中，删除不常用的数据
+        2.allkeys-lru : 查询所有key的不常用数据删除   。。最常用
+        其他再搜索
+
+
