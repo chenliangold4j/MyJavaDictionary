@@ -85,3 +85,48 @@
         应用场景：
             1.常用于存储对象
 
+    3.set  集合中没有重复，通过哈希表实现
+        sadd key member1 [member2] :向集合添加一个或多个成员
+        scard key : 获取集合成员数
+        smembers key :返回集合所有成员
+        sismember key member :判断是否集合成员
+        srandmember key [count]  : 返回集合中一个或多个随机数
+        srem key member1 [member2] ： 移除一个或多个元素
+        spop key [count] ::移除并 返回集合中的一个随机元素
+        smove source destination member
+        sdiff key1 [key2] 返回给定所有集合的差集
+        sdiffstore destination key1 [key2] 返回给定所有集合的差集并存储再 destination中交集语法：
+        sinter key1 [key2] 给定所有集合的交集
+        sinterstore destination key1 [key2] 交集
+        sunion key1 [key2] 并集
+        sunionstore destiantion key1 [key2]
+
+        应用场景：
+            1.利用集合操作，取不同兴趣圈子的交集，实现共同关注，共同好友等功能。
+            2.利用唯一性，统计访问网站的ip，活跃用户列表
+        例子：1.判断用户名是否存在。缓存所有用户名，这样不需要sql查询
+             2.抽奖。
+    4.zset 有序集合，不重复。每个元素关联一个double分数。根据分数排列。分数可以重复
+        zadd key score1 member1 [score2 member2]:向集合添加或者更新成员数据以及分数
+        zcard key :
+        zcount key min max:
+        zrank key member : 返回成员的索引
+        zrange key start stop [withscores]:通过索引区间返回有序集合成指定区间内的成员（低到高）
+        zrangebyscore key min max  [withscores] [limit] :通过分数返回区间内成员
+        zrevrange key start stop [withscores] :
+        zrevrangebyscore key max min [withscores]
+        del key
+        zrem key member : 移除成员
+        zremrangebyrank key start stop
+        zremrangebyscore key min max
+        zincrby key increment member :添加memeber元素的分数
+
+        应用场景：排行榜，销量排名，积分排名。
+            1.按照时间作为score这样可以时间排序信息
+            2.将score作为
+
+
+    5.HyperLogLog  用于基数统计算法
+        pfadd key element [element] 添加指定元素到hyperloglog中
+        pfcount key [key ...] 返回给定的基数估计值
+        pfmerge destkey sourcekey [sourcekey ..] 将多个kyperloglog合并为一个
