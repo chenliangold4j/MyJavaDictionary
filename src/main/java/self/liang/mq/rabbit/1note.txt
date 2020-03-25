@@ -1,0 +1,69 @@
+1.docker run -it --rm --name rabbitmq   -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_DEFAULT_PASS=admin -p 5672:5672 -p 15672:15672 rabbitmq:3-management
+
+2.一些命令：
+    1）rabbitmqctl list_queues 列出队列
+    root@720ff2e69437:/# rabbitmqctl list_queues
+    Timeout: 60.0 seconds ...
+    Listing queues for vhost / ...
+
+    2） rabbitmqctl list_vhosts 查看虚拟主机
+    root@720ff2e69437:/# rabbitmqctl list_vhosts
+    Listing vhosts ...
+    name
+    /
+
+    3） rabbitmqctl status 查看状态
+
+3.virtual hosts 管理
+    virtual hosts 相当与mysql的db
+     一般以/开头
+
+4.代码
+    1.基本的生产消费代码：
+        见项目：rabbitmq-learn  leanr.rabbit.main.simplequeue
+        不足：耦合性高，生产者一一对应消费者，如果要多个消费者，这时候不行。队列名变更不方便，需要同时变更。
+
+    2.work queue 多个消费者：
+        实际开发中，生产者的消息生成是毫不费力的，而消费者的处理就需要花费较多时间。
+        见项目：rabbitmq-learn leanr.rabbit.main.workqueue
+        这里是注册的consumer轮询分发。
+
+    3.work queue 公平分发。
+        上一个示例里面，是按照一个一条分发的。现在需要按消费者的反馈来分发
+        使用公平分发，需要关闭自动ack。channel.basicQos(1); 并告诉mq，每次只发送一条给消费者
+        leanr.rabbit.main.workqueuefair
+
+    4. 消息应答以及持久化
+        boolean autoAck = false；
+        channel.basicConsume(QUEUE_NAME, autoAck,defaultConsumer);
+
+        boolean autoAck = true;自动确认模式，表示一旦rabbitmq分发消息到了消费者，消息就会在内存中删除。
+        这种情况下，如果刚接到消息，消费者未处理完成被杀死，消息将会丢失。
+        boolean autoAck = false；手动模式，这时候，如果消费者未处理完成被杀死，rabbitmq就会交付给其他消费者。
+        rabbitmq支持消息应带。告诉rabbitmq这个消息处理完成可以删除。
+
+        这个默认是false
+
+        rabbitmq支持持久化。
+        Queue.DeclareOk queueDeclare(String queue, boolean durable, boolean exclusive, boolean autoDelete,
+                                         Map<String, Object> arguments) throws IOException;
+        其中 boolean durable 表示是否持久化。已经注册的队列无法修改持久化属性。
+
+    5.发布订阅
+        1.一个生成者，多个消费者。
+        2.每一个消费者都有自己的队列
+        3.生成者没有直接把消息发送到队列，而是发送到exchange上
+        4.每个队列都需要绑定到交换机
+
+        leanr.rabbit.main.ps
+        注意。exchange没有存储能力，只有队列有存储能力，当没有队列绑定到exchange时，发送给exchange的消息会丢失。
+
+        exchange：交换机，转发器。
+        一方面是接受生产者的消息，另一方面是向队列推送消息。
+        void basicPublish(String exchange, String routingKey, BasicProperties props, byte[] body) throws IOException;
+        routingKey 为 “” 代表匿名转发
+        channel.exchangeDeclare(EXCHANGE_NAME, "fanout"); fanout指不处理路由键。
+        其他的：direct  这个模式处理路由键。
+
+
+

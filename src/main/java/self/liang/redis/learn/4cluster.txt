@@ -1,0 +1,42 @@
+1.主从复制：
+   配置文件添加：
+    --port 6380 从服务的端口号
+    --slaveof 127.0.0.1 6379 指定主服务器
+    ./bin/redis-server ./redis.conf --port 6380 --slaveof 127.0.0.1 6379
+
+2.集群：实际使用最多的模式
+    redis cluster 是社区推出的redis分布式集群方案。
+
+    redis集群方案：
+        1. twitter开发的twemoproxy
+        2. 豌豆荚开发的codis
+        3. redis cluster
+
+    redis-cluster 至少需要3 mater + 3 slave 才能建立集群。采用无中心结构，每个节点保存数据和整个集群状态，每个节点和其他所有节点连接。
+        1.所有redis彼此互联（ping-pong机制），内部使用二进制协议传输
+        2.节点的fail是集群中超过半数的节点失效才失效
+        3.客户端与redis节点直接连接，不需要中间proxy，客户端只需连接其中一个节点
+        4.redis-cluster把所有物理节点映射到 0~16383 slot上，cluster负责维护
+        5.reids集群预先分配好16384个哈希槽，放置key时。用哈希环的原理，将key使用crc16之后再对16384求余。得到对应的redis节点
+
+    redis cluster 容错
+        1.什么时候判master不可用
+            投票机制，投票过程时集中所有master参与，半数以上对master超时，就认为master挂掉了
+        2.什么时候整个集群不可用？
+            1.有任意master挂掉，且当前master没有slave，集群进入fail状态。
+            2.半数master挂掉
+    redis cluster节点分配
+        平分slot
+
+
+    集群安装:
+        https://redis.io/topics/cluster-tutorial
+        连接集群：redis-cli -h127.0.0.1 -c -p 7000 -a 123456  ： -c可连接到集群，没加c无法正常操作
+
+        基本命令：
+            info replication 通过cluster nodes命令和cluster info命令来看集群效果
+            cluster nodes
+                每个redis节点都有一个ID值，此ID将被此特定redis实例永久使用。其他节点会记录此id值，而不是端口和ip。
+
+        集群关闭：
+            全部shutdown即可。

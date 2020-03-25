@@ -1,0 +1,47 @@
+
+主要用的是多活模式：
+    这种模式依赖rabbitmq的federation插件，可以实现持续的可靠的AMQP数据通信，多活模式再实际配置与应用非常简单。
+    一般采用双中心或者多中心，在两套数据中心各部署一条rabbitmq集群，各中心的rabbitmq服务除了需要为业务提供正常的消息服务外，中心
+    之间还需要实现部分队列消息共享。
+
+    federation插件是一个不需要构建cluster，而在brokers之间传输消息的高性能插件，federation插件可以在brokers胡总和cluster之间传输消息
+    可以使连接不同的user和virtual host.使用amqp协议通讯，接受不连续的传输
+
+1.集群搭建步骤：
+    1.准备多个节点
+    2.组成集群操作。使用集群命令，配置集群模式
+        rabbitmq-server -detached
+    3.slave加入集群操作
+        命令：rabbitmqctl join cluster rabbit@bhz71
+        有几个slave都加入master
+    4.文件同步
+        见/var/lib/rabbitmq/.erlang.cookie copy到各个节点相同的目录下。
+        rabbitmq-server -detache 启动
+    4.修改集群：
+        rabbitmqctl set_cluster_name rabbitmq_cluster1
+
+    5.查看集群状态
+        rabbitmqctl cluste_status
+
+    6.配置镜像策略：
+        rabbitmqctl set _policy ha-all "^" '{"ha-mode":"all"}'
+        这样就是镜像队列，
+        镜像队列的所有机器的数据一致
+
+    7 安装haproxy并配置
+        这里就不作记录了
+        详情搜索 haproxy rabbitmq
+        这里视频做了两个haproxy。、
+
+    8.keepAlived高可用：
+        通过VRRP协议实现的高可用。解决单点故障。
+        keepAlived一方面具有配置管理LVS的功能。
+        通过配置脚本检测是否正常
+        通过keepAlived监控haproxy
+        keepAlived用认证机制组成集群。
+
+        详情 搜索 haproxy+keepalived
+
+        配置之后。多台keepalived映射为一个虚拟ip。这样程序只要连接这个虚拟ip。由keepalived保证高可用
+    9.
+
