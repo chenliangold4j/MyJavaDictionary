@@ -1,0 +1,143 @@
+1.读写分离
+    1.需要配置mysql的主从复制
+        在mysql里面有主从的搭建记录.这里再记录一遍.
+        1.配置文件
+        2.主机里创建角色
+            mysql> create user 'slave'@'%' identified by '123456'
+                -> ;
+            Query OK, 0 rows affected (0.01 sec)
+
+            mysql>  grant replication slave on *.* to 'slave'@'%';
+            Query OK, 0 rows affected (0.00 sec)
+
+            mysql> flush privileges;
+            Query OK, 0 rows affected (0.01 sec)
+
+        3.slave配置主机
+           CHANGE MASTER TO
+                   master_host='172.17.0.2',
+                   master_user='slave',
+                   master_password='123456',
+                   master_port=3306,
+                   master_log_file='mysql-bin.000005',
+                   master_log_pos=154;
+
+                   mysql> start slave;
+                   Query OK, 0 rows affected (0.00 sec)
+
+                   mysql> show slave status\G;
+                   *************************** 1. row ***************************
+                                  Slave_IO_State: Waiting for master to send event
+                                     Master_Host: 172.17.0.2
+                                     Master_User: slave
+                                     Master_Port: 3306
+                                   Connect_Retry: 60
+                                 Master_Log_File: mysql-bin.000004
+                             Read_Master_Log_Pos: 749
+                                  Relay_Log_File: 1adc5cdd4d71-relay-bin.000002
+                                   Relay_Log_Pos: 320
+                           Relay_Master_Log_File: mysql-bin.000004
+                                Slave_IO_Running: Yes                -----------------! 这两个yes为成功
+                               Slave_SQL_Running: Yes                -----------------!
+
+         4.mycat配置
+            这里注意dataHost的balance的值:
+                1. balance = "0" 不开启读写分离机制
+                2. balance="1"  全部的readhost与stand by writeHost 参与select 语句的负载均衡,简单的说,当双主双从模式 M1->S1 M2->S2 且m1 m2互为主备
+                    ,正常情况下,m2 s1 s2 都参与select语句的负载均衡
+                3. balance="2" 所有读操作都随机的在 writeHost,readhost上分发.
+                4. balance="3' 所有读请求分发到readHost,writerHost 不负担读压力.
+
+
+            <mycat:schema xmlns:mycat="http://io.mycat/">
+            	<schema name="TESTDB" checkSQLschema="false" sqlMaxLimit="100" dataNode="dn1">
+            	</schema>
+            	<!-- <dataNode name="dn1$0-743" dataHost="localhost1" database="db$0-743" /> -->
+            	<dataNode name="dn1" dataHost="localhost1" database="db1" />
+            	<dataHost name="localhost1" maxCon="1000" minCon="10" balance="0" writeType="0" dbType="mysql" dbDriver="native" switchType="1" slaveThreshold="100">
+            		<heartbeat>select user()</heartbeat>
+            		<!-- can have multi write hosts -->
+            		<writeHost host="hostM1" url="192.168.11.33:3406" user="root" password="123456">
+            			<!-- can have multi read hosts -->
+            			<readHost host="hostS2" url="192.168.11.33:3506" user="root" password="123456" />
+            		</writeHost>
+            	</dataHost>
+            </mycat:schema>
+
+
+2.双主双从:
+        1.搭建:
+            1.删除db,从新配置主从(stop slave reset master);
+            2.配置文件更新:
+                log-slave-updates  # 作为从库有写入也更新二进制日志文件
+                auto-increment-increment=2 # 自增长字段的每次递增量
+                auto-increment-offset = 1; #自增长字段的开始值  这里每个主库的起始值不一样.需要分开
+
+            3.两台主机都创建slave用户并配置主从
+            4.双主互备;
+                这里是m2复制m1,同时m1复制m2
+                这里和slave复制master的命令一致
+                 CHANGE MASTER TO
+                                   master_host='172.17.0.4',
+                                   master_user='slave',
+                                   master_password='123456',
+                                   master_port=3306,
+                                   master_log_file='mysql-bin.000003',
+                                   master_log_pos=764;
+
+            5.修改mycat配置 balance=1
+                writeType : 0:所有写操作发送到配置的第一个writeHost，第一个挂了之后切换到第二个
+                            1：所有写操作都随机的发送到配置的writeHost，1.5以后废弃
+                switchType: 1: 默认值，自动切换
+                            -1：不自动切换
+                            2 基于mysql主从同步的状态决定是否切换。
+             <schema name="TESTDB" checkSQLschema="false" sqlMaxLimit="100" dataNode="dn1">
+             	</schema>
+             	<!-- <dataNode name="dn1$0-743" dataHost="localhost1" database="db$0-743" /> -->
+             	<dataNode name="dn1" dataHost="localhost1" database="db1" />
+             	<dataHost name="localhost1" maxCon="1000" minCon="10" balance="1" writeType="0" dbType="mysql" dbDriver="native" switchType="1" slaveThreshold="100">
+             		<heartbeat>select user()</heartbeat>
+             		<!-- can have multi write hosts -->
+             		<writeHost host="hostM1" url="192.168.11.33:3406" user="root" password="123456">
+             			<!-- can have multi read hosts -->
+             			<readHost host="hostS1" url="192.168.11.33:3506" user="root" password="123456" />
+             		</writeHost>
+             		<writeHost host="hostM2" url="192.168.11.33:3606" user="root" password="123456">
+             			<!-- can have multi read hosts -->
+             			<readHost host="hostS2" url="192.168.11.33:3706" user="root" password="123456" />
+             		</writeHost>
+             	</dataHost>
+
+
+3.垂直拆分：
+        拆分的考虑： 1.关联查询不能跨主机，所以垂直拆分，尽量把有关联关系的放一起
+        步骤：
+            1.修改schema.xml
+                新增table信息 以及dn2
+                	<schema name="TESTDB" checkSQLschema="false" sqlMaxLimit="100" dataNode="dn1">
+                		<table name="customer" dataNode="dn2"></table>
+                	</schema>
+                	<!-- <dataNode name="dn1$0-743" dataHost="localhost1" database="db$0-743" /> -->
+                	<dataNode name="dn1" dataHost="host1" database="orders" />
+                	<dataNode name="dn2" dataHost="host2" database="orders" />
+                	<dataHost name="host1" maxCon="1000" minCon="10" balance="0" writeType="0" dbType="mysql" dbDriver="native" switchType="1" slaveThreshold="100">
+                		<heartbeat>select user()</heartbeat>
+                		<!-- can have multi write hosts -->
+                		<writeHost host="hostM1" url="192.168.11.33:4006" user="root" password="123456">
+                		</writeHost>
+                	</dataHost>
+
+                	<dataHost name="host2" maxCon="1000" minCon="10" balance="0" writeType="0" dbType="mysql" dbDriver="native" switchType="1" slaveThreshold="100">
+                		<heartbeat>select user()</heartbeat>
+                		<!-- can have multi write hosts -->
+                		<writeHost host="hostM1" url="192.168.11.33:4007" user="root" password="123456">
+                		</writeHost>
+                	</dataHost>
+
+4.水平拆分：
+        安装某个字段某种规则来分散到多个数据库。
+        注意水平拆分方案需要考虑是否会负载不平衡。
+        例如：订单表拆分，用id或者时间都会导致同一时间的一台机器负载过多，用用户id的话就相对均衡，而且有利于集中用户订单信息。
+
+        步骤：
+            1.

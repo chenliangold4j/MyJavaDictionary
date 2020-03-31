@@ -65,5 +65,29 @@
         channel.exchangeDeclare(EXCHANGE_NAME, "fanout"); fanout指不处理路由键。
         其他的：direct  这个模式处理路由键。
 
+    6.routing 路由模式
+        leanr.rabbit.main.routing
+
+    7.topic
+        将路由键和字符串模式匹配
+        # 匹配一个或多个
+        * 匹配一个
+        例如：#.news  则 dhf.news dsf.news都匹配
+
+    8.消息确认机制
+        生产者数据的确认。
+        两种方式：
+            1.AMQP协议，实现了事务机制。
+                txSelect txCommit txRollback
+                txSelect:用户将当前channel设置成transation模式
+                txCommit:用于提交事务
+                txRollback：回滚事务
+                leanr.rabbit.main.tx
+            2.confirm模式
+                用唯一id确认。注意，如果borker设置了basic.ack的multiple域，表示到这个序列号以前的消息都已经得到处理
+
+应用场景：
+    日志收集
+    搜索中的
 
 

@@ -1,0 +1,56 @@
+1.基本功能：
+    1.读写分离
+    2.数据分片（分库分表)
+    3.多数据源的整合
+
+2.原理:
+    拦截sql语句,对sql语句分析,如:分片分析,路由分析,读写分离分析,缓存分析.之后发送到真实数据库返回结果.
+
+3.安装.解压官网压缩包
+    配置文件:
+        1.schema.xml 定义逻辑库,表,分片节点等内容
+        2.rule.xml:定义分片规则
+        3.server.xml 定义用户以及系统相关变量,如端口等.
+    配置server.xml  用户
+         <user name="root">
+                      <property name="password">123456</property>
+                      <property name="schemas">TESTDB</property> //mycat逻辑库名
+    配置 schemal.xml 最简单:
+        <mycat:schema xmlns:mycat="http://io.mycat/">
+                <schema name="TESTDB" checkSQLschema="false" sqlMaxLimit="100" dataNode="dn1"> //指定用哪个dataNode 这里用唯一的dn1
+                </schema>
+                <dataNode name="dn1" dataHost="localhost1" database="db1"  />// database配置真实数据库的名字
+                <dataHost name="localhost1" maxCon="1000" minCon="10" balance="0"
+                                  writeType="0" dbType="mysql" dbDriver="native" switchType="1"  slaveThreshold="100">
+                        <heartbeat>select user()</heartbeat>
+                        <!-- can have multi write hosts -->
+                        <writeHost host="hostM1" url="192.168.11.33:3406" user="root"
+                                           password="123456"> //配置写主机
+                                <!-- can have multi read hosts -->
+                                <readHost host="hostS2" url="192.168.11.33:3506" user="root" password="123456" /> //配置读主机
+                        </writeHost>
+                </dataHost>
+        </mycat:schema>
+    准备数据库
+         docker create --name mysqlforcat03  -v D:\docker\mysqlforcat03\conf:/etc/mysql -p 3606:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7.28
+
+
+      FROM centos
+      RUN yum -y install java
+      COPY ./Mycat-server-1.6-RELEASE-20161028204710-linux.tar.gz /usr/local
+      RUN cd /usr/local && ls -a
+      RUN cd /usr/local && tar -zxvf Mycat-server-1.6-RELEASE-20161028204710-linux.tar.gz && ls -lna
+      RUN yum -y install vim
+      RUN yum -y install net-tools
+
+      EXPOSE 8066 9066
+      CMD ["/usr/local/mycat/bin/mycat", "console"]
+
+        docker run -p 8066:8066 -p 9066:9066
+        --name mycat
+        -v /usr/local/mycat/conf:/usr/local/mycat/conf
+        -d zhang/mycat:1.6.5
+4.启动:
+      mysql -uroot -p123456 -h 172.17.0.3 -P 8066 登录mycat
+      Server version: 5.6.29-mycat-1.6-RELEASE-20161028204710 MyCat Server (OpenCloundDB)
+
