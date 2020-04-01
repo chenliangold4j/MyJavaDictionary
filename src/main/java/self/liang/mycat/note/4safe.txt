@@ -1,0 +1,17 @@
+权限配置：
+    1.server.xml
+	<user name="root">
+		<property name="password">123456</property>
+		<property name="schemas">TESTDB</property>
+	</user>
+	<user name="user">
+		<property name="password">user</property>
+		<property name="schemas">TESTDB</property>
+		<property name="readOnly">true</property>
+	</user>
+
+    2.配置privileges设置DML权限
+        详情搜索
+
+    3.mycat防火墙 定义ip白名单，和sql黑名单
+        server.xml可以配置firewall

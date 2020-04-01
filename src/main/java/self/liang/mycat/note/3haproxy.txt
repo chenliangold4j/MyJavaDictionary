@@ -1,0 +1,41 @@
+基于ha机制的mycat高可用。
+    使用HAProxy和KeepAlived配合两台mycat搭起mycat集群。
+    docker run -d --name myhaproxy1 -v D:\docker\haproxy1\haproxy:/usr/local/etc/haproxy -p7777:7777 haproxy:1.7
+    测试配置
+    #全局配置
+    global
+        log 127.0.0.1 local0
+        uid 99
+        gid 99
+        pidfile /usr/data/haproxy/haproxy.pid
+        daemon
+        maxconn 4096
+    defaults
+        log global
+        mode http
+        option httplog
+        option dontlognull
+        timeout connect 5000
+        timeout client 50000
+        timeout server 50000
+
+    listen proxy_status
+        bind :48066
+            mode tcp
+            balance roundrobin
+            server mycat_1 172.17.0.1:8067 check inter 10s
+
+    frontend admin_stats
+        bind :7777
+            mode http
+            stats enable
+            option httplog
+            maxconn 10
+            stats refresh 30s
+            stats uri /admin
+            stats auth admin:123456
+            stats hide-version
+            stats admin if TRUE
+
+之后再配置keepAlived 这里不作实验：
+    keepAlived会配置一个虚拟ip，所有的请求访问虚拟ip即可。

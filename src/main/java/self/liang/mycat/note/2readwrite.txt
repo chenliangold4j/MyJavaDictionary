@@ -140,4 +140,124 @@
         例如：订单表拆分，用id或者时间都会导致同一时间的一台机器负载过多，用用户id的话就相对均衡，而且有利于集中用户订单信息。
 
         步骤：
-            1.
+            1.修改schema.xml
+            	<schema name="TESTDB" checkSQLschema="false" sqlMaxLimit="100" dataNode="dn1">
+            		<table name="customer" dataNode="dn2"></table>
+            		<table name="orders" dataNode="dn1,dn2" rule="mode_rule"></table>
+            	</schema>
+            2.修改rule.xml
+                <function name="mod-long" class="io.mycat.route.function.PartitionByMod">
+                		<!-- how many data nodes -->
+                		<property name="count">2</property>
+                </function>
+                <tableRule name="mod_rule">
+                    <rule>
+                        <columns>customer_id</columns>
+                        <algorithm>mod-long</algorithm>
+                    </rule>
+                </tableRule>
+
+        mycat的分片join
+           mycat会各自在机器上join，所以如果要做链接，在示例的order_detail 就必须规则和orders一致
+           1.ER表：
+                mycat将子表的储存依赖于主表，并且物理上紧邻存放。
+                配置步骤
+                    1.schema.xml
+                            <schema name="TESTDB" checkSQLschema="false" sqlMaxLimit="100" dataNode="dn1">
+                                <table name="customer" dataNode="dn2"></table>
+                                <table name="orders" dataNode="dn1,dn2" rule="mod_rule">
+                                    <childTable name="order_detail" primaryKey="id" joinKey="order_id" parentKey="id"/>
+                                    //将order_detail设置为子表，其中order_id对应主表的id
+                                </table>
+                            </schema>
+                            mysql> select o.*,od.detail from orders o inner join orders_detail od on o.id=od.order_id;
+                            +----+------------+-------------+-----------+---------+
+                            | id | order_type | customer_id | amount    | detail  |
+                            +----+------------+-------------+-----------+---------+
+                            |  3 |        101 |         101 | 110300.00 | detail3 |
+                            |  4 |        101 |         101 | 112300.00 | detail4 |
+                            |  5 |        102 |         101 | 112400.00 | detail5 |
+                            |  1 |        101 |         100 | 100100.00 | detail1 |
+                            |  2 |        101 |         100 | 100300.00 | detail2 |
+                            |  6 |        102 |         100 | 162400.00 | detail6 |
+                            +----+------------+-------------+-----------+---------+
+
+        全局表：
+            多个数据节点都需要这个表，查询只从一个获取，修改到所有节点。
+            配置：
+                修改schema.xml
+                <table name="dict_order_type" dataNode="dn1,dn2" type="global"></table>
+
+
+        常用的分片规则
+            1.取模 //已经使用
+            2.分片枚举
+                通过在配置文件中配置可能的枚举id，自己配置分片，本规则适用于特定场景，比如有业务需要按照省份或区县来做保存。
+                步骤：
+                    1.修改schema.mxl
+                	  <table name="orders_ware_info" dataNode="dn1,dn2" rule="sharding_by_intfile"></table>
+                	2.修改rule.xml
+                		<tableRule name="sharding_by_intfile">
+                    		<rule>
+                    			<columns>areacode</columns>
+                    			<algorithm>hash-int</algorithm>
+                    		</rule>
+                    	</tableRule>
+                	   	<function name="hash-int" class="io.mycat.route.function.PartitionByFileMap">
+                       		<property name="mapFile">partition-hash-int.txt</property> // 标识配置文件的名字
+                       		<property name="type">1</property>// 0 为int值，非0为String
+                       		<property name="defaultNode">0</property>// 默认节点，不认识的枚举值会路由到默认节点
+                       	</function>
+
+                    3.修改partition-hash-int.txt配置文件
+                        110=0
+                        120=1
+            3.范围约定：
+                1.schema.xml
+                    <table name="payment_info" dataNode="dn1,dn2" rule="auto_sharding_long"></table>
+                2.修改rule.xml
+                    	<tableRule name="auto_sharding_long">
+                    		<rule>
+                    			<columns>order_id</columns>
+                    			<algorithm>rang-long</algorithm>
+                    		</rule>
+                    	</tableRule>
+                    	<function name="rang-long" class="io.mycat.route.function.AutoPartitionByLong">
+                        		<property name="mapFile">autopartition-long.txt</property>
+                        		<property name="defaultNode">0</property>
+                        </function>
+                3.修改autopartition-long.txt
+            4.按时间划分
+                schema.xml <table name="login_info" dataNode="dn1,dn2" rule="sharding_by_date"></table>
+                rule.xml
+                  	<function name="shardingByDate" class="io.mycat.route.function.PartitionByDate">
+                  		<property name="dateFormat">yyyy-MM-dd</property>
+                  		<property name="sBeginDate">2020-01-01</property>
+                  		<property name="sEndDate">2020-12-31</property>
+                  		<property name="sPartionDay">183</property>
+                  	</function>
+                insert into login_info(id,user_id,login_date) values(1,101,'2020-04-01');
+                insert into login_info(id,user_id,login_date) values(2,122,'2020-11-01');
+                insert into login_info(id,user_id,login_date) values(3,132,'2020-01-01');
+                insert into login_info(id,user_id,login_date) values(4,432,'2020-03-01');
+                insert into login_info(id,user_id,login_date) values(5,232,'2020-09-01');
+                insert into login_info(id,user_id,login_date) values(6,1132,'2020-07-01');
+
+        全局序列：
+            分库分表的情况下，自增主键已经无法保证唯一，为此，mycat提供了全局sequence，提供了包含本地配置和数据库配置等多种方式
+            1.本地文件：
+                mycat将sequence配置到文件中，但使用到后，mycat会更下classpath中的sequence_conf.properties文件中sequence当前的值
+                这种方式并不推荐，抗风险能力差
+            2.数据库方式：
+                利用一个数据库的表来进行累加计数。但不是每次都读写数据库，mycat会预加载一部分号段到内存，用完再取。
+                步骤：
+                   https://www.cnblogs.com/ivictor/p/5235147.html
+
+                   insert into orders(id,amount,customer_id,order_type) values(next value for MYCATSEQ_MYCAT,1000,101,102);
+            3.时间戳：
+                 全局ID = 64位二进制 (42(毫秒)+5(机器id）+5（业务编码）+12（重复累加）换算成十进制为18位数的long类型，每毫秒可以风法12位进制的累加。
+                 优点：配置简单
+                 缺点：id过长
+            4.自主生成全局序列：
+                可再java项目里自己生成全局序列
+                例如可以用redis的单线程原子性incr来生成序列。
