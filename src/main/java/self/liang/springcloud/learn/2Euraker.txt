@@ -1,0 +1,47 @@
+1.基本：
+    1.建立一个eureka服务
+        引入pom，开启注解@EnableEurekaServer，配置配置项即可
+        详情见 cloud-eureka-server7001
+    2.服务注册：
+        引入starter 开始注解，配置yml;
+
+    3.服务消费
+        引入starter 开始注解，配置yml;
+
+
+
+2.eureka集群
+    1.eureka通过配置相互注册达成集群。
+        service-url:
+          #设置与Eureka Server交互的地址查询服务和注册服务都需要依赖这个地址
+          defaultZone: http://eureka7001.com:7002/eureka/  #互相注册
+
+    2.将单机微服务都配置进集群：
+        微服务的yml
+           service-url:
+              #defaultZone: http://localhost:7001/eureka #单机版
+              defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka  #集群版
+3.服务提供者集群：
+    1.注册为同一名字即可
+
+
+4.服务器发现：
+    @EnableDiscoveryClient
+
+5.eureka自我保护：
+    保护模式主要用于一组客户端和eureka server之间存在网络分区场景下的保护，一旦进入保护模式。
+    eureka将会尝试保护其服务注册表中的信息，不再删除服务注册表中的数据，也就是不会注销任何微服务。
+
+    换句话说：某时刻某个微服务不可用，eureka不会立刻清理，依旧会保存信息
+    属于CAP里面的AP分支
+
+    短时间（默认90s）内丢失大量服务心跳，这时候就会开启自我保护。主要是为了分区容错。
+
+
+6.三个注册中心的对比
+    组件名       语言     CAP     服务健康检查   对外暴露接口
+    eureka      java      AP         可配支持       http
+    consul      go        CP          支持         http/dns
+    zookeeper   java      CP          支持         zkClient
+
+    CAP 关注的数据。

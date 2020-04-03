@@ -1,0 +1,57 @@
+1.Hystrix
+    处理分布式系统的延迟和容错的开源库。hystirx能够保证一个依赖出问题的情况下，不会导致整体失败，避免级联失败。
+    “断路器”本事是一种开关，当某个服务党员发生故障之后，通过断路器的故障监控，向调用方法返回一个符合预期的，可处理的备选响应。
+    而不是长时间等待或抛出异常。
+    fallback:服务降级
+    break:熔断
+    flowLimit:服务限流
+
+    1.降级配置。
+        @HystrixCommand
+
+           @HystrixCommand(fallbackMethod = "paymentInfo_TimeoutHandler",commandProperties = {
+                     @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "3000")
+             })
+            public String paymentInfo_Timeout(Integer id) {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return "线程名:" + Thread.currentThread().getName() + " payment ok id:" + id + " \t" + " 耗时3s";
+            }
+
+            public String paymentInfo_TimeoutHandler(Integer id){
+                return "线程名:" + Thread.currentThread().getName() + " paymentInfo_TimeoutHandler:" + id + " \t" + " fallback";
+            }
+
+         @EnableCircuitBreaker 再main上注解
+
+        这时候，程序异常和报错都会调用fallback函数
+    2.client降级：
+        因为client用了feign，开启的注解改为@EnableHystrix
+        其他和上面一样。
+    3.统一降级：
+       @DefaultProperties(defaultFallback = "") 类级注解。
+       方法 @HystrixCommand 优先
+
+    4.feign统一降级：
+       给有 @FeignClient 注解的接口添加统一的服务降级类。
+       @FeignClient(value = "CLOUD-PROVIDER-HYSTRIX-PAYMENT",fallback = PaymentFallbackService.class)
+       PaymentFallbackService 为此接口的实现类。
+
+
+    5.服务熔断：
+        达到最大访问时，直接拒绝访问，然后调用降级方法，之后检测是否正常，然后恢复调用链路
+          @HystrixCommand(fallbackMethod = "paymentCircuitBreaker_fallback",commandProperties = {
+                    @HystrixProperty(name = "circuitBreaker.enabled",value = "true"),   //是否开启断路器
+                    @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold",value = "10"),  //请求次数
+                    @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds",value = "10000"),    //时间窗口期
+                    @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage",value = "60"),    //失败率达到多少后跳闸
+            })
+
+        再限定时间内  10次请求超过60%失败，就会触发熔断。再时间窗口期内，不再调用，窗口期过后再重试。
+
+    6 hystrix dashboard
+        http://localhost:9001/hystrix
+        @EnableHystrixDashboard

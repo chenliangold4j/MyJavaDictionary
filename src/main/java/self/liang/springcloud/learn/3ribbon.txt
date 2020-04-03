@@ -1,0 +1,19 @@
+1.spring cloud ribbon 是一套客户端负载均衡工具
+    主要是提供客户端软件负载均衡算法和服务调用。提供了完善的配置项如：连接超时，重试等。可以很容易使用ribbon来自定义负载均衡算法
+
+2.ribbon 已经进入维护模式
+    能干吗：负载均衡+ restTemplate调用。
+3.引入eureka的时候，自动引入了ribbon。
+
+4.切换负载均衡算法：
+    接口：IRule ： 根据特定算法中从服务列表获取服务
+    大多数自带的算法都实现了这个接口
+
+    建立一个配置类，不能被componentScan扫描到  这里注册一个IRule接口的bean
+    然后再启动类上添加注解：@RibbonClient(name="CLOUD-PAYMENT-SERVICE",configuration = MyRule.class)
+
+    需要其他可以搜索ribbon的算法
+
+5.自定义负载算法：
+    通过DiscoveryClient 来获取注册中心的服务
+    然后自己自定义使用哪个client。用这个client的uri来调用

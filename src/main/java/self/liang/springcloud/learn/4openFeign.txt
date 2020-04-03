@@ -1,0 +1,24 @@
+1.openFeign:
+    声明式的web服务客户端
+    只需声明接口添加注解即可。
+2.基本：
+    接口+ @FeignClient
+    用于消费端。
+3.@EnableFeignClients //开启Feign
+    @Component
+    @FeignClient("CLOUD-PAYMENT-SERVICE")
+    public interface PaymentFeignService {
+
+        @GetMapping("/payment/get/{id}")
+        CommonResult<Payment> getPaymentById(@PathVariable("id") Long id);
+    }
+
+    注意getMapping指定了调用微服务的哪个地址
+4.超时控制：
+    默认等待1秒钟
+    #设置feign 客户端超时时间（openFeign默认支持ribbon）
+    ribbon:
+      #指的是建立连接所用的时间，适用于网络状况正常的情况下，两端连接所用的时间
+      ReadTimeout: 5000
+      #指的是建立连接后从服务器读取到可用资源所用的时间
+      ConnectTimeout: 5000

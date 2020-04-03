@@ -1,0 +1,26 @@
+1.版本选型
+    https://spring.io/projects/spring-cloud 的Release Trains 注明了cloud于boot版本的对应关系.
+    所有项目见workspace备份文件
+2.热部署
+    1. <dependency>
+                  <groupId>org.springframework.boot</groupId>
+                  <artifactId>spring-boot-devtools</artifactId>
+                  <scope>runtime</scope>
+                  <optional>true</optional>
+       </dependency>
+    2. add plugin:
+          <build>
+            <plugins>
+              <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                  <fork>true</fork>
+                  <addResources>true</addResources>
+                </configuration>
+              </plugin>
+            </plugins>
+          </build>
+    3.配置自动编译
+
+    4.idea ：操作： ctrl + shift + alt + /，选择Registry，勾选勾上 Compiler autoMake allow when app running
