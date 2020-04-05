@@ -5,4 +5,54 @@
     可以与git整合。
 
 2.配置中心搭建
+    spring:
+      application:
+        name: cloud-config-center
+      cloud:
+        config:
+          server:
+            git:
+              uri: https://github.com/chenliangold4j/cloud-config.git #github仓库上面的git仓库名字
+              ##搜索目录
+              search-paths:
+                - cloud-config
+          #读取分支
+          label: master
 
+    之后可以通过http://localhost:3344/master/config-dev.yml 来访问配置文件
+
+3.bootstrap.yml是系统级的，优先级更高
+    spring cloud 会创建一个bootstrap context，作为spring应用的application context的父上下文，初始化时，bootstrap context负责
+    从外部源加载配置属性并解析配置，这两个上下文共享一个从外部获取的Environment
+
+    bootstrap 属性有高优先级，默认情况下，他们不会被本地配置覆盖。bootstrap context 和 application context 有着不同的约定，所以
+    新增一个bootstrap.yml文件，保证bootstrap context和application context 配置的分离。
+
+4.config client
+    spring:
+      application:
+        name: config-client
+      cloud:
+        #Config客户端配置
+        config:
+          label: master #分支名称
+          name: config #配置文件名称
+          profile: dev #读取后缀名称 上述3个综合：master分支上config-dev.yml的配置文件被读取 http://config-3344.com:3344/master/config-dev.yml
+          uri: http://localhost:3344 #配置中心地址
+
+5.动态刷新：
+    client修改配置：
+    #暴露监控端点
+    management:
+      endpoints:
+        web:
+          exposure:
+            include: "*"
+
+    加上@RefreshScope 在业务类controller上
+
+    之后需要发送post请求刷新http://localhost:3355/actuator/refresh
+
+    这样就避免服务重启
+
+6.

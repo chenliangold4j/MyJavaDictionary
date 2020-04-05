@@ -1,0 +1,33 @@
+1.消息驱动：
+    屏蔽底层消息中间件，统一消息的编程模型
+    但是现在stream只支持 rabbitmq和kafka
+    似乎也就一般
+2.binder：
+    input 生产者
+    output 消费者
+    channel 是queue的一种抽象。在消息通讯系统中就是实现存储和转发的媒介。通过channel对队列进行配置
+    source
+    slink
+    注解：
+        @Input
+        @Output
+        @StreamListener
+        @EnableBinding
+3.provider配置
+4.consumer配置
+    配置详情见项目cloud -stream
+
+5.重复消费和持久化
+    springcloud-stream 需要用分组来解决重复消费。因为默认是普通的publish  subscription 模式
+    原因：默认组号不一样。
+    解决：两个consumer用相同的组号
+     bindings: # 服务的整合处理
+            input: # 这个名字是一个通道的名称
+              destination: studyExchange # 表示要使用的exchange名称定义
+              content-type: application/json # 设置消息类型，本次为json，文本则设为text/plain
+              binder: defaultRabbit # 设置要绑定的消息服务的具体设置
+              group: self_consumer
+
+    在stream默认模式中，相同组就是排队消费，不同组就是同时监听。
+
+    在stream中，有分组信息的consumer，可以接到持久化消息。

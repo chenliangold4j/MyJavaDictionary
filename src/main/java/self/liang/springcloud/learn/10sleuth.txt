@@ -1,0 +1,17 @@
+1.分布式请求链路追踪
+    在微服务框架中，一个由客户端发起的请求在后端系统中会经过多个不同的服务节点调用来协同产生最后的请求结果，每一个前段请求都会形成
+    一条复杂的分布式服务调用链路，链路中的任何一环出现高延迟或者错误会引起整个请求最后失败。
+    这时候需要知道 请求怎么走，在哪调用失败。
+
+    spring cloud sleuth提供了一套完整的链路追踪方案
+    可以与zipkin兼容支持。
+2.配置
+    spring cloud从F版开始，已经不需要自己构建Zipkin Server了，只需要调用jar包即可。
+    docker run -d -p 9411:9411 openzipkin/zipkin
+    每条链路通过trace id唯一标识，span标识发起的请求信息，各span通过parent id 关联起来
+
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      probability: 1  # 采样率 0-1之间， 1表示全部采样  性能会有影响

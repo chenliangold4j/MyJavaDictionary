@@ -1,0 +1,39 @@
+1.消息总线：
+    spring cloud bus 是用来将分布式系统的节点和轻量级消息系统链接起来的框架
+    它整合了java的时间处理机制和消极中间件的功能
+    目前支持  rabbitMQ 和 kafka
+2.整合并通知配置。
+     1.配置中心：
+      #rabbit相关配置
+      rabbitmq:
+        host: localhost
+        port: 5672
+        username: admin
+        password: admin
+
+    #rabbitmq相关配置，暴露bus刷新配置的端点
+    management:
+      endpoints:  #暴露bus刷新配置的端点
+        web:
+          exposure:
+            include: 'bus-refresh'  #凡是暴露监控、刷新的都要有actuator依赖，bus-refresh就是actuator的刷新操作
+
+    2.client：
+        #  #rabbit相关配置 15672是web管理界面的端口，5672是MQ访问的端口
+          rabbitmq:
+            host: localhost
+            port: 5672
+            username: admin
+            password: admin
+        #暴露监控端点
+        management:
+          endpoints:
+            web:
+              exposure:
+                include: "*"
+    3.post 配置中心 http://localhost:3344/actuator/bus-refresh
+
+3.定点通知：
+    http://localhost:3344/actuator/bus-refresh/{destination}
+    通过destination指定通知的实例
+     http://localhost:3344/actuator/bus-refresh/config-client:3355
