@@ -18,7 +18,7 @@ public class TestHttpServerHandler extends SimpleChannelInboundHandler<HttpObjec
         System.out.println(msg.getClass());
 
         System.out.println(ctx.channel().remoteAddress());
-        Thread.sleep(8000);
+//        Thread.sleep(8000);
 
         if (msg instanceof HttpRequest) {
             HttpRequest httpRequest = (HttpRequest)msg;
