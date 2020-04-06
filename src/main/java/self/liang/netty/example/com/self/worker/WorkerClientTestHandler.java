@@ -41,6 +41,9 @@ public class WorkerClientTestHandler extends SimpleChannelInboundHandler<String>
                 "\t        <token>" + token + "</token>\n" +
                 "         </Login>\n" +
                 "</DSXClient>\n");
+//        Channel.write()  :                        从 tail 到 head 调用每一个outbound 的 ChannelHandlerContext.write
+//
+//        ChannelHandlerContext.write() : 从当前的Context, 找到上一个outbound, 从后向前调用 write
         ctx.write(content);
         ctx.flush();
     }

@@ -81,7 +81,6 @@
         5) "age"
         6) "22"
 
-
         应用场景：
             1.常用于存储对象
 
@@ -120,11 +119,12 @@
         zremrangebyrank key start stop
         zremrangebyscore key min max
         zincrby key increment member :添加memeber元素的分数
+        zunionstore destkey numbkeys key [key ..] 并集
+        zinterstore destkey numkeys key [key。。]  交集
 
         应用场景：排行榜，销量排名，积分排名。
             1.按照时间作为score这样可以时间排序信息
             2.将score作为
-
 
     5.HyperLogLog  用于基数统计算法
         pfadd key element [element] 添加指定元素到hyperloglog中
