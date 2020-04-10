@@ -25,3 +25,7 @@
 
     4.idea ：操作： ctrl + shift + alt + /，选择Registry，勾选勾上 Compiler autoMake allow when app running
 
+3.bootstrap 配置文件有以下几个应用场景。
+        使用 Spring Cloud Config 配置中心时，这时需要在 bootstrap 配置文件中添加连接到配置中心的配置属性来加载外部配置中心的配置信息；
+        一些固定的不能被覆盖的属性
+        一些加密/解密的场景；
