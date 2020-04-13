@@ -41,4 +41,5 @@
 
     1.数据库从derby切换到mysql
        1）  https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html 下载sql文件，导入数据库。
-       2）
+    2.开3个以上nacos-server
+    3.nginx配置负载均衡至nacos-server

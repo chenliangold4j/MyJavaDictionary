@@ -1,0 +1,92 @@
+1.基本：
+    反向代理，负载均衡，正向代理，动静分离（动态资源和静态资源分离。如 img 静态 servlet 动态）。
+     docker run -d --name mynginx -vD:\docker\nginx\nginx:/etc/nginx -p80:80 -p8000:8000 nginx:1.12.0
+
+2.配置文件：
+    第一部分：全局块：
+        配置文件开始到events 结束，是全局都影响的模块。
+
+        worker_processes  1; 并发值，值越大，nginx支持的并发量就越多。
+    第二部分：events
+        events 块涉及的指令主要影响nginx服务器与用户的网络连接，常用的设置包括是否开启对多work process下的网络连接进行序列化，是否
+        允许同时接受多个网络连接，选择哪种事件驱动模型来处理连接请i去，每个word process 可以同时支持的最大连接数等。
+
+        events {
+            worker_connections  1024; // 最大连接数量1024. 这部分配置对nginx性能影响较大。
+        }
+
+
+    第三部分：http
+        http全局块配置的指令包括文件引入，MIME-TYPE定义，日志自定义，连接超时事件，单链接请求上限。
+        server 块：
+            全局server
+
+            location块
+3.反向代理：
+    1.代理单机
+         location / {
+                root   /usr/share/nginx/html;
+                proxy_pass   http://192.168.65.2:8080;
+                index  index.html index.htm;
+            }
+
+         代理65.2的8080
+    2.效果：
+        访问 www.123.com/edu/  到8080
+        访问 www.123.com/vod/  到8081
+
+        配置
+               location  ~ /vod/ {
+                   proxy_pass   http://192.168.65.2:8081;
+               }
+
+                location  ~ /edu/ {
+                   proxy_pass   http://192.168.65.2:8080;
+               }
+
+               注意。这里 http://localhost/edu/a.html 对应的tomcat 路径应该是 static/edu/a.html
+               nginx只是转发http://localhost/edu/a.html这个请求给tomcat，不会有改变。tomcat接到这个请求该怎么响应怎么响应。
+
+4.负载均衡：
+     效果：访问 www.123.com/edu/a.html  平均到8080和8081中。
+     http 区域
+     upstream myserver{
+             server 192.168.65.2:8081;
+             server 192.168.65.2:8080;
+        }
+
+     server区域
+     location / {
+            proxy_pass   http://myserver;
+            index  index.html index.htm;
+        }
+
+
+        轮询	默认方式
+        weight	权重方式
+        ip_hash	依据ip分配方式
+        least_conn	最少连接方式
+        fair（第三方）	响应时间方式
+        url_hash（第三方）	依据URL分配方式
+
+        https://www.cnblogs.com/1214804270hacker/p/9325150.html
+
+5.动静分离
+      nginx处理静态页面，tomcat处理动态页面。
+      一般把静态文件独立成单独的域名，放在独立的服务器上，也是目前主流推荐的方案。
+      通过location 指定不同的后缀名。通过expires 参数设置，可以设置浏览器缓存过期事件，减少与服务器之间的请求和流量。
+      如果缓存未过期，返回304
+
+      配置：
+           这里对应linux的路径为  /static/www/
+            location  /www/ {
+                root   /static/;
+                 index  index.html index.htm;
+            }
+
+            location /images/ {
+                root   /static/;
+                autoindex on;
+            }
+6.高可用
+     keepAlived nginx

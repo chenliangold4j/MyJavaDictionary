@@ -1,0 +1,49 @@
+1.seata模型：
+    http://seata.io/zh-cn/docs/overview/what-is-seata.html
+    Seata术语
+    TC - 事务协调者
+    维护全局和分支事务的状态，驱动全局事务提交或回滚。
+
+    TM - 事务管理器
+    定义全局事务的范围：开始全局事务、提交或回滚全局事务。
+
+    RM - 资源管理器
+    管理分支事务处理的资源，与TC交谈以注册分支事务和报告分支事务的状态，并驱动分支事务提交或回滚。
+
+2.步骤：
+    1.TM向TC 申请开启一个全局事务，全局事务创建成功并生成一个全局唯一的XID；
+    2.XID 在微服务调用链路的上下文中传播；
+    3.RM 向 TC注册分支事务，将其纳入XID 对应全局事务管辖。
+    4.TM 向 TC发起针对XID 的全局提交或回滚事务
+    5.TC 调度XID 下管辖的全服分支事务完成提交或回滚请求.
+
+    妈的不是人话.
+    还是另外一个教程清除.
+
+3.seata server
+    下载之后修改配置文件 file.conf 主要是修改存储模式至mysql 建表语句见官网.
+    service {
+      vgroup_mapping.my_test_tx_group = "fsp_tx_group"
+      default.grouplist = "127.0.0.1:8091"
+      disableGlobalTransaction = false
+    }
+    store {
+      mode = "db"
+      db {
+        datasource = "dbcp"
+        db-type = "mysql"
+        driver-class-name = "com.mysql.jdbc.Driver"
+        url = "jdbc:mysql://127.0.0.1:3306/seata"
+        user = "root"
+        password = "123456"
+      }
+    }
+
+   registry.conf 修改注册中心为nacos
+    启动.在nacos注册中心看到
+
+4.建表:
+    seata-server有自己的三张表
+    seata客户端,自己有自己的undo_log
+
+5.
