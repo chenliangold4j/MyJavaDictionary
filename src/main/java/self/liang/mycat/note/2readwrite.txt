@@ -15,11 +15,11 @@
 
         3.slave配置主机
            CHANGE MASTER TO
-                   master_host='172.17.0.2',
+                   master_host='172.17.0.1',
                    master_user='slave',
                    master_password='123456',
-                   master_port=3306,
-                   master_log_file='mysql-bin.000005',
+                   master_port=3606,
+                   master_log_file='mysql-bin.000004',
                    master_log_pos=154;
 
                    mysql> start slave;
@@ -39,7 +39,7 @@
                            Relay_Master_Log_File: mysql-bin.000004
                                 Slave_IO_Running: Yes                -----------------! 这两个yes为成功
                                Slave_SQL_Running: Yes                -----------------!
-
+           从机取消主从：stop salve 然后  reset slave
          4.mycat配置
             这里注意dataHost的balance的值:
                 1. balance = "0" 不开启读写分离机制
@@ -48,6 +48,8 @@
                 3. balance="2" 所有读操作都随机的在 writeHost,readhost上分发.
                 4. balance="3' 所有读请求分发到readHost,writerHost 不负担读压力.
 
+            writeType="0" 所有写操作发送到配置的第一个writeHost，第一个挂了切到还生还的第二个。
+            switchType="1" 表示自动切换
 
             <mycat:schema xmlns:mycat="http://io.mycat/">
             	<schema name="TESTDB" checkSQLschema="false" sqlMaxLimit="100" dataNode="dn1">

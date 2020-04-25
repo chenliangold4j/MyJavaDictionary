@@ -6,6 +6,9 @@ package self.liang.classload.example;
  */
 public class LoaderTest  {
     public static void main(String[] args) {
+
+//        System.out.println(Integer.MAX_VALUE/(1024*1024));
+
         ClassLoader classLoader =   LoaderTest.class.getClassLoader();
         System.out.println(ClassLoader.getSystemClassLoader());
         System.out.println(classLoader);

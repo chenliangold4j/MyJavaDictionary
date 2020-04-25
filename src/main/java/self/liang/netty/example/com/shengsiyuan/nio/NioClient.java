@@ -37,28 +37,32 @@ public class NioClient {
 
                             ByteBuffer writeBuffer = ByteBuffer.allocate(1024);
 
-                            writeBuffer.put((LocalDateTime.now() + " 连接成功").getBytes());
+                            String msg = "连接成功";
+                            int length = msg.getBytes().length;
+                            String head=String.format("%010d", length);
+                            String pack=head+msg;
+
+                            writeBuffer.put(pack.getBytes());
                             writeBuffer.flip();
                             client.write(writeBuffer);
-
-                            ExecutorService executorService = Executors.newSingleThreadExecutor(Executors.defaultThreadFactory());
-                            executorService.submit(() -> {
-                                while (true) {
-                                    try {
-                                        writeBuffer.clear();
-                                        InputStreamReader input = new InputStreamReader(System.in);
-                                        BufferedReader br = new BufferedReader(input);
-
-                                        String sendMessage = br.readLine();
-
-                                        writeBuffer.put(sendMessage.getBytes());
-                                        writeBuffer.flip();
-                                        client.write(writeBuffer);
-                                    } catch (Exception ex) {
-                                        ex.printStackTrace();
-                                    }
-                                }
-                            });
+//                            ExecutorService executorService = Executors.newSingleThreadExecutor(Executors.defaultThreadFactory());
+//                            executorService.submit(() -> {
+//                                while (true) {
+//                                    try {
+//                                        writeBuffer.clear();
+//                                        InputStreamReader input = new InputStreamReader(System.in);
+//                                        BufferedReader br = new BufferedReader(input);
+//
+//                                        String sendMessage = br.readLine();
+//
+//                                        writeBuffer.put(sendMessage.getBytes());
+//                                        writeBuffer.flip();
+//                                        client.write(writeBuffer);
+//                                    } catch (Exception ex) {
+//                                        ex.printStackTrace();
+//                                    }
+//                                }
+//                            });
                         }
 
                         client.register(selector, SelectionKey.OP_READ);
@@ -75,7 +79,6 @@ public class NioClient {
                         }
                     }
                 }
-
                 keySet.clear();
             }
         } catch (Exception ex) {

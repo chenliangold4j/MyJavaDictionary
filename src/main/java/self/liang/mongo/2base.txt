@@ -1,0 +1,165 @@
+1.三个概念
+    数据库  database   数据库是一个仓库，在仓库中可以存放集合
+    集合  collection   类似数组 集合中可以存放文档
+    文档  document     文档数据库中的最小单位，我们存储和操作的内容是文档。
+1.命令
+    1） db.auth('admin', '123456') 登录
+
+    2） > show dbs   查看数据库show databases;
+     admin   0.000GB
+     config  0.000GB
+     local   0.000GB
+
+    3）> use admin   切换数据库和mysql一样
+    switched to db admin
+
+    mongodb 使用文档的时候会自动创建数据库和集合。。所以use 可以使用不存在的db
+
+    4）curd
+       1） 概览
+        插入：db.<collection>.insert(doc);
+        >  db.stus.insert({name:"张三",age:18,gender:"男"})
+        WriteResult({ "nInserted" : 1 })
+        > show collections
+        stus
+
+        插入多个用 数组：[{},{}]
+
+       2） 查询
+        > db.stus.find()
+        { "_id" : ObjectId("5ea442afe61d6f7b19b09f19"), "name" : "张三", "age" : 18, "gender" : "男" }
+        mongo自动添加_id 为唯一标识符。可以自己指定
+        > db.stus.find({age:18})
+        { "_id" : ObjectId("5ea442afe61d6f7b19b09f19"), "name" : "张三", "age" : 18, "gender" : "男" }
+
+        语法
+        MongoDB 查询数据的语法格式如下：
+        db.collection.find(query, projection)
+        query ：可选，使用查询操作符指定查询条件
+        projection ：可选，使用投影操作符指定返回的键。查询时返回文档中所有键值， 只需省略该参数即可（默认省略）。
+        如果你需要以易读的方式来读取数据，可以使用 pretty() 方法，语法格式如下：
+
+        >db.col.find().pretty()
+        pretty() 方法以格式化的方式来显示所有文档。
+        db.col.find().count() 返回数量
+
+        MongoDB AND 条件
+        MongoDB 的 find() 方法可以传入多个键(key)，每个键(key)以逗号隔开，即常规 SQL 的 AND 条件。
+
+        语法格式如下：
+        >db.col.find({key1:value1, key2:value2}).pretty()
+        实例
+        以下实例通过 by 和 title 键来查询 菜鸟教程 中 MongoDB 教程 的数据
+        > db.col.find({"by":"菜鸟教程", "title":"MongoDB 教程"}).pretty()
+        {
+                "_id" : ObjectId("56063f17ade2f21f36b03133"),
+                "title" : "MongoDB 教程",
+                "description" : "MongoDB 是一个 Nosql 数据库",
+                "by" : "菜鸟教程",
+                "url" : "http://www.runoob.com",
+                "tags" : [
+                        "mongodb",
+                        "database",
+                        "NoSQL"
+                ],
+                "likes" : 100
+        }
+        以上实例中类似于 WHERE 语句：WHERE by='菜鸟教程' AND title='MongoDB 教程'
+
+        MongoDB OR 条件
+        MongoDB OR 条件语句使用了关键字 $or,语法格式如下：
+        >db.col.find(
+           {
+              $or: [
+                 {key1: value1}, {key2:value2}
+              ]
+           }
+        ).pretty()
+        实例
+        以下实例中，我们演示了查询键 by 值为 菜鸟教程 或键 title 值为 MongoDB 教程 的文档。
+
+        >db.col.find({$or:[{"by":"菜鸟教程"},{"title": "MongoDB 教程"}]}).pretty()
+        {
+                "_id" : ObjectId("56063f17ade2f21f36b03133"),
+                "title" : "MongoDB 教程",
+                "description" : "MongoDB 是一个 Nosql 数据库",
+                "by" : "菜鸟教程",
+                "url" : "http://www.runoob.com",
+                "tags" : [
+                        "mongodb",
+                        "database",
+                        "NoSQL"
+                ],
+                "likes" : 100
+        }
+        >
+        AND 和 OR 联合使用
+        以下实例演示了 AND 和 OR 联合使用，类似常规 SQL 语句为： 'where likes>50 AND (by = '菜鸟教程' OR title = 'MongoDB 教程')'
+
+        >db.col.find({"likes": {$gt:50}, $or: [{"by": "菜鸟教程"},{"title": "MongoDB 教程"}]}).pretty()
+        {
+                "_id" : ObjectId("56063f17ade2f21f36b03133"),
+                "title" : "MongoDB 教程",
+                "description" : "MongoDB 是一个 Nosql 数据库",
+                "by" : "菜鸟教程",
+                "url" : "http://www.runoob.com",
+                "tags" : [
+                        "mongodb",
+                        "database",
+                        "NoSQL"
+                ],
+                "likes" : 100
+        }
+
+
+        3）修改
+        update() 方法
+        update() 方法用于更新已存在的文档。语法格式如下：
+        db.collection.update(
+           <query>,
+           <update>,
+           {
+             upsert: <boolean>,
+             multi: <boolean>,
+             writeConcern: <document>
+           }
+        )
+        参数说明：
+        query : update的查询条件，类似sql update查询内where后面的。
+        update : update的对象和一些更新的操作符（如$,$inc...）等，也可以理解为sql update查询内set后面的
+        upsert : 可选，这个参数的意思是，如果不存在update的记录，是否插入objNew,true为插入，默认是false，不插入。
+        multi : 可选，mongodb 默认是false,只更新找到的第一条记录，如果这个参数为true,就把按条件查出来多条记录全部更新。
+        writeConcern :可选，抛出异常的级别。
+
+        只更新第一条记录： set换位 unset 则删除这个属性。
+        db.col.update( { "count" : { $gt : 1 } } , { $set : { "test2" : "OK"} } );
+        全部更新：
+        db.col.update( { "count" : { $gt : 3 } } , { $set : { "test2" : "OK"} },false,true );
+        只添加第一条：
+        db.col.update( { "count" : { $gt : 4 } } , { $set : { "test5" : "OK"} },true,false );
+        全部添加进去:
+        db.col.update( { "count" : { $gt : 5 } } , { $set : { "test5" : "OK"} },true,true );
+        全部更新：
+        db.col.update( { "count" : { $gt : 15 } } , { $inc : { "count" : 1} },false,true );
+        只更新第一条记录：
+        db.col.update( { "count" : { $gt : 10 } } , { $inc : { "count" : 1} },false,false );
+
+        4）删除
+        如果你的 MongoDB 是 2.6 版本以后的，语法格式如下：
+
+        db.collection.remove(
+           <query>,
+           {
+             justOne: <boolean>,
+             writeConcern: <document>
+           }
+        )
+        参数说明：
+        query :（可选）删除的文档的条件。
+        justOne : （可选）如果设为 true 或 1，则只删除一个文档，如果不设置该参数，或使用默认值 false，则删除所有匹配条件的文档。
+        writeConcern :（可选）抛出异常的级别。
+
+        >db.col.remove({'title':'MongoDB 教程'})
+        WriteResult({ "nRemoved" : 2 })           # 删除了两条数据
+        >db.col.find()
+        ……                                        # 没有数据

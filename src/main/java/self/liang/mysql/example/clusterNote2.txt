@@ -132,7 +132,7 @@
 
     #设置master相关信息:
        CHANGE MASTER TO
-           master_host='192.168.3.27',
+           master_host='127',
            master_user='itcast',
            master_password='itcast',
            master_port=3306,

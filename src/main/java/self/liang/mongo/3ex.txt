@@ -1,0 +1,14 @@
+
+1. db.users.insert({ username:"swk" })
+2. db.users.find();
+3. db.users.find().count();
+4. db.users.find({username:"swk"})
+5. db.users.update({username:"swk"},{$set :{address:"huaguoshan"}})
+6. db.users.replaceOne({username:"zhubaijie"},{username:"tangseng"})
+7. db.users.update({username:"swk"},{$unset:{address:1}})
+8. db.users.update({username:"swk"},{$set:{hobby:{cities:["beijing","shanghai"],movies:["sanguo","honglou"]}}})
+9.  db.users.update({username:"tangseng"},{$set:{hobby:{cities:["beijing","shanghai"],movies:["hero","honglou"]}}})
+//这里是用内嵌文档。需要加‘ ’，然后是查询数组元素，可以直接写
+10. db.users.find({'hobby.movies':"hero"})
+11. db.users.update({username:"tangseng"},{$push:{"hobby.movies":"dahua"}}) 只添加
+12.  db.users.update({username:"tangseng"},{$addToSet:{"hobby.movies":"dahua"}})  有就不添加

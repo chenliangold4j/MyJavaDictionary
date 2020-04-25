@@ -1,3 +1,12 @@
 Bradman     99.94   52  80  10  6996    334 29
 Pollock     60.97   23  41  4   2256    274 7
 Headley     60.83   22  40  4   2256    270*    10
+
+CREATE TABLE `log_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `detail` varchar(255) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `operator_type` int(11) DEFAULT NULL,
+  `time` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=UTF8;

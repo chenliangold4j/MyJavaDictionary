@@ -125,7 +125,6 @@ public class TheoryMybatis {
         sqlSession.close();
 //   PageInfo更详细
 
-
         //批量操作的sqlSession
         sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
         employeeMapper =  sqlSession.getMapper(EmployeeMapper.class);

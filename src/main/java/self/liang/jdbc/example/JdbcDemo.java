@@ -32,37 +32,21 @@ public class JdbcDemo {
             //这种方式的万条插入在0.3秒
             stmt = conn.createStatement();
             StringBuilder sql;
-            Random rand = new Random(25);
-            int i;
-            i = rand.nextInt(10000);
-//            for(int j=0;j<9000;j++) {
-//                sql = new StringBuilder("INSERT INTO user(account,password,status) values");
-//                for (int k = 1; k <= 10000; k++) {
-//                    sql.append("(" + "'user" + i + k + "'," + "'pass" + i + k + "'," + "1),");
+//            Random rand = new Random(25);
+//            int i;
+//            i = rand.nextInt(10000);
+//            for(int j=10000;j<20000;j++) {
+//                sql = new StringBuilder("INSERT INTO sc(sid,cid,score) values");
+//                for (int k = 100; k <= 706; k++) {
+//                    sql.append("('"+j+k+"',"+"'"+j+"','"+k+"'),");
 //                }
+////                System.out.println(sql);
 //                sql.replace(sql.length() - 1, sql.length(), "");
 //                stmt.execute(sql.toString());
 //                conn.commit();
 //            }
+            sql = new StringBuilder("se INTO sc(sid,cid,score) values");
 
-
-//            //这种方式测试下来一万条数据插入需要20秒
-//            String sql = "INSERT INTO user(account,password,status) values(?,?,1)";
-//            stmt = conn.prepareStatement(sql);
-//
-//            Long time = System.currentTimeMillis();
-//            Random rand = new Random(25);
-//            int i;
-//            i = rand.nextInt(1000);
-//            stmt.clearParameters();
-//            for (int k = 1; k <= 1000; k++) {
-//                stmt.setString(1, "user" + i + k);
-//                stmt.setString(2, "pass" + i + k);
-//                stmt.addBatch();
-//            }
-//            stmt.executeBatch();
-//            conn.commit();
-//            System.out.println(System.currentTimeMillis() - time);
             System.out.println("准备close");
             stmt.close();
             conn.close();
