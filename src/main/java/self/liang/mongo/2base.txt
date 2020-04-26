@@ -2,7 +2,7 @@
     数据库  database   数据库是一个仓库，在仓库中可以存放集合
     集合  collection   类似数组 集合中可以存放文档
     文档  document     文档数据库中的最小单位，我们存储和操作的内容是文档。
-1.命令
+2.命令
     1） db.auth('admin', '123456') 登录
 
     2） > show dbs   查看数据库show databases;
@@ -163,3 +163,27 @@
         WriteResult({ "nRemoved" : 2 })           # 删除了两条数据
         >db.col.find()
         ……                                        # 没有数据
+
+3.文档关系：
+    1. 一对一 db.wifeAndHusband.insert({ name:"黄蓉",husband:{ name:"郭靖"}})
+    2. 一对多
+    db.users.insert({ name:"孙的"},{name:"郭靖"})
+    db.order.insert({
+        list:["苹果","香蕉”，“鸭梨”]，
+        user_id:objectId("5ea472263800663e90a256a0") //与用户关联。
+    })
+
+    查找：
+        var user_id = db.users.find({name:"孙的"})._id;
+        db.order.find({user_id:user_id})
+    3. 多对多
+
+        db.teachers.insert([
+         { name:"洪七公"},{name:"黄药师"}，{name:"欧阳锋"}
+        ])
+
+        db.stus.insert([
+             { name:"郭靖",tech_ids:[objectId("5ea472263800663e90a256a0"),objectId("5ea472263800663e90a256a0")]},
+             { name:"黄蓉",tech_ids:[objectId("5ea472263800663e90a256a0"),objectId("5ea472263800663e90a256a0")]},
+        ])
+

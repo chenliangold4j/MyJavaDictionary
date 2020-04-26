@@ -1,4 +1,4 @@
-1. docker run -itd --name mongo -p 27017:27017 mongo --auth
+1. docker run -d --name mongo -p 27017:27017 mongo --auth
 
 -p 27017:27017 ：映射容器服务的 27017 端口到宿主机的 27017 端口。外部可以直接通过 宿主机 ip:27017 访问到 mongo 的服务。
 --auth：需要密码才能访问容器服务。
@@ -14,12 +14,12 @@ $ docker exec -it mongo mongo admin
 #创建读写账号
 db.createUser(
      {
-       user: "zjy",
-       pwd: "zjy",
+       user: "root",
+       pwd: "123456",
        roles: [
           { role: "readWrite", db: "test" }
        ]
      }
  )
 
- db.auth('zjy','zjy') 使用这个账号
+ db.auth('root','123456') 使用这个账号

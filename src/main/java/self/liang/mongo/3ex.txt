@@ -11,4 +11,42 @@
 //这里是用内嵌文档。需要加‘ ’，然后是查询数组元素，可以直接写
 10. db.users.find({'hobby.movies':"hero"})
 11. db.users.update({username:"tangseng"},{$push:{"hobby.movies":"dahua"}}) 只添加
-12.  db.users.update({username:"tangseng"},{$addToSet:{"hobby.movies":"dahua"}})  有就不添加
+12. db.users.update({username:"tangseng"},{$addToSet:{"hobby.movies":"dahua"}})  有就不添加
+13. db.users.remove({"hobby.cities":"beijing"})
+14. db.users.remove({})
+15. db.numbers.insert({num:1})
+16. > for(var i=1;i<=20000;i++){
+    ... db.numbers.insert({num:i})}
+    ;
+    WriteResult({ "nInserted" : 1 }) 一次插入两万条
+
+17.> var arr=[];
+   > for(var i=1;i<=20000;i++){arr.push({num:i})}
+   20000
+   > db.numbers.insert(arr);
+   BulkWriteResult({
+           "writeErrors" : [ ],
+           "writeConcernErrors" : [ ],
+           "nInserted" : 20000,
+           "nUpserted" : 0,
+           "nMatched" : 0,
+           "nModified" : 0,
+           "nRemoved" : 0,
+           "upserted" : [ ]
+   })
+
+18. db.numbers.find({num:500})
+19. db.numbers.find({num:{$gt:9800}})
+20. db.numbers.find({num:{$gt:9800,$lt:9805}})
+21. db.numbers.find({num:{$gt:9800}}).skip(10).limit(10);  //显示第11到20
+
+22. db.numbers.find({$or:[{num:{$lt:5}},{num:{$gt:9998}}]});
+
+23. db.emp.updateMany({sal:{$lte:1000}},{$inc:{sal:400}}) 给所有sal 1000一下的加400
+
+24. 默认按照_id排序
+     db.emp.find({}).sort({sal:1}); 按照sal排序  1   -1  修改升降。
+     db.emp.find({}).sort({sal:1，empno:-1});\
+     limit  skip   sort  顺序任意
+25. find 的第二个参数，指定投影。。 不指定就查所有，指定就查指定列
+      db.emp.find({}，{ename:1,_id:0});查ename 不看id
