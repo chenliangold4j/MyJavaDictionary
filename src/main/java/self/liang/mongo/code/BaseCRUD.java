@@ -14,8 +14,6 @@ public class BaseCRUD {
 
     public static void main(String[] args) {
         MongoCollection<Document> collection = MongoDBUtil.getConnect().getCollection("user");
-
-
         //1创建文档对象。
         Document document = new Document("name","张三")
                 .append("sex", "男")
@@ -40,7 +38,6 @@ public class BaseCRUD {
 //        collection.deleteOne(filter);
 //        //删除与筛选器匹配的所有文档
 //        collection.deleteMany(filter);
-
 
         filter = Filters.eq("name", "张三");
         //指定修改的更新文档

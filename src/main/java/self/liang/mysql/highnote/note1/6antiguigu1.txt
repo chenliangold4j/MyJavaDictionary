@@ -1,0 +1,216 @@
+视频教程里面的查询优化
+
+1.常用顺序 ：
+select distinct
+   <select list>
+from
+ <left_table><join_type> join <right_table> on <join_condition>
+
+where
+    <where condition>
+group by
+    <group by list>
+having
+    <having condition>
+order by
+    <order by condition>
+limit
+    number
+
+2.join
+    left join  左表为主连接右表  把右表项目排除用  where 右表.key is null
+    right join 右表为主连接左表 把左表项目排除用  where 坐表.key is null
+    inner join 内连接, select <list> from tableA A inner join tableB B on A.key = B.key 取相交
+    outer join 全连接
+
+3,索引建议:
+    实际情况:
+        1.多值索引居多
+        2.一张表索引一般不超过5个,  查询使用的索引只会只有一个.
+
+    1.索引结构:
+        Btree  主要是这种,实际是B+Tree
+        hash
+        full-text 全文索引
+        R-Tree
+
+    2.索引的创建情况:
+        1.频繁查询
+        2.查询中与其他表关联的字段,外键关系建立索引
+        3.频繁更新的字段不适合索引
+        4.where条件用不到的字段不建索引
+        5.尽量用符合索引
+        6.查询中排序的字段,排序字段若通过索引去访问将大大提高排序速度.  order by 也要符合最左
+        7.查询中统计或者分组字段   group by 也和索引息息相关
+
+        以下情况不建立:
+          1.经常增删改的表
+          2.数据重复切分布平均的表字段.
+          3.
+
+    3.explain:
+        字段:
+        1.  id : 表示查询中执行select子句或者操作表的顺序.
+                三种情况:
+                1.id 相同.执行顺序自上而下.
+                mysql> EXPLAIN select mmall_order.* from mmall_order,mmall_order_item,mmall_pay_info where  mmall_order.order_no = mmall_order_item.order_no and mmall_order.order_no = mmall_pay_info.order_no and mmall_order.order_no = 10000030
+                +----+-------------+------------------+------------+-------+----------------+----------------+---------+-------+---------+----------+----------------------------------------------------+
+                | id | select_type | table            | partitions | type  | possible_keys  | key            | key_len | ref   | rows    | filtered | Extra                                              |
+                +----+-------------+------------------+------------+-------+----------------+----------------+---------+-------+---------+----------+----------------------------------------------------+
+                |  1 | SIMPLE      | mmall_order      | NULL       | const | order_no_index | order_no_index | 9       | const |       1 |   100.00 | NULL                                               |
+                |  1 | SIMPLE      | mmall_order_item | NULL       | ref   | order_no_index | order_no_index | 9       | const |       1 |   100.00 | Using index                                        |
+                |  1 | SIMPLE      | mmall_pay_info   | NULL       | ALL   | NULL           | NULL           | NULL    | NULL  | 2984132 |    10.00 | Using where; Using join buffer (Block Nested Loop) |
+                +----+-------------+------------------+------------+-------+----------------+----------------+---------+-------+---------+----------+----------------------------------------------------+
+
+                2.id 不同,如果是子查询 id的序号会递增,id值越大,越优先执行,以下这个示例 最里面的mmall_pay_info开始
+                mysql>    EXPLAIN select * from mmall_order where order_no = (
+                    ->                                     select order_no from mmall_order_item where order_no = (
+                    ->                                         select order_no from mmall_pay_info where order_no=10000030
+                    ->                                     )
+                    ->                                 )
+                    -> ;
+                +----+-------------+------------------+------------+-------+----------------+----------------+---------+-------+---------+----------+--------------------------+
+                | id | select_type | table            | partitions | type  | possible_keys  | key            | key_len | ref   | rows    | filtered | Extra                    |
+                +----+-------------+------------------+------------+-------+----------------+----------------+---------+-------+---------+----------+--------------------------+
+                |  1 | PRIMARY     | mmall_order      | NULL       | const | order_no_index | order_no_index | 9       | const |       1 |   100.00 | NULL                     |
+                |  2 | SUBQUERY    | mmall_order_item | NULL       | ref   | order_no_index | order_no_index | 9       | const |       1 |   100.00 | Using where; Using index |
+                |  3 | SUBQUERY    | mmall_pay_info   | NULL       | ALL   | NULL           | NULL           | NULL    | NULL  | 2984132 |    10.00 | Using where              |
+                +----+-------------+------------------+------------+-------+----------------+----------------+---------+-------+---------+----------+--------------------------+
+                3 rows in set, 1 warning (0.55 sec)
+
+
+                3.有相同有不同,结合以上两个, 相同id 从上到下, 越大的id越先
+
+        2. select_type :
+                常见值:
+                    SIMPLE  简单查询  不包含子查询和UNION
+                    PRIMARY  主查询
+                    SUBQUERY  子查询
+                    DERIVER  衍生  from列表中包含的子查询.mysql会及那个这些子查询的结果放在临时表里
+                    UNION   若第二个select 出现在union之后,则会标记为union.
+                    UNION RESULT  union表中的结果.
+
+        3.type:  system>const>eq_ref>ref>range>index>all   从最好到最后.   一般来说,得保证查询至少达到range级别.最好能到ref
+               all: all  全表扫描 (row百万以上,all一定要优化. )
+               index:从索引中读全表,比all还是要块
+               range:只检索给定的范围的行,使用一个索引来选择行. 一般就是你的where 语句中出现了between,<,>,in等操作.  范围扫描比全表好,因为它只需要开始于索引的某一点,而结束在另一点.
+               ref:非唯一性索引扫描,返回匹配某个单独值得所有行.本质上也是一种索引访问,它返回所有匹配某个单独值的行.它可能会找到多个符合条件的行,所以他应该属于查找和扫描的集合体.
+               eq_ref:唯一性索引扫描,对于每个索引键,表中只有一条记录与之匹配.常见于主键或唯一索引扫描.
+               const:表示通过索引一次就找到了,const用于比较primary key 或者unique索引,因为只匹配一行数据,所以很快.如果将主键置于where 列表中,mysql就能将该查询转换为一个常量.
+               system:只要一行记录:是const类型的特例
+               null
+
+         例子:
+         1.EXPLAIN select * from mmall_category,mmall_product where mmall_category.id = mmall_product.category_id
+              -> ;
+          +----+-------------+----------------+------------+--------+---------------+---------+---------+------------------------------------+--------+----------+-------+
+          | id | select_type | table          | partitions | type   | possible_keys | key     | key_len | ref                                | rows   | filtered | Extra |
+          +----+-------------+----------------+------------+--------+---------------+---------+---------+------------------------------------+--------+----------+-------+
+          |  1 | SIMPLE      | mmall_product  | NULL       | ALL    | NULL          | NULL    | NULL    | NULL                               | 650846 |   100.00 | NULL  |
+          |  1 | SIMPLE      | mmall_category | NULL       | eq_ref | PRIMARY       | PRIMARY | 4       | testdata.mmall_product.category_id |      1 |   100.00 | NULL  |
+          +----+-------------+----------------+------------+--------+---------------+---------+---------+------------------------------------+--------+----------+-------+
+
+          这里category_id 用了全表扫描,mmall_category.id 用了主键eq_ref;
+
+         2. select * from mmall_category,mmall_product where mmall_category.id = mmall_product.category_id and mmall_product.price > 2000 用了15秒,找到数据70万
+          //典型返回数据过多,在数据量10000以内 时间会在0.5s 以内.
+
+
+         3. EXPLAIN select * from mmall_product where id BETWEEN 50 and 80
+             -> ;
+         +----+-------------+---------------+------------+-------+---------------+---------+---------+------+------+----------+-------------+
+         | id | select_type | table         | partitions | type  | possible_keys | key     | key_len | ref  | rows | filtered | Extra       |
+         +----+-------------+---------------+------------+-------+---------------+---------+---------+------+------+----------+-------------+
+         |  1 | SIMPLE      | mmall_product | NULL       | range | PRIMARY       | PRIMARY | 4       | NULL |   31 |   100.00 | Using where |
+         +----+-------------+---------------+------------+-------+---------------+---------+---------+------+------+----------+-------------+
+         1 row in set, 1 warning (0.00 sec)
+
+        4.possible_keys  可能应用的索引,一个或多个,不一定查询实际使用.
+          key   用到的索引,查询中若使用了覆盖索引,则该索引仅出现在key列表中.
+
+        5.key_len 索引使用的字节数,可通过该列计算查询中使用的索引的长度.在不损失精确性的情况下,长度越短越好.
+            是最大可能长度,非实际长度.根据表计算而来.
+
+        6.ref:索引的哪一列被使用了.有可能是常量(const).
+        7.rows 大致需要扫描的行数
+        8.Extra:
+            using where,
+            using index; 使用了覆盖索引,如果同时出现using where 表明索引被用来执行索引键值得查找;没有,则表明索引用来读取数据.
+            using filesort  使用文件排序(非索引排序,性能差距文件排序和索引排序差距大)  //出现这个一般都需要优化
+            using temporary 使用临时表,排序时使用了临时表. 常见于order by 和group by //很伤系统性能.
+            using index for group-by:
+            using join buffer 使用了连接缓存
+            impossible where: 出现where总是false
+            distinct : 优化distinct
+            select tables optimized away :
+
+            优化示例:
+               1.用col1 col2 col3 做索引:
+                select col1 from t1 where col1='ac' order by col3  //这个用文件排序,,慢
+                select col1 from t1 where col1='ac' order by col2,col3 //这个用索引排序,快
+
+               2.用col1 col2 col3 做索引:
+                select col1 from t1 where col1 in('ac','ab','aa') group by col2  //用了临时表,文件排序
+                select col1 form t1 where col1 in('ac','ab','aa') group by col1,col2 //直接使用索引.
+
+4.优化示例:
+    1. 单表优化:
+        1.
+        select id,author_id from article where category_id = 1 and comments > 1 order by views desc 1;
+        在一个只有id为主键得表中,,这样肯定是全表扫描
+
+        第一步.在where后面得字段建立索引:
+            create index idx_article_ccv on article(category_id,comments,views);
+
+        第二步:创建索引之后,但是发现使用了 using filesort;
+            因为 comments > 1  范围之后得索引,会导致失效; 如果是 comments = 1 那么 索引直接完美,但是因为是范围,所以views 不会起作用.
+            根据btree 索引得工作原理.先排序category_id 遇到相同,再排序comments 再遇到相同,再排序views
+            这里comments 现在为范围值,不能再用view索引.
+
+            发现这个索引做得不合适,删除.
+            重新创建; create index idx_article_cv on article(category_id,views);
+
+            type 变为ref ,ref 为const. 这时候性能更好些
+
+        2.自己实验:
+        select * from mmall_product where category_id = 100006 and stock>2000 ORDER BY  price desc limit 10
+
+        EXPLAIN select * from mmall_product where category_id = 100006 and stock>2000 ORDER BY  price desc limit 10;
+        +----+-------------+---------------+------------+------+---------------+------+---------+------+--------+----------+-----------------------------+
+        | id | select_type | table         | partitions | type | possible_keys | key  | key_len | ref  | rows   | filtered | Extra                       |
+        +----+-------------+---------------+------------+------+---------------+------+---------+------+--------+----------+-----------------------------+
+        |  1 | SIMPLE      | mmall_product | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 650846 |     3.33 | Using where; Using filesort |
+        +----+-------------+---------------+------------+------+---------------+------+---------+------+--------+----------+-----------------------------+
+        1 row in set, 1 warning (0.00 sec)
+
+        create index idx_mmall_product_csp on  mmall_product(category_id,stock,price);
+        mysql> EXPLAIN select * from mmall_product where category_id = 100006 and stock>2000 ORDER BY  price desc limit 10;
+        +----+-------------+---------------+------------+-------+-----------------------+-----------------------+---------+------+-------+----------+--------------------------------------------------+
+        | id | select_type | table         | partitions | type  | possible_keys         | key                   | key_len | ref  | rows  | filtered | Extra                                            |
+        +----+-------------+---------------+------------+-------+-----------------------+-----------------------+---------+------+-------+----------+--------------------------------------------------+
+        |  1 | SIMPLE      | mmall_product | NULL       | range | idx_mmall_product_csp | idx_mmall_product_csp | 8       | NULL | 63044 |   100.00 | Using index condition; Using MRR; Using filesort |
+        +----+-------------+---------------+------------+-------+-----------------------+-----------------------+---------+------+-------+----------+--------------------------------------------------+
+        1 row in set, 1 warning (0.00 sec)
+
+        虽然有文件排序,但是这里也从0.65秒优化到了0.084秒
+
+        drop index idx_mmall_product_csp on  mmall_product
+
+
+        create index idx_mmall_product_csp on  mmall_product(category_id,price);
+
+         EXPLAIN select * from mmall_product where category_id = 100006 and stock>2000 ORDER BY  price desc limit 10;
+        +----+-------------+---------------+------------+------+-----------------------+-----------------------+---------+-------+-------+----------+-------------+
+        | id | select_type | table         | partitions | type | possible_keys         | key                   | key_len | ref   | rows  | filtered | Extra       |
+        +----+-------------+---------------+------------+------+-----------------------+-----------------------+---------+-------+-------+----------+-------------+
+        |  1 | SIMPLE      | mmall_product | NULL       | ref  | idx_mmall_product_csp | idx_mmall_product_csp | 4       | const | 60952 |    33.33 | Using where |
+        +----+-------------+---------------+------------+------+-----------------------+-----------------------+---------+-------+-------+----------+-------------+
+        1 row in set, 1 warning (0.00 sec)
+
+        创建对了索引之后..查询时间到了0.002
+
+
+    2.两表优化:
+
+
+

@@ -1,0 +1,80 @@
+对全表三百万数据的优化记录：
+    总大小约3GB的数据，其实不大
+
+1.查看表的索引：
+    show index from table_name（表名）
+
+      mysql> show index from mmall_user
+        +------------+------------+------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+        | Table      | Non_unique | Key_name         | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
+        +------------+------------+------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+        | mmall_user |          0 | PRIMARY          |            1 | id          | A         |     2719760 |     NULL | NULL   |      | BTREE      |         |               |
+        | mmall_user |          0 | user_name_unique |            1 | username    | A         |     2355117 |     NULL | NULL   |      | BTREE      |         |               |
+        +------------+------------+------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+        2 rows in set (0.00 sec)
+
+        代表有两个索引：一个主键，一个username唯一索引
+
+    添加索引 ALTER TABLE `table_name` ADD INDEX index_name ( `column1`, `column2`, `column3` )
+            ALTER TABLE `table_name` ADD UNIQUE (`column`)
+            等
+
+        ALTER TABLE mmall_user ADD INDEX index_name ( question, answer) 对三百万数据的表添加一个索引 用时38s
+
+    删除索引 drop index [index name] on table_name;
+
+2. 简单语句的查询
+
+    1.简单对比：
+
+        select * from mmall_user where email = 'email2500000'; 用时1.202 s
+
+        EXPLAIN select * from mmall_user where email = 'email25000000';
+        +----+-------------+------------+------------+------+---------------+------+---------+------+---------+----------+-------------+
+        | id | select_type | table      | partitions | type | possible_keys | key  | key_len | ref  | rows    | filtered | Extra       |
+        +----+-------------+------------+------------+------+---------------+------+---------+------+---------+----------+-------------+
+        |  1 | SIMPLE      | mmall_user | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 2932310 |    10.00 | Using where |
+        +----+-------------+------------+------------+------+---------------+------+---------+------+---------+----------+-------------+
+        1 row in set, 1 warning (0.00 sec)
+
+        没有用到索引，扫描的行数超过 两百万条。
+
+         select * from mmall_user where username='用户2500000'; 用了索引，几乎秒回
+
+        EXPLAIN  select * from mmall_user where username='用户2500000'; rows 只有1 ，用了唯一索引非常块。
+
+    2.索引失效的情况i
+        1.like 前面不加%，可以使用索引
+            select * from mmall_user where username like "%用户250%"  1.325s
+            select * from mmall_user where username like "用户250%"   0.0321s
+
+        2.or语句前后没有同时使用索引。当or左右查询字段只有一个是索引，该索引失效，只有当or左右查询字段均为索引时，才会生效
+            select * from mmall_user where username = '用户250' or email='2500' 1.261 s
+            select * from mmall_user where username = '用户250' or id = 1000000  0.002s
+
+        3.组合索引，不是使用第一列索引，索引失效。  这里有 quetion和 answer的联合索引
+            EXPLAIN select * from mmall_user where question = "问题123"  扫描一行
+            EXPLAIN select * from mmall_user where answer = "问题123" 扫描三百万
+            EXPLAIN select * from mmall_user where question="问题213" and answer = "问题123"  扫描一行
+            EXPLAIN select * from mmall_user where answer = "问题123" and  question="问题213" 扫描一行
+            EXPLAIN select * from mmall_user where phone="123456" and question = "问题65564" 扫描一行
+            EXPLAIN select * from mmall_user where phone="123456" and answer = "问题65564"   扫描三百万
+
+        4.在索引列上使用 IS NULL 或 IS NOT NULL操作。索引是不索引空值的，所以这样的操作不能使用索引，可以用其他的办法处理，
+          例如：数字类型，判断大于0，字符串类型设置一个默认值，判断是否等于默认值即可。
+            EXPLAIN select * from mmall_user where  username is not null  扫描三百万，索引失效。
+
+        5.在索引字段上使用not，<>，!=。不等于操作符是永远不会用到索引的，因此对它的处理只会产生全表扫描。
+          优化方法： key<>0 改为 key>0 or key<0
+            EXPLAIN select * from mmall_user where  username != "用户3213" 扫描三百万
+
+        6.对索引字段进行计算操作、字段上使用函数。
+            也就是说  对传入的值用函数，而不是对索引。
+        7.当全表扫描速度比索引速度快时，mysql会使用全表扫描，此时索引失效。
+
+
+    3.重构查询：
+
+
+
+
