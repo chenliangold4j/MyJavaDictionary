@@ -13,9 +13,17 @@
 
     order by 和 group by  使用的 临时表和filesort 要注意.
 
+    查找了网上一些博客分析GROUP BY 与临时表的关系 :
+    　　1. 如果GROUP BY 的列没有索引,产生临时表.
+    　　2. 如果GROUP BY时,SELECT的列不止GROUP BY列一个,并且GROUP BY的列不是主键 ,产生临时表.
+    　　3. 如果GROUP BY的列有索引,ORDER BY的列没索引.产生临时表.
+    　　4. 如果GROUP BY的列和ORDER BY的列不一样,即使都有索引也会产生临时表.
+    　　5. 如果GROUP BY或ORDER BY的列不是来自JOIN语句第一个表.会产生临时表.
+    　　6. 如果DISTINCT 和 ORDER BY的列没有索引,产生临时表.
+
+
 2.sql 优化步骤
     1. explain
-
     分析----
     1.观察,跑1天,查看慢sql情况
     2.开启慢查询日志,设置阙值,比如超过5秒钟就是慢sql,并将它抓取出来.
@@ -70,6 +78,22 @@
 
             优化策略：增大sort_buffer_size参数的设置。
                     增大max_lenth_for_sort_data参数的设置。
+
+                    mysql> show variables like '%sort_buffer_size%'
+                        -> ;
+                    +-------------------------+---------+
+                    | Variable_name           | Value   |
+                    +-------------------------+---------+
+                    | innodb_sort_buffer_size | 1048576 |  //在创建InnoDB索引时用于指定对数据排序的排序缓冲区的大小。利用这块内存把数据读进来进行内部排序然后写入磁盘。这个参数只会在创建索引的过程中被使用，不会用在后面的维护操作；在索引创建完毕后innodb_sort_buffer会被释放。
+                    | myisam_sort_buffer_size | 8388608 |
+                    | sort_buffer_size        | 262144  |
+
+                     SET GLOBAL sort_buffer_size = 1024*1024;
+
+                    文档说“On Linux, there are thresholds of 256KB and 2MB where larger values may significantly slow down memory allocation”
+                    据说Sort_Buffer_Size 超过2KB的时候，就会使用mmap() 而不是 malloc() 来进行内存分配，导致效率降低。
+
+
 
 
             提供order by 的速度：

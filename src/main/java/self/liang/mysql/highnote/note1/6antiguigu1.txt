@@ -254,6 +254,53 @@ limit
             +----+-------------+------------------+------------+------+---------------+------+---------+------+---------+----------+----------------------------------------------------+
             2 rows in set, 1 warning (0.00 sec)
 
+            /*
+            EXPLAIN select * from mmall_pay_info left join  mmall_order_item on mmall_order_item.order_no = mmall_pay_info.order_no order by  mmall_order_item.total_price limit 10000 ;
+
+            mysql> EXPLAIN select * from mmall_pay_info left join  mmall_order_item on mmall_order_item.order_no = mmall_pay_info.order_no order by  mmall_order_item.total_price limit 10000 ;
+            +----+-------------+------------------+------------+------+----------------+----------------+---------+----------------------------------+---------+----------+---------------------------------+
+            | id | select_type | table            | partitions | type | possible_keys  | key            | key_len | ref                              | rows    | filtered | Extra                           |
+            +----+-------------+------------------+------------+------+----------------+----------------+---------+----------------------------------+---------+----------+---------------------------------+
+            |  1 | SIMPLE      | mmall_pay_info   | NULL       | ALL  | NULL           | NULL           | NULL    | NULL                             | 2693691 |   100.00 | Using temporary; Using filesort |
+            |  1 | SIMPLE      | mmall_order_item | NULL       | ref  | order_no_index | order_no_index | 9       | testdata.mmall_pay_info.order_no |       1 |   100.00 | NULL                            |
+            +----+-------------+------------------+------------+------+----------------+----------------+---------+----------------------------------+---------+----------+---------------------------------+
+            2 rows in set, 1 warning (0.00 sec)
+
+            连接之后如果在没有索引的列上  order by  mmall_order_item.total_price  用时耗时30s
+
+            EXPLAIN select * from mmall_pay_info left join  mmall_order_item on mmall_order_item.order_no = mmall_pay_info.order_no order by mmall_order_item.id limit 10;
+            +----+-------------+------------------+------------+------+----------------+----------------+---------+----------------------------------+---------+----------+---------------------------------+
+            | id | select_type | table            | partitions | type | possible_keys  | key            | key_len | ref                              | rows    | filtered | Extra                           |
+            +----+-------------+------------------+------------+------+----------------+----------------+---------+----------------------------------+---------+----------+---------------------------------+
+            |  1 | SIMPLE      | mmall_pay_info   | NULL       | ALL  | NULL           | NULL           | NULL    | NULL                             | 2693691 |   100.00 | Using temporary; Using filesort |
+            |  1 | SIMPLE      | mmall_order_item | NULL       | ref  | order_no_index | order_no_index | 9       | testdata.mmall_pay_info.order_no |       1 |   100.00 | NULL                            |
+            +----+-------------+------------------+------------+------+----------------+----------------+---------+----------------------------------+---------+----------+---------------------------------+
+            2 rows in set, 1 warning (0.00 sec)
+
+            即使在id上排序，也会有问题  耗时20s；
+
+
+            mysql> EXPLAIN select * from mmall_pay_info right join  mmall_order_item on mmall_order_item.order_no = mmall_pay_info.order_no order by mmall_order_item.id limit 10;
+            +----+-------------+------------------+------------+-------+----------------+----------------+---------+------------------------------------+------+----------+-------+
+            | id | select_type | table            | partitions | type  | possible_keys  | key            | key_len | ref                                | rows | filtered | Extra |
+            +----+-------------+------------------+------------+-------+----------------+----------------+---------+------------------------------------+------+----------+-------+
+            |  1 | SIMPLE      | mmall_order_item | NULL       | index | NULL           | PRIMARY        | 4       | NULL                               |   10 |   100.00 | NULL  |
+            |  1 | SIMPLE      | mmall_pay_info   | NULL       | ref   | order_no_index | order_no_index | 9       | testdata.mmall_order_item.order_no |    1 |   100.00 | NULL  |
+            +----+-------------+------------------+------------+-------+----------------+----------------+---------+------------------------------------+------+----------+-------+
+            2 rows in set, 1 warning (0.00 sec)
+
+            这样耗时不过0.037 s   ，特别注意 join的顺序，这里从left 改right ，优化到了
+
+            mysql> EXPLAIN select * from mmall_pay_info right  join  mmall_order_item on mmall_order_item.order_no = mmall_pay_info.order_no order by mmall_pay_info.id limit 10;
+            +----+-------------+------------------+------------+------+----------------+----------------+---------+------------------------------------+---------+----------+---------------------------------+
+            | id | select_type | table            | partitions | type | possible_keys  | key            | key_len | ref                                | rows    | filtered | Extra                           |
+            +----+-------------+------------------+------------+------+----------------+----------------+---------+------------------------------------+---------+----------+---------------------------------+
+            |  1 | SIMPLE      | mmall_order_item | NULL       | ALL  | NULL           | NULL           | NULL    | NULL                               | 2852569 |   100.00 | Using temporary; Using filesort |
+            |  1 | SIMPLE      | mmall_pay_info   | NULL       | ref  | order_no_index | order_no_index | 9       | testdata.mmall_order_item.order_no |       1 |   100.00 | NULL                            |
+            +----+-------------+------------------+------------+------+----------------+----------------+---------+------------------------------------+---------+----------+---------------------------------+
+
+            */
+
             mysql> show index from mmall_pay_info;
             +----------------+------------+----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
             | Table          | Non_unique | Key_name       | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |

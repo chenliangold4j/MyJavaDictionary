@@ -1,0 +1,154 @@
+1.mysql的语句练习：
+    建立表语句：
+    CREATE TABLE `student`(
+    `s_id` VARCHAR(20),
+    `s_name` VARCHAR(20) NOT NULL DEFAULT '',
+    `s_birth` VARCHAR(20) NOT NULL DEFAULT '',
+    `s_sex` VARCHAR(10) NOT NULL DEFAULT '',
+    PRIMARY KEY(`s_id`)
+    );
+
+    CREATE TABLE `course`(
+    `c_id` VARCHAR(20),
+    `c_name` VARCHAR(20) NOT NULL DEFAULT '',
+    `t_id` VARCHAR(20) NOT NULL,
+    PRIMARY KEY(`c_id`)
+    );
+
+    CREATE TABLE `teacher`(
+    `t_id` VARCHAR(20),
+    `t_name` VARCHAR(20) NOT NULL DEFAULT '',
+    PRIMARY KEY(`t_id`)
+    );
+
+    CREATE TABLE `score`(
+    `s_id` VARCHAR(20),
+    `c_id` VARCHAR(20),
+    `s_score` INT(3),
+    PRIMARY KEY(`s_id`,`c_id`)
+    );
+
+    insert into student values('01' , '赵雷' , '1990-01-01' , '男');
+    insert into student values('02' , '钱电' , '1990-12-21' , '男');
+    insert into student values('03' , '孙风' , '1990-05-20' , '男');
+    insert into student values('04' , '李云' , '1990-08-06' , '男');
+    insert into student values('05' , '周梅' , '1991-12-01' , '女');
+    insert into student values('06' , '吴兰' , '1992-03-01' , '女');
+    insert into student values('07' , '郑竹' , '1989-07-01' , '女');
+    insert into student values('08' , '王菊' , '1990-01-20' , '女');
+
+    insert into course values('01' , '语文' , '02');
+    insert into course values('02' , '数学' , '01');
+    insert into course values('03' , '英语' , '03');
+
+
+    insert into teacher values('01' , '张三');
+    insert into teacher values('02' , '李四');
+    insert into teacher values('03' , '王五');
+
+
+    insert into score values('01' , '01' , 80);
+    insert into score values('01' , '02' , 90);
+    insert into score values('01' , '03' , 99);
+    insert into score values('02' , '01' , 70);
+    insert into score values('02' , '02' , 60);
+    insert into score values('02' , '03' , 80);
+    insert into score values('03' , '01' , 80);
+    insert into score values('03' , '02' , 80);
+    insert into score values('03' , '03' , 80);
+    insert into score values('04' , '01' , 50);
+    insert into score values('04' , '02' , 30);
+    insert into score values('04' , '03' , 20);
+    insert into score values('05' , '01' , 76);
+    insert into score values('05' , '02' , 87);
+    insert into score values('06' , '01' , 31);
+    insert into score values('06' , '03' , 34);
+    insert into score values('07' , '02' , 89);
+    insert into score values('07' , '03' , 98);
+
+2.练习开始：
+   -- 1、查询"01"课程比"02"课程成绩高的学生的信息及课程分数
+   select st.*,sc.s_score as '语文' ,sc2.s_score '数学'
+   from student st
+   left join score sc on sc.s_id=st.s_id and sc.c_id='01'
+   left join score sc2 on sc2.s_id=st.s_id and sc2.c_id='02'
+   where sc.s_score>sc2.s_score
+
+    解析：student st left join score sc on sc.s_id=st.s_id and sc.c_id='01' 查询出了 学生的课程01 的成绩
+       之后再left join score sc2 on sc2.s_id=st.s_id and sc2.c_id='02' 再left join 只查01 的成绩，这样01和02 在同一行了。
+        where sc.s_score>sc2.s_score  找到01比02 高的几行。
+
+        优化解析。这里最后的where 没用到索引。可以在s_score建立索引加速。
+
+   -- 2、查询平均成绩大于等于60分的同学的学生编号和学生姓名和平均成绩
+   select st.s_id,st.s_name,ROUND(AVG(sc.s_score),2) "平均成绩" from student st
+   left join score sc on sc.s_id=st.s_id
+   group by st.s_id having AVG(sc.s_score)>=60
+
+   group by  的 SELECT子句中的列名必须为分组列或列函数。列函数对于GROUP BY子句定义的每个组各返回一个结果。
+   也就是说，在这个句子中 group by st.s_id 那么返回结果中，只能有st的字段 或对sc的函数结果。
+
+   其实可以这么理解：这个左连接之后，是st变多了。会有两个，所以group by 要st，
+   然后，里面sc表的字段值不一样，所以不能返回sc的字段，而是字段计算的结果。
+
+   解析：round(x,d)  ，x指要处理的数，d是指保留几位小数
+        student st left join score sc on sc.s_id=st.s_id 这里,学生和成绩连接。
+
+
+        优化：没有优化空间，要么用了主键，要么用了函数。
+
+    3、查询所有同学的学生编号、学生姓名、选课总数、所有课程的总成绩
+    select st.s_id,st.s_name,count(sc.c_id) "选课总数",sum(case when sc.s_score is null then 0 else sc.s_score end) "总成绩"
+    from student st
+    left join score sc on st.s_id = sc.s_id
+    group by st.s_id
+
+
+    4、查询"李"姓老师的数量
+    select t.t_name,count(t.t_id) from teacher t
+    group by t.t_id having t.t_name like "李%";
+
+    5.查询学过"张三"老师授课的同学的信息
+    select st.* from student st
+    left join score sc on sc.s_id=st.s_id
+    left join course c on c.c_id=sc.c_id
+    left join teacher t on t.t_id=c.t_id
+    where t.t_name="张三"
+
+        解析：一步一步连接过去，这样所有学生都有老师。
+
+   6、查询没学过"张三"老师授课的同学的信息
+     -- 张三老师教的课
+     select c.* from course c left join teacher t on t.t_id=c.t_id where  t.t_name="张三"
+     -- 有张三老师课成绩的st.s_id
+     select sc.s_id from score sc where sc.c_id in (select c.c_id from course c left join teacher t on t.t_id=c.t_id where  t.t_name="张三")
+     -- 不在上面查到的st.s_id的学生信息,即没学过张三老师授课的同学信息
+     select st.* from student st where st.s_id not in(
+      select sc.s_id from score sc where sc.c_id in (select c.c_id from course c left join teacher t on t.t_id=c.t_id where  t.t_name="张三")
+      )
+
+
+      解析：查不再，则先查在。
+
+   -- 7、查询学过编号为"01"并且也学过编号为"02"的课程的同学的信息
+   select st.* from student st
+   inner join score sc on sc.s_id = st.s_id
+   inner join course c on c.c_id=sc.c_id and c.c_id="01"
+   where st.s_id in (
+   select st2.s_id from student st2
+   inner join score sc2 on sc2.s_id = st2.s_id
+   inner join course c2 on c2.c_id=sc2.c_id and c2.c_id="02"
+   )
+
+
+
+    -- 8、查询学过编号为"01"但是没有学过编号为"02"的课程的同学的信息
+    select st.* from student st
+    inner join score sc on sc.s_id = st.s_id
+    inner join course c on c.c_id=sc.c_id and c.c_id="01"
+    where st.s_id not in (
+    select st2.s_id from student st2
+    inner join score sc2 on sc2.s_id = st2.s_id
+    inner join course c2 on c2.c_id=sc2.c_id and c2.c_id="02"
+    )
+
