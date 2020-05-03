@@ -211,6 +211,71 @@ limit
 
 
     2.两表优化:
+        1.自己实验:
+            explain select * from mmall_pay_info left join  mmall_order_item on mmall_order_item.order_no = mmall_pay_info.order_no  limit 10000
+
+            慢出天际:再两表没有索引得情况下.不可能使用这个语句.(切记,再没有索引得百万级的表上,做连接就是搞自己)
+            mysql>   explain select * from mmall_pay_info INNER JOIN  mmall_order_item on mmall_order_item.order_no = mmall_pay_info.order_no  limit 10000
+                -> ;
+            +----+-------------+------------------+------------+------+---------------+------+---------+------+---------+----------+----------------------------------------------------+
+            | id | select_type | table            | partitions | type | possible_keys | key  | key_len | ref  | rows    | filtered | Extra                                              |
+            +----+-------------+------------------+------------+------+---------------+------+---------+------+---------+----------+----------------------------------------------------+
+            |  1 | SIMPLE      | mmall_pay_info   | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 2984132 |   100.00 | NULL                                               |
+            |  1 | SIMPLE      | mmall_order_item | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 2852569 |    10.00 | Using where; Using join buffer (Block Nested Loop) |
+            +----+-------------+------------------+------------+------+---------------+------+---------+------+---------+----------+----------------------------------------------------+
+            2 rows in set, 1 warning (0.00 sec)
+
+
+            1.
+            做其中右表的order_no做索引:
+                create index order_no_index on mmall_order_item(order_no);
+
+            mysql> explain select * from mmall_pay_info left join  mmall_order_item on mmall_order_item.order_no = mmall_pay_info.order_no  limit 10000
+                -> ;
+            +----+-------------+------------------+------------+------+----------------+----------------+---------+----------------------------------+---------+----------+-------+
+            | id | select_type | table            | partitions | type | possible_keys  | key            | key_len | ref                              | rows    | filtered | Extra |
+            +----+-------------+------------------+------------+------+----------------+----------------+---------+----------------------------------+---------+----------+-------+
+            |  1 | SIMPLE      | mmall_pay_info   | NULL       | ALL  | NULL           | NULL           | NULL    | NULL                             | 2693691 |   100.00 | NULL  |
+            |  1 | SIMPLE      | mmall_order_item | NULL       | ref  | order_no_index | order_no_index | 9       | testdata.mmall_pay_info.order_no |       1 |   100.00 | NULL  |
+            +----+-------------+------------------+------------+------+----------------+----------------+---------+----------------------------------+---------+----------+-------+
+            2 rows in set, 1 warning (0.00 sec)
+
+                drop index order_no_index on mmall_order_item;
+                create index order_no_index on mmall_pay_info(order_no);
+
+            对左表做索引:
+
+            mysql> explain select * from mmall_pay_info left join  mmall_order_item on mmall_order_item.order_no = mmall_pay_info.order_no  limit 10000 ;
+            +----+-------------+------------------+------------+------+---------------+------+---------+------+---------+----------+----------------------------------------------------+
+            | id | select_type | table            | partitions | type | possible_keys | key  | key_len | ref  | rows    | filtered | Extra                                              |
+            +----+-------------+------------------+------------+------+---------------+------+---------+------+---------+----------+----------------------------------------------------+
+            |  1 | SIMPLE      | mmall_pay_info   | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 2693691 |   100.00 | NULL                                               |
+            |  1 | SIMPLE      | mmall_order_item | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 2852569 |   100.00 | Using where; Using join buffer (Block Nested Loop) |
+            +----+-------------+------------------+------------+------+---------------+------+---------+------+---------+----------+----------------------------------------------------+
+            2 rows in set, 1 warning (0.00 sec)
+
+            mysql> show index from mmall_pay_info;
+            +----------------+------------+----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+            | Table          | Non_unique | Key_name       | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
+            +----------------+------------+----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+            | mmall_pay_info |          0 | PRIMARY        |            1 | id          | A         |     2693691 |     NULL | NULL   |      | BTREE      |         |               |
+            | mmall_pay_info |          1 | order_no_index |            1 | order_no    | A         |     2693691 |     NULL | NULL   | YES  | BTREE      |         |               |
+            +----------------+------------+----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+            2 rows in set (0.00 sec)
+
+            结论:left join 索引要加在右表.
+                right join 索引要加左表.
+
+            所以对连接,,查看那张表有索引,对应调整表的顺序.
+
+            建立对的连接之后,返回一万条数据降低到了:0.055s
+
+    3.三表优化:
+        示例:多个表left join  按照两表的结果.
+
+        join语句的优化,永远用小结果集驱动大结果集
+         优先优化nestedLoop的内层循环.
+        保证join表上的条件字段用了索引.
 
 
 

@@ -1,0 +1,65 @@
+1.mysql 锁机制
+    1.表锁：偏读
+     手动加锁：
+            lock table mylock read; 加read锁
+            unlock table;
+
+            在profile中，测试结果发现更新语句的lock时间过长。
+            Waiting for table metadata loc     12
+
+
+            lock table mylock write;加写锁。
+
+
+        分析表锁定：
+            show status like 'table%';
+
+            mysql>  show status like 'table%';
+            +----------------------------+-------+
+            | Variable_name              | Value |
+            +----------------------------+-------+
+            | Table_locks_immediate      | 316   |
+            | Table_locks_waited         | 0     |
+            | Table_open_cache_hits      | 12    |
+            | Table_open_cache_misses    | 12    |
+            | Table_open_cache_overflows | 0     |
+            +----------------------------+-------+
+            5 rows in set (0.00 sec)
+            Table_locks_immediate: 产生表级锁定的次数，表示可以立即获取锁的查询次数，每立即获取锁值加1
+            Table_locks_waited：出现表级锁，争用而等待的次数。这个值高，说明存在着较严重的表级锁争用的情况。
+
+    2.行锁：偏写
+        无索引，会导致行锁升级表锁。
+        注意间隙锁。
+
+        show status like 'innodb_row_lock%';
+
+        mysql> show status like 'innodb_row_lock%';
+        +-------------------------------+-------+
+        | Variable_name                 | Value |
+        +-------------------------------+-------+
+        | Innodb_row_lock_current_waits | 0     | //当前正在等待锁定的数量。
+        | Innodb_row_lock_time          | 0     | //从系统启动到现在锁定总时间长度
+        | Innodb_row_lock_time_avg      | 0     | //每次等待所花的平均时间
+        | Innodb_row_lock_time_max      | 0     | // 从系统启动到现在等待最常的一次所花的时间
+        | Innodb_row_lock_waits         | 0     | // 总等待次数
+        +-------------------------------+-------+
+        5 rows in set (0.00 sec)
+
+
+        建议：
+            尽可能让所有数据检索都通过索引来完成，避免无索引行锁升级为表锁。
+            合理设计索引，尽量缩小锁的范围。
+            尽可能减少检索条件，避免间隙锁。
+            控制事务大小
+
+    3.页锁：
+
+
+
+
+
+
+
+
+2.

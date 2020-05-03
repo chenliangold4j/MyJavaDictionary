@@ -1,0 +1,243 @@
+1. 索引失效的避免:
+    1.全值匹配
+    2.最左前缀
+    3.不再索引列上左任何操作(计算,函数,类型转换) ,会导致索引失效而转向全表扫描
+    4.存储引擎不能使用索引中范围条件右边的列
+    5.尽量使用覆盖索引 少用select *
+    6.mysql 在使用不等于(!= 或<>)的时候无法使用索引会导致全表扫描
+    7.is null , is not null也服务使用索引
+    8.like 匹配通配符开头%
+        解决这个问题:覆盖索引可以防止 %string% 失效
+    9.字符串不加单引号索引失效 (这里有隐式类型转换)
+    10.少用or,用它连接时会索引失效.
+
+    order by 和 group by  使用的 临时表和filesort 要注意.
+
+2.sql 优化步骤
+    1. explain
+
+    分析----
+    1.观察,跑1天,查看慢sql情况
+    2.开启慢查询日志,设置阙值,比如超过5秒钟就是慢sql,并将它抓取出来.
+    3.explain + 慢sql 分析
+    4.show profile
+    5.运维经历 or dba ,进行sql数据库服务器的参数调优.
+
+    总结:
+        1.慢查询的开启并捕获
+        2.explain 慢查询分析
+        3.show profile 查询sql在mysql服务器里面的执行细节和生命周期情况.
+        4.SQL 数据库服务器的参数调优.
+
+3.其他优化补充
+    1.小表驱动大表.
+    2.exists
+        select .. from table where exists (subquery)
+        将主查询的数据,放到子查询中做条件验证.根据验证结果(true or false)来决定查询的数据结果是否得以保留.
+
+    3.order by 优化：
+        1.
+        order by 尽量用index 方式排序，避免使用filesort方式排序。
+        尽可能在索引列上完成排序操作，遵照索引原则。
+        如果不再索引列上，filesort 有两种算法：mysql就要启动双路排序和单路排序。
+
+        这里category_id price有索引，但是使用的不合适，导致了性能差距。
+        select * from mmall_product where category_id > 100009  ORDER BY price DESC limit 10000  用时17 s
+        EXPLAIN select * from mmall_product where category_id > 100009  ORDER BY price DESC limit 10000
+            -> ;
+        +----+-------------+---------------+------------+------+-----------------------+------+---------+------+--------+----------+-----------------------------+
+        | id | select_type | table         | partitions | type | possible_keys         | key  | key_len | ref  | rows   | filtered | Extra                       |
+        +----+-------------+---------------+------------+------+-----------------------+------+---------+------+--------+----------+-----------------------------+
+        |  1 | SIMPLE      | mmall_product | NULL       | ALL  | idx_mmall_product_csp | NULL | NULL    | NULL | 650846 |    50.00 | Using where; Using filesort |
+        +----+-------------+---------------+------------+------+-----------------------+------+---------+------+--------+----------+-----------------------------+
+        1 row in set, 1 warning (0.00 sec)
+
+        mysql> EXPLAIN select * from mmall_product where category_id = 100009  ORDER BY price DESC limit 10000  用时 0.1s
+            -> ;
+        +----+-------------+---------------+------------+------+-----------------------+-----------------------+---------+-------+-------+----------+-------------+
+        | id | select_type | table         | partitions | type | possible_keys         | key                   | key_len | ref   | rows  | filtered | Extra       |
+        +----+-------------+---------------+------------+------+-----------------------+-----------------------+---------+-------+-------+----------+-------------+
+        |  1 | SIMPLE      | mmall_product | NULL       | ref  | idx_mmall_product_csp | idx_mmall_product_csp | 4       | const | 56546 |   100.00 | Using where |
+        +----+-------------+---------------+------------+------+-----------------------+-----------------------+---------+-------+-------+----------+-------------+
+        1 row in set, 1 warning (0.00 sec)
+
+
+        2. order by 单路排序：
+            先从磁盘读数据，在buffer中排序。把随机IO变为顺序IO，减少了磁盘读写，但是消耗内存空间
+            但是因为  sort_buffer大小有限制，如果需要的数据 大于buffer 则会导致 多次读取sort——buffer 大小的数据，然后存在临时文件中。
+            反而导致了多次的IO，以及效率的低下。
+
+
+            优化策略：增大sort_buffer_size参数的设置。
+                    增大max_lenth_for_sort_data参数的设置。
+
+
+            提供order by 的速度：
+                1.order by 时  select 的字段大小总和小于 max_lenth_for_sort_data 而且排序字段不是 TEXT|BLOB 类型时，会用改进后的算法---单路排序，否则用老算法--多路排序。
+                2.两种算法的数据都有可能超出sort_buffer的总量，超出之后，会创建tmp 文件进行合并排序，导致多次IO，但是单路排序算法的风险会更大一些，所以要提高sort——buffer-size；
+
+                增大sort_buffer_size参数的设置，这个参数是针对进程的。
+                max_lenth_for_sort_data，提高会增加使用单路的概率，但是如果太高，数据超过sort_buffer_size 的概率会增大。反而又出现多次IO
+
+
+            为排序使用索引：
+                mysql 两种排序方式，文件排序或扫描有序索引排序。
+                mysql 能为排序于查询使用相同的索引。
+
+    4.group by
+        group by 实质是先排序后进行分组。
+        当无法使用索引列，增大max_lenth_for_sort_data，sort_buffer_size
+        where 高于having，能写where限定条件就不要取having限定了。
+
+4.慢查询日志：
+    运行时间超过：long_query_time 会被记录。默认为10
+    默认情况下，没有开启。 一般生产环境不开启。性能有一些影响
+
+    1.开启
+        show variables like '%slow_query_log%' 查看
+        set global slow_query_log=1 开启  //临时开启，永久需要配置文件修改。
+
+        mysql>  show variables like '%slow_query_log%' ;
+        +---------------------+--------------------------------------+
+        | Variable_name       | Value                                |
+        +---------------------+--------------------------------------+
+        | slow_query_log      | OFF                                  |
+        | slow_query_log_file | /var/lib/mysql/1f817baec02c-slow.log |
+        +---------------------+--------------------------------------+
+        2 rows in set (0.03 sec)
+
+        mysql> set global slow_query_log=1
+            -> ;
+        Query OK, 0 rows affected (0.11 sec)
+
+    2.查询并修改慢查询定义的时间
+      show variables like 'long_query_time%'
+      set global long_query_time=1
+
+      select * from mmall_pay_info left join  mmall_order_item on mmall_order_item.order_no = mmall_pay_info.order_no where mmall_order_item.current_unit_price > 3000    limit 10000
+      用时1.4s 被记录。
+
+      日志
+      # Query_time: 1.479303  Lock_time: 0.003267 Rows_sent: 16  Rows_examined: 3000015
+      use testdata;
+      SET timestamp=1588504046;
+      select * from mmall_pay_info left join  mmall_order_item on mmall_order_item.order_no = mmall_pay_info.order_no where mmall_order_item.current_unit_price > 3000    limit 10000;
+
+    3.命令
+
+      得到返回记录最多的20个sql
+      mysqldumpslow -s r -t 20 sqlslow.log
+      得到平均访问次数最多的20条sql
+      mysqldumpslow -s ar -t 20 sqlslow.log
+      得到平均访问次数最多,并且里面含有ttt字符的20条sql
+      mysqldumpslow -s ar -t 20 -g "ttt" sqldlow.log
+      注：
+      1、如果出现 -bash: mysqldumpslow: command not found 错误，请执行
+      ln -s /usr/local/mysql/bin/mysqldumpslow /usr/bin
+      2、如果出现如下错误，Died at /usr/bin/mysqldumpslow line 161, <> chunk 405659.说明你要分析的sql日志太大了，请拆分后再分析
+      拆分的命令为：
+      tail -100000 mysql-slow.log>mysql-slow.20180725.log
+
+      mysqlddumpslw  参数：
+        -s 按照那种方式排序
+            c：访问计数
+            l：锁定时间
+            r:返回记录
+            al：平均锁定时间
+            ar：平均访问记录数
+            at：平均查询时间
+        -t 是top n的意思，返回多少条数据。
+        -g 可以跟上正则匹配模式，大小写不敏感。
+
+
+    4.show profile
+        1. show profile 是mysql 提供用来分析当前会话中语句执行的资源消耗情况，可以用于sql调优的测量
+        2. 默认情况下处于关闭，并保存15此运行的结果
+        3.步骤：
+            1. 查看是否支持
+                show variables like 'profiling';
+                 show variables like 'profiling';
+                +---------------+-------+
+                | Variable_name | Value |
+                +---------------+-------+
+                | profiling     | OFF   |
+                +---------------+-------+
+                1 row in set (0.00 sec)
+            2.开启
+                set profiling = on;
+            3.运行sql
+                select * from mmall_pay_info left join  mmall_order_item on mmall_order_item.order_no = mmall_pay_info.order_no where mmall_order_item.current_unit_price > 3000    limit 10000;
+            4.查看结果
+                 show profiles;
+                +----------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+                | Query_ID | Duration   | Query                                                                                                                                                                           |
+                +----------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+                |        1 | 1.45408975 | select * from mmall_pay_info left join  mmall_order_item on mmall_order_item.order_no = mmall_pay_info.order_no where mmall_order_item.current_unit_price > 3000    limit 10000 |
+                +----------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+                1 row in set, 1 warning (0.00 sec)
+            5.诊断sql
+                show profile cpu,block io for query  (Query_ID)
+                mysql>  show profile cpu,block io for query  1
+                +----------------------+----------+----------+------------+--------------+---------------+
+                | Status               | Duration | CPU_user | CPU_system | Block_ops_in | Block_ops_out |
+                +----------------------+----------+----------+------------+--------------+---------------+
+                | starting             | 0.000046 | 0.000000 |   0.000000 |            0 |             0 |
+                | checking permissions | 0.000004 | 0.000000 |   0.000000 |            0 |             0 |
+                | checking permissions | 0.000003 | 0.000000 |   0.000000 |            0 |             0 |
+                | Opening tables       | 0.000024 | 0.000000 |   0.000000 |            0 |             0 |
+                | init                 | 0.000023 | 0.000000 |   0.000000 |            0 |             0 |
+                | System lock          | 0.000007 | 0.000000 |   0.000000 |            0 |             0 |
+                | optimizing           | 0.000010 | 0.000000 |   0.000000 |            0 |             0 |
+                | statistics           | 0.000021 | 0.000000 |   0.000000 |            0 |             0 |
+                | preparing            | 0.000013 | 0.000000 |   0.000000 |            0 |             0 |
+                | executing            | 0.000002 | 0.000000 |   0.000000 |            0 |             0 |
+                | Sending data         | 1.453854 | 1.470000 |   0.000000 |            0 |             0 |
+                | end                  | 0.000009 | 0.000000 |   0.000000 |            0 |             0 |
+                | query end            | 0.000005 | 0.000000 |   0.000000 |            0 |             0 |
+                | closing tables       | 0.000005 | 0.000000 |   0.000000 |            0 |             0 |
+                | freeing items        | 0.000051 | 0.000000 |   0.000000 |            0 |             0 |
+                | cleaning up          | 0.000014 | 0.000000 |   0.000000 |            0 |             0 |
+                +----------------------+----------+----------+------------+--------------+---------------+
+                16 rows in set, 1 warning (0.00 sec)
+
+                传输数据 Sending data 消耗了大多数时间。
+
+                2.show profile的常用查询参数。
+
+                ①ALL：显示所有的开销信息。
+
+                ②BLOCK IO：显示块IO开销。
+
+                ③CONTEXT SWITCHES：上下文切换开销。
+
+                ④CPU：显示CPU开销信息。
+
+                ⑤IPC：显示发送和接收开销信息。
+
+                ⑥MEMORY：显示内存开销信息。
+
+                ⑦PAGE FAULTS：显示页面错误开销信息。
+
+                ⑧SOURCE：显示和Source_function，Source_file，Source_line相关的开销信息。
+
+                ⑨SWAPS：显示交换次数开销信息。
+
+            6.日常开发注意
+                ①converting  HEAP to MyISAM：查询结果太大，内存不够，数据往磁盘上搬了。
+
+                ②Creating tmp table：创建临时表。先拷贝数据到临时表，用完后再删除临时表。
+
+                ③Copying to tmp table on disk：把内存中临时表复制到磁盘上，危险！！！
+
+                ④locked。
+    5.全局日志：
+         只能在测试环境用。
+         1.启动：
+            配置：见搜索
+            set global general_log = 1;
+            set global log_output='TABLE';
+
+         2.获取：
+            select * from mysql.general_log;
+
+
