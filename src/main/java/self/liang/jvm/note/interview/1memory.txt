@@ -1,0 +1,160 @@
+
+javap -c .\Math.class > math.txt
+
+
+1. 栈  //每个线程都有自己的栈
+    线程栈（虚拟机栈）：每个方法执行会创建一个栈帧（stack frame），用于存储局部变量，方法出口，动态连接，操作数栈。
+    本地方法栈：naive 方法的栈。
+    程序计数器：当前线程所执行字节码的行号指示器。  类似下面code 前面的标志，记录执行到哪一行，
+
+    Compiled from "Math.java"
+    public class self.liang.jvm.note.interview.Math {
+      public static final int initData;
+
+      public static self.liang.spring.example.factory.User user;
+
+      public self.liang.jvm.note.interview.Math();
+        Code:
+           0: aload_0
+           1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+           4: return
+
+      public int compute();
+        Code:
+           0: iconst_1   // 将int 类型常量1 压入（操作数栈）
+           1: istore_1  //将int类型的值存入局部变量1
+           2: iconst_2
+           3: istore_2
+           4: iload_1  // 从局部变量1中装载int类型值
+           5: iload_2
+           6: iadd
+           7: bipush        10
+           9: imul  //执行int 类型乘法
+          10: istore_3
+          11: iload_3
+          12: ireturn    //返回方法出口。这个存在虚拟机栈中。
+
+      public static void main(java.lang.String[]);
+        Code:
+           0: new           #2                  // class self/liang/jvm/note/interview/Math
+           3: dup
+           4: invokespecial #3                  // Method "<init>":()V
+           7: astore_1
+           8: aload_1
+           9: invokevirtual #4                  // Method compute:()I
+          12: pop
+          13: return
+
+      static {};
+        Code:
+           0: new           #5                  // class self/liang/spring/example/factory/User
+           3: dup
+           4: invokespecial #6                  // Method self/liang/spring/example/factory/User."<init>":()V
+           7: putstatic     #7                  // Field user:Lself/liang/spring/example/factory/User;
+          10: return
+    }
+
+2.堆  //大家公用的。
+    堆：放对象
+        eden:
+        survivor0
+        survivor1
+        old:
+
+    方法区：线程共享的内存区域，存储被虚拟机加载的类信息，常量，静态变量，即时编译器编译后的代码
+        方法区1.8之后，不再jvm管理的内存当中，在物理内存中。
+
+      public static User user = new User(); 这样的静态变量，指针在方法区中，对象在堆中。
+
+    jvisualvm   查看
+3.对象头：
+    java的对象头由以下三部分组成：
+
+    1，Mark Word
+
+    2，指向类的指针
+
+    3，数组长度（只有数组对象才有）
+
+    见图对象头png
+
+4.一些经验：内存设置：
+    压测的时候，单机每秒产生60m对象。 1~2秒后，这些对象变为垃圾对象。
+    java -Xms3072M -Xmx3072M -Xss1M -XX:MetaspaceSize=512M -XXMaxMetaspaceSize=512M
+
+    补充：
+    那么-XX:MetaspaceSize=512M的含义到底是什么呢？
+        其实，这个JVM参数是指Metaspace扩容时触发FullGC的初始化阈值，也是最小的阈值。这里有几个要点需要明确：
+        1.无论-XX:MetaspaceSize配置什么值，Metaspace的初始容量一定是21807104（约20.8m）；
+        2.Metaspace由于使用不断扩容到-XX:MetaspaceSize参数指定的量，就会发生FGC；且之后每次Metaspace扩容都会发生FGC；
+        3.如果Old区配置CMS垃圾回收，那么第2点的FGC也会使用CMS算法进行回收；
+        4.Meta区容量范围为[20.8m, MaxMetaspaceSize)；
+        5.如果MaxMetaspaceSize设置太小，可能会导致频繁FGC，甚至OOM；
+
+
+    系统运行13秒之后占满eden 触发年轻代GC。但是当时那一秒产生的对象会放在survivor区，这时候由于60M对象要进如survivor ，survivor 100M ，大于survivor 50%  会直接进入老年带。
+
+    java -Xms3072M -Xmx3072M -Xmn 2048M -Xss1M -XX:MetaspaceSize=256M -XXMaxMetaspaceSize=256M
+    修改  -Xmn 2048M  把年轻代设置为2G ，这时候survivor 变为200m 这时候对象不会进入老年代。
+
+5.调优：
+    C:\Users\phantom\IdeaProjects\MyJavaDictionary>java -X
+        -Xmixed           混合模式执行 (默认)
+        -Xint             仅解释模式执行
+        -Xbootclasspath:<用 ; 分隔的目录和 zip/jar 文件>
+                          设置搜索路径以引导类和资源
+        -Xbootclasspath/a:<用 ; 分隔的目录和 zip/jar 文件>
+                          附加在引导类路径末尾
+        -Xbootclasspath/p:<用 ; 分隔的目录和 zip/jar 文件>
+                          置于引导类路径之前
+        -Xdiag            显示附加诊断消息
+        -Xnoclassgc       禁用类垃圾收集
+        -Xincgc           启用增量垃圾收集
+        -Xloggc:<file>    将 GC 状态记录在文件中 (带时间戳)
+        -Xbatch           禁用后台编译
+        -Xms<size>        设置初始 Java 堆大小
+        -Xmx<size>        设置最大 Java 堆大小
+        -Xss<size>        设置 Java 线程堆栈大小
+        -Xprof            输出 cpu 配置文件数据
+        -Xfuture          启用最严格的检查, 预期将来的默认值
+        -Xrs              减少 Java/VM 对操作系统信号的使用 (请参阅文档)
+        -Xcheck:jni       对 JNI 函数执行其他检查
+        -Xshare:off       不尝试使用共享类数据
+        -Xshare:auto      在可能的情况下使用共享类数据 (默认)
+        -Xshare:on        要求使用共享类数据, 否则将失败。
+        -XshowSettings    显示所有设置并继续
+        -XshowSettings:all
+                          显示所有设置并继续
+        -XshowSettings:vm 显示所有与 vm 相关的设置并继续
+        -XshowSettings:properties
+                          显示所有属性设置并继续
+        -XshowSettings:locale
+                          显示所有与区域设置相关的设置并继续
+
+    -X 选项是非标准选项, 如有更改, 恕不另行通知。
+
+  大多数调优：却是 -XX 开头的。
+  java -XX:+PrintCommandLineFlags -version   查看当前java 默认的参数
+  -XX:InitialHeapSize=266132736  //m默认堆大小
+  -XX:MaxHeapSize=4258123776  //最大堆大小
+  -XX:+PrintCommandLineFlags
+  -XX:+UseCompressedClassPointers  //
+  -XX:+UseCompressedOops
+  -XX:-UseLargePagesIndividualAllocation
+   -XX:+UseParallelGC  //默认parallelGC
+  java version "1.8.0_211"
+  Java(TM) SE Runtime Environment (build 1.8.0_211-b12)
+  Java HotSpot(TM) 64-Bit Server VM (build 25.211-b12, mixed mode)
+  PS C:\Users\phantom\IdeaProjects\MyJavaDictionary\target\classes\self\liang\jvm\note\interview>
+
+
+  arthas 工具
+
+  1.cpu飙高：
+    阿里工具：arthas
+     或者其他工具。
+
+  2. 内存占用过高
+    jmap -histo 2161 | head -20  //这个命令生产环境不能调用。 jmap 会导致堆暂停。
+
+
