@@ -152,3 +152,51 @@
     inner join course c2 on c2.c_id=sc2.c_id and c2.c_id="02"
     )
 
+    -- 9、查询没有学全所有课程的同学的信息
+    select * from student where s_id not in (
+    select st.s_id from student st
+    inner join score sc on sc.s_id = st.s_id and sc.c_id="01"
+    where st.s_id  in (
+    select st1.s_id from student st1
+    inner join score sc2 on sc2.s_id = st1.s_id and sc2.c_id="02"
+    ) and st.s_id in (
+    select st2.s_id from student st2
+    inner join score sc2 on sc2.s_id = st2.s_id and sc2.c_id="03"
+    ))
+
+    -- 10、查询至少有一门课与学号为"01"的同学所学相同的同学的信息
+    select distinct st.* from student st
+    left join score sc on sc.s_id=st.s_id
+    where sc.c_id in (
+    select sc2.c_id from student st2
+    left join score sc2 on sc2.s_id=st2.s_id
+    where st2.s_id ='01'
+    )
+
+    -- 11、查询和"01"号的同学学习的课程完全相同的其他同学的信息
+    select  st.* from student st
+    left join score sc on sc.s_id=st.s_id
+    group by st.s_id
+    having group_concat(sc.c_id) =
+    (
+    select  group_concat(sc2.c_id) from student st2
+    left join score sc2 on sc2.s_id=st2.s_id
+    where st2.s_id ='01'
+    )
+
+    -- 12、查询和"01"号的同学学习的课程完全相同的其他同学的信息
+    select  st.* from student st
+    left join score sc on sc.s_id=st.s_id
+    group by st.s_id
+    having group_concat(sc.c_id) =
+    (
+    select  group_concat(sc2.c_id) from student st2
+    left join score sc2 on sc2.s_id=st2.s_id
+    where st2.s_id ='01'
+    )
+
+
+
+
+
+
