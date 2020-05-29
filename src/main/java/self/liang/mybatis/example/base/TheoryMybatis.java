@@ -94,7 +94,7 @@ import java.util.UUID;
  * 总结：
  * 1.根据配置文件创建Configuration对象
  * 2.创建一个DefaultSqlSession对象
- * 里面包含了Configuration记忆Executro
+ * 里面包含了Configuration记忆Executor
  * 3.DefaultSqlSession。getMapper（）获取Mapper接口的MapperProxy
  * 4.MapperProxy里面有DefaultSqlSession对象
  * 5执行增删改查方法：
@@ -127,8 +127,8 @@ public class TheoryMybatis {
 
         //批量操作的sqlSession
         sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
-        employeeMapper =  sqlSession.getMapper(EmployeeMapper.class);
-        employeeMapper.addEmp(new Employee(null, UUID.randomUUID().toString().substring(0,5),UUID.randomUUID().toString().substring(0,5),"2"));
+        employeeMapper = sqlSession.getMapper(EmployeeMapper.class);
+        employeeMapper.addEmp(new Employee(null, UUID.randomUUID().toString().substring(0, 5), UUID.randomUUID().toString().substring(0, 5), "2"));
 //        这里add一万条
         sqlSession.commit();
         //整合的时候。可以配置一个sqlSessionTemplate
@@ -142,7 +142,6 @@ public class TheoryMybatis {
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         return sqlSessionFactory;
     }
-
 
 
     /**

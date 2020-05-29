@@ -29,7 +29,6 @@
                 proxy_pass   http://192.168.65.2:8080;
                 index  index.html index.htm;
             }
-
          代理65.2的8080
     2.效果：
         访问 www.123.com/edu/  到8080

@@ -31,7 +31,11 @@ OOM解决思路
      4.Heap Dump分析
         1.用jvisualvm  文件  装入  再OOM示例中。。99%都是byte[]   但是信息很简略。无法直观的知道哪里出现了问题
         2. Metaspace/PermGen 元空间/永久代  这种oom 瞄准class对象 类加载过多（有自定义classloader的时候可能性增高）
+                    //Exception in thread thread_name: java.lang.OutOfMemoryError: Metaspace
+                      Cause: Java class metadata (the virtual machines internal presentation of Java class) is allocated in native memory (referred to here as metaspace). If metaspace for class metadata is exhausted, a java.lang.OutOfMemoryError exception with a detail MetaSpace is thrown. The amount of metaspace that can be used for class metadata is limited by the parameter MaxMetaSpaceSize, which is specified on the command line. When the amount of native memory needed for a class metadata exceeds MaxMetaSpaceSize, a java.lang.OutOfMemoryError exception with a detail MetaSpace is thrown
            heap space  瞄准占空间最大的对象
+                    //Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+                      	at self.liang.jvm.note.example.OOM.main(OOM.java:11)
            path to GC roots  找到引发的对象元空间的。或者是堆空间的过多对象，，去看它的gc root为什么没有被回收
            顺腾摸瓜
         3.mat工具就强大很多，，有可能问题分析，，占用图示，，   其实能用熟悉这个工具。。知道每一个选项是什么意思。。对jvm就已经很熟了
@@ -46,3 +50,4 @@ OOM解决思路
                     注意。这里又用到了远程debug（很重要！）;然后找到是
 
         4.商业工具jProfiler
+

@@ -196,7 +196,24 @@
     )
 
 
+    -- 15、查询两门及其以上不及格课程的同学的学号，姓名及其平均成绩
+    select st.s_id,st.s_name,avg(sc.s_score) from student st
+    left join score sc on sc.s_id=st.s_id
+    where sc.s_id in (
+    select sc.s_id from score sc
+    where sc.s_score<60 or sc.s_score is NULL
+    group by sc.s_id having COUNT(1)>=2
+    )
+    group by st.s_id
 
+    -- 17、按平均成绩从高到低显示所有学生的所有课程的成绩以及平均成绩
+    select st.s_id,st.s_name,avg(sc4.s_score) "平均分",sc.s_score "语文",sc2.s_score "数学",sc3.s_score "英语" from student st
+    left join score sc  on sc.s_id=st.s_id  and sc.c_id="01"
+    left join score sc2 on sc2.s_id=st.s_id and sc2.c_id="02"
+    left join score sc3 on sc3.s_id=st.s_id and sc3.c_id="03"
+    left join score sc4 on sc4.s_id=st.s_id
+    group by st.s_id
+    order by avg(sc4.s_score) desc
 
 
 
