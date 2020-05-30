@@ -1,0 +1,11 @@
+1.  工作区  暂存区  本地库
+
+ 写的新代码 -》 工作区
+ git add -》 暂存区
+ git commit -> 本地库
+ git push -》 远程库
+
+2.局域网：gitlab
+    外网 github 码云等
+
+3.‘ 0
