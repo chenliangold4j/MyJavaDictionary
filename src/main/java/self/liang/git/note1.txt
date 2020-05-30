@@ -8,4 +8,73 @@
 2.局域网：gitlab
     外网 github 码云等
 
-3.‘ 0
+3.命令行基本操作：
+    1.初始化：
+        git init
+        生产.git 文件夹 里面有一下文件
+        -rw-r--r-- 1 86166 197609 130 5月  31 01:28 config
+        -rw-r--r-- 1 86166 197609  73 5月  31 01:28 description
+        -rw-r--r-- 1 86166 197609  23 5月  31 01:28 HEAD
+        drwxr-xr-x 1 86166 197609   0 5月  31 01:28 hooks/
+        drwxr-xr-x 1 86166 197609   0 5月  31 01:28 info/
+        drwxr-xr-x 1 86166 197609   0 5月  31 01:28 objects/
+        drwxr-xr-x 1 86166 197609   0 5月  31 01:28 refs/
+    2.设置签名：
+        形式：
+            用户名：emial 地址
+        作用：
+            用于区分不同开发用户
+        辨析:
+            这里设置的签名和登录远程仓库(代码托管中心)的用户名密码没有任何关系
+        命令:
+            1.项目级别/仓库级别:
+            当前本地库范围内有效
+            git config user.name xxx
+            git config user.email xxx@xxx.com
+            签名信息保存位置:当前仓库位置/.git/config文件
+
+            2.系统用户级别:
+            登录当前操作系统的用户范围内有效
+            git config --global user.name xxx
+            git config --global user.email xxx@xxx.com
+            签名信息保存位置:~/.gitconfig文件(cat ~/.gitconfig)
+
+            3.优先级:
+            项目级别优先于用户系统级别，二者都有时使用项目级别;
+            如果只有系统用户级别的签名，就采用系统用户级别;
+            如果二者都没有则不允许，之前设置一个;
+
+    3.基本操作：
+        1.添加和提交
+            git status
+
+            git add  readme.txt  添加到暂存区
+            git rm --cached readme.txt  从暂存区删除
+
+            git commit -m "message"
+
+        2.版本穿梭：
+            1.查看log
+            $ git log  //首先查看版本   空格向下，b向上。q退出
+            commit f9ddf74f1925b196d66cdac20dbb64748c0c11db (HEAD -> master)
+            Author: tom <chenliangxingji1@163.com>
+            Date:   Sun May 31 03:11:01 2020 +0800
+                commit 2
+            commit e1a8991d41895da5e9d8a6400303b6dce9098205
+            Author: tom <chenliangxingji1@163.com>
+            Date:   Sun May 31 02:40:18 2020 +0800
+                my first comit
+
+            >git log --pretty=oneline  //一行显示一个提交
+            907a78d8bf659d40021924b27104a3dc06db0ab4 (HEAD -> master) keep
+            b8ef7ccc79472780bb6c6c30e6578e7898d6d5a3 (origin/master, origin/HEAD) keep
+            aba3267650c6c4f8abff7d70af54e5a73eb85826 keep
+            2a869e25f70ccc1dbd79698cb09fafd47da1b0d0 keep
+            5e874bce054dda71fce8f398ea77a4d7733c6650 keep
+
+            git log --oneline
+            git reflog  //同时显示移动的步数
+
+            2.前进后退
+                1.基于索引值
+
