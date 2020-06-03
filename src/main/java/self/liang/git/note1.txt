@@ -52,6 +52,15 @@
             git rm --cached readme.txt  从暂存区删除
 
             git commit -m "message"
+            git mv original_filename new_filename 修改文件名、
+
+            查看项目分叉历史
+            git log --decorate --graph --all
+
+            配别名
+            Git 并不会在你输入部分命令时像 Linux 一样自动推断你想要的命令，可以使用 git config 来为长命令配上别名
+            git config --global alias.co "commit"
+            当想要 commit 的时候，就可以直接输入 git co
 
         2.版本穿梭：
             1.查看log
@@ -77,4 +86,182 @@
 
             2.前进后退
                 1.基于索引值
+                git reflog
+                8402b76 (HEAD -> master) HEAD@{0}: commit: keep
+                907a78d HEAD@{1}: commit: keep
+                b8ef7cc (origin/master, origin/HEAD) HEAD@{2}: pull: Fast-forward
+
+                git  reset --hard 907a78d
+                HEAD is now at 907a78d keep
+
+                git reflog
+                907a78d (HEAD -> master) HEAD@{0}: reset: moving to 907a78d
+                8402b76 HEAD@{1}: commit: keep
+                907a78d (HEAD -> master) HEAD@{2}: commit: keep
+                b8ef7cc (origin/master, origin/HEAD) HEAD@{3}: pull: Fast-forward
+
+                git reset --hard  8402b76
+                HEAD is now at 8402b76 keep
+
+                2. ^ 符号
+                     git reset --hard HEAD^ 往前退一步  每增加一个^ 多移动一步
+                3. ~符号
+                     git reset --hard HEAD~3 后退3步
+
+                4. --hard --soft --mixed
+                    --soft 仅仅在本地库移动指针，不会修改工作区和缓存区
+                    --mixed 移动本地库的head指针，重置缓存区。
+                    --hard 暂存区，工作区，head指针都会重置到版本。
+
+            3.删除后找回：
+                reset 到文件新建的版本。所以需要文件提交到过本地库。
+            4.diff 比较文件
+                1.git diff  filename
+                $ git diff apple.txt
+                The file will have its original line endings in your working directory
+                diff --git a/apple.txt b/apple.txt
+                index 4eeff4b..2e7a7c7 100644
+                --- a/apple.txt
+                +++ b/apple.txt
+                @@ -1,2 +1,2 @@
+                 apple
+                -apple
+                +dog
+
+                这里比较的是暂存区，如果add 了，就没有diff的结果。
+
+                2.git diff HEAD apple.txt  添加版本号，这样可以和本地库版本进行比较。
+                3.git diff 比较所有文件
+
+
+        3.分支：
+            1.分支操作：
+                 1.git branch -v 查看本地所有分支
+                   git branch -r 查看远程所有分支
+                   git branch -a 查看所有分支
+
+                 git branch -v
+                * dev    c944d21 add apple.txt
+                  master c944d21 add apple.txt
+
+                 2.git branch name  创建name分支
+
+                 3.git checkout name 切换到name分支
+
+                 4.合并分支
+                     1.切换到被合并的分支上。例如 hot fix 要与master 合并，需要切换到master; git checkout master
+                     2.执行 git merge hot_fix
+                 5.解决冲突
+                         apple
+                         <<<<<<< HEAD
+                         dsafdasf
+                         apple
+
+                         asdfasdf
+                         asdfsdaf
+                         =======
+                         dfsdfsdf
+                         sdfdsf
+                         ddddddd
+                         dfsafdas
+                         >>>>>>> dev
+                   从<<<<<<< HEAD 到 ======= 是当前分支的内容。
+                   从======= 到  >>>>>>> dev 是另外分支的内容。
+
+                   解决网冲突 需要 再 git add  git commit 完成解决冲突
+                   解决冲突的git commit 不能带文件名
+                6.删除分支
+                  git branch -d branch_name  # 删除已合并的分支
+                  git branch -D branch_name  # 强制删除未合并的分支
+        4.TAG - 标签
+              git 可以给历史中的某一个提交打上标签，一般用标签来标注版本号
+              查看标签
+              git tag  # 列出所有tag标签
+              git tag -l 1.8.5*  # *为通配符，列出1.8.5xxxxxx之类的所有tag
+              创建标签
+              git tag v1.4  # 标注最后一次提交对象
+              git tag v1.4 commithash  # 标注指定提交对象
+              查看特定标签
+              git show v1.0
+              删除标签
+              git show -d v1.0
+              检出标签
+              git checkout v1.0
+
+              在检出标签模式下，会处于头部分离状态，可以查看当前分支的状态，但是最好不要commit，如果此时进行了提交，
+              标签不会发生变化，新提交也不会属于任何分支，并且无法访问。除非访问确切的Hash。
+              因此，如果想要修改，最后使用 git branch -b branch_name 来创建分支进行修改
+
+        5.Git 存储
+         当所在项目已经工作了一段时间，需要紧急切换到其他分支，但本分支的任务没有完成，我们可以将本分支的工作储存到栈中。命令如下，本质上还是提交，
+         但是不保存在提交记录中。
+         Git 存储
+         git stash
+         Git 存储还原
+         git stash apply
+         当任务完成时，切回本分支，可以使用下方命令还原状态，但是栈中还是会保留之前的存储对象。
+         切回本分支时，最好再次查看一下状态 git status，然后再还原存储的任务。
+         查看存储
+         git stash list
+         当前任务保存在栈中，存储对象名为 stash@{0} ，大括号中为存储顺序编号
+         还原指定存储
+         git stash apply stash@{2} # 如果不指定一个储藏，Git认为指定的是最近的储藏
+         删除栈中的存储
+         git stash drop stash@{0}
+         还原并删除栈中的存储
+         git stash pop  # 最好在只有一个存储的情况下
+    4.远程库与本地库：
+        1. git remote add origin https://github.com/chenliangold4j/testCmd.git   //这里可以是ssh地址，但是要自己配置了key
+           这样之后origin 就代表这个地址
+
+            $ git remote -v
+            origin  https://github.com/chenliangold4j/testCmd.git (fetch)
+            origin  https://github.com/chenliangold4j/testCmd.git (push)
+
+        2.git push origin master
+            之后输入用户名和密码
+        3.git clone https://github.com/chenliangold4j/testCmd.git
+            有三个效果：
+                1.下载到本地
+                2.创建origin 别名
+                3.初始化本地库
+          在Clone的时候如果clone非本地配置的用户名密码的项目的时候，可以临时性地用嵌套了【用户名:密码】的git语句来clone项目。
+          格式：
+          git clone http://userName:password@链接
+          举例：
+          git clone https://用户名:密码@git.coding.net/sample/HelloWorld.git
+          git clone https://chenliangphantomold4j2:password@gitee.com/chenliangphantom/testCmd.git
+
+        4.其他人员需要加入团队
+
+        5 fetch + merge = pull
+             1.git fetch origin master
+                git fetch是将远程主机的最新内容拉到本地，用户在检查了以后决定是否合并到工作本机分支中。
+             2.git checkout origin/master 切换到远程的主干，就可以看到最新的文件。
+               git checkout master 查看完远程的修改，切换到本地。
+             3. git merge origin/master master 把远程master 合并到本地master
+
+        6.协同开发的冲突解决：
+            先git pull origin [branch]
+            解决冲突
+            然后 git push origin [branch]
+
+        7. Git Merge 的三种方式：
+            # 快速合并
+            git merge branch_name
+            不会显示 feature，只保留单条分支记录。fast-forward方式合并， feature 的提交历史混入到 master 中
+
+            # 禁止快速合并
+            git merge --no-ff branch_name
+            # 不使用fast-forward方式合并，可以保存你之前的分支历史。能够更好的查看 merge历史，以及branch 状态。推荐这种
+
+            # 使用squash方式合并
+            git merge --squash branch_name
+
+            --squash选项的含义是：本地文件内容与不使用 --squash 的合并结果相同，但是不提交、不移动HEAD，
+            因此需要一条额外的commit命令。其效果相当于将 feature 分支上的多个commit合并成一个，放在 Master 分支上，
+            原来的 Feature commit 历史则没有拿过来。
+
+        7.跨团队协作：fork    pull request
+
 
