@@ -1,0 +1,205 @@
+1.执行流程：
+   filter顺序
+   spring security内置的各种filter：
+
+   CHANNEL_FILTER	ChannelProcessingFilter	http/intercept-url@requires-channel
+   SECURITY_CONTEXT_FILTER	SecurityContextPersistenceFilter	http
+   CONCURRENT_SESSION_FILTER	ConcurrentSessionFilter	session-management/concurrency-control
+   HEADERS_FILTER	HeaderWriterFilter	http/headers
+   CSRF_FILTER	CsrfFilter	http/csrf
+   LOGOUT_FILTER	LogoutFilter	http/logout
+   X509_FILTER	X509AuthenticationFilter	http/x509
+   PRE_AUTH_FILTER	AbstractPreAuthenticatedProcessingFilter Subclasses	N/A
+   CAS_FILTER	CasAuthenticationFilter	N/A
+   FORM_LOGIN_FILTER	UsernamePasswordAuthenticationFilter	http/form-login
+   BASIC_AUTH_FILTER	BasicAuthenticationFilter	http/http-basic
+   SERVLET_API_SUPPORT_FILTER	SecurityContextHolderAwareRequestFilter	http/@servlet-api-provision
+   JAAS_API_SUPPORT_FILTER	JaasApiIntegrationFilter	http/@jaas-api-provision
+   REMEMBER_ME_FILTER	RememberMeAuthenticationFilter	http/remember-me
+   ANONYMOUS_FILTER	AnonymousAuthenticationFilter	http/anonymous
+   SESSION_MANAGEMENT_FILTER	SessionManagementFilter	session-management
+   EXCEPTION_TRANSLATION_FILTER	ExceptionTranslationFilter	http
+   FILTER_SECURITY_INTERCEPTOR	FilterSecurityInterceptor	http
+   SWITCH_USER_FILTER	SwitchUserFilter	N/A
+
+
+   第一个看所有的都为空，
+   从SecurityContextPersistenceFilter开始
+
+   1.SecurityContextPersistenceFilter
+    使用在请求之前从已配置的SecurityContextRepository获得的信息来配置securitycontext，
+    并在请求完成并清除上下文holder时将其存储回存储库中。默认情况下，它使用HttpSessionSecurityContextRepository。
+    有关HttpSession相关配置选项的信息，请参见这个类。
+    这个过滤器对于每个请求只执行一次，以解决servlet容器(特别是Weblogic)的不兼容性。
+    必须在任何身份验证处理机制之前执行此筛选器。身份验证处理机制(如BASIC、CAS处理过滤器等)期望SecurityContext在执行时包含一个有效的SecurityContext。
+    这本质上是对旧的HttpSessionContextIntegrationFilter的重构，将存储问题委托给单独的策略，从而允许在请求之间维护安全上下文的方式上进行更多定制。
+    可以使用forceeagersessioncreate属性来确保在过滤器链执行之前会话始终可用(默认值为false，因为这是资源密集型的，不推荐使用)。
+
+    SecurityContextPersistenceFilter.执行流程
+        if (request.getAttribute(FILTER_APPLIED) != null) {
+        			// ensure that filter is only applied once per request
+        			chain.doFilter(request, response);
+        			return;
+        }
+        其中static final String FILTER_APPLIED = "__spring_security_scpf_applied";
+
+        request.setAttribute(FILTER_APPLIED, Boolean.TRUE);
+
+        之后从NullSecurityContextRepositoryd的SecurityContextHolder   获取SecurityContext（SecurityContextImpl）;
+        SecurityContextHolder利用了一个SecurityContextHolderStrategy（存储策略）进行上下文的存储
+        SecurityContextHolderStrategy,针对线程存储安全上下文信息的策略。
+
+        SecurityContextHolderStrategy的实现类
+            GlobalSecurityContextHolderStrategy 全局的上下文存取策略，只存储一个上下文，对应前面说的单机系统。
+            ThreadLocalSecurityContextHolderStrategy 基于ThreadLocal的存储策略实现，
+                public SecurityContext getContext() {
+                		SecurityContext ctx = contextHolder.get();
+
+                		if (ctx == null) {
+                			ctx = createEmptyContext();
+                			contextHolder.set(ctx);
+                		}
+
+                		return ctx;
+                	}
+                public SecurityContext createEmptyContext() {
+                		return new SecurityContextImpl();
+                	}
+               没有的话自己创建了一个createEmptyContext，有的话直接中ThreadLocal中获取。
+
+            SecurityContextImpl 里面保存了Authentication 对象。
+
+
+            public interface Authentication extends Principal, Serializable {
+            	Collection<? extends GrantedAuthority> getAuthorities();
+            	Object getCredentials();
+            	Object getDetails();
+            	Object getPrincipal();
+            	boolean isAuthenticated();
+            	void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException;
+            }
+
+            由源码可知，Authentication（认证信息），主要包含了以下内容
+            用户权限集合 => 可用于访问受保护资源时的权限验证
+            用户证书（密码） => 初次认证的时候，进行填充，认证成功后将被清空
+            细节 => 暂不清楚，猜测应该是记录哪些保护资源已经验证授权，下次不用再验证，等等。
+            Pirncipal => 大概就是账号吧
+            是否已认证成功
+
+        chain.doFilter(holder.getRequest(), holder.getResponse()); 设置完初始化的空认证对象后，执行dofilter
+
+
+        之后再finlly 中
+        SecurityContext contextAfterChainExecution = SecurityContextHolder
+        					.getContext();
+        			// Crucial removal of SecurityContextHolder contents - do this before anything
+        			// else.
+        			SecurityContextHolder.clearContext();
+       获取SecurityContextImpl 并清除（再Threadlocal面清除），这就是上下文。
+       这时候打印对象：
+        org.springframework.security.core.context.SecurityContextImpl@fa79fc8b:
+        Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken@fa79fc8b:
+        Principal: org.springframework.security.core.userdetails.User@586034f:
+        Username: admin; Password: [PROTECTED]; Enabled: true; AccountNonExpired: true;
+        credentialsNonExpired: true; AccountNonLocked: true; Not granted any authorities;
+        Credentials: [PROTECTED]; Authenticated: true; Details: null; Not granted any authorities
+
+
+        //之后把上下文保存在NullSecurityContextRepositoryd
+        repo.saveContext(contextAfterChainExecution, holder.getRequest(),
+        					holder.getResponse());   // 这里什么都每干。。直接是空方法。
+        request.removeAttribute(FILTER_APPLIED);//删除开始设置的attribute
+
+
+    2.HeaderWriterFilter
+         HeaderWriterFilter是在请求前后写入一些往前请求头或者响应头写入一些信息
+
+        继承OncePerRequestFilter
+         OncePerRequestFilter，顾名思义，它能够确保在一次请求中只通过一次filter，
+         而需要重复的执行。大家常识上都认为，一次请求本来就只filter一次，为什么还要由此特别限定呢，
+         往往我们的常识和实际的实现并不真的一样，经过一番资料的查阅，此方法是为了兼容不同的web container，
+         也就是说并不是所有的container都入我们期望的只过滤一次，servlet版本不同，执行过程也不同，
+         因此，为了兼容各种不同运行环境和版本，默认filter继承OncePerRequestFilter是一个比较稳妥的选择。
+
+        写入的的为 保存在自己的headerWriters
+        X-Content-Type-Options: nosniff
+        X-XSS-Protection: 1; mode=block
+        Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+        Pragma: no-cache
+        Expires: 0
+
+        如果服务器发送响应头 "X-Content-Type-Options: nosniff"，则 script 和 styleSheet 元素会拒绝包含错误的 MIME 类型的响应。
+        这是一种安全功能，有助于防止基于 MIME 类型混淆的攻击
+
+
+        网站可以明确地包含X-XSS-Protection标题，如果一个恶意的输入被反映在文档中，反射的部分将被删除或整个文档根本不会被渲染。
+        X-XSS-Protection告诉浏览器过滤器/审核员应该如何操作。Thare有三种可能的选择：
+        0（禁用XSS过滤器/审核员）
+        1（删除不安全的部分;如果没有X-XSS-Protection标题，这是默认设置）
+        1; mode = block（如果找到XSS，则不要渲染文档）
+
+        后面三个是缓存设置
+
+    3.LogoutFilter
+
+        通常，您会想要调用注销处理程序TokenBasedRememberMeServices和SecurityContextLogoutHandler(按顺序)。
+        注销后，将对由配置的LogoutSuccessHandler或logoutSuccessUrl确定的URL执行重定向，具体取决于使用的构造函数。
+
+        LogoutSuccessHandler实例，以确定注销后的目标目的地。
+        LogoutHandlers 列表用于执行实际的注销功能
+
+    4.ClientCredentialsTokenEndpointFilter      credential:证书
+        OAuth2令牌端点的筛选器和身份验证端点。允许客户端使用作为安全过滤器包含的请求参数进行身份验证，这是规范允许的(但不推荐)。
+        规范建议您允许对客户机进行HTTP基本身份验证，并且完全不使用此筛选器。
+
+
+        认证流程：
+        1. 从request中解析client_id和client_secret
+        2. 将clientId和clientSecret构造成UsernamePasswordAuthenticationToken,
+        交给ProviderManager，然后ProviderManager代理AuthenticationProvider去认证，最后真正执行的是DaoAuthenticationProvider，
+        通过UserDetailsService.loadUserByUsername向表oauth_client_details查询clientDetails信息
+
+        这里的UserDetail是从clientDetailsService里面获取的。
+
+    5.BasicAuthenticationFilter
+        处理HTTP请求的基本授权头，将结果放入securitycontext中。
+        总之，此过滤器负责处理具有HTTP请求头的授权请求，该请求的身份验证方案为Basic和base64编码的username:password token。
+        例如，要验证用户“Aladdin”的密码为“open sesame”，会出现以下标题:
+        Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+        此过滤器可用于向远程协议客户端(如Hessian和SOAP)以及标准用户代理(如Internet Explorer和Netscape)提供基本的身份验证服务。
+        如果身份验证成功，生成的身份验证对象将被放置到securitycontext中。
+        如果身份验证失败，并且ignoreFailure为false(默认值)，则调用AuthenticationEntryPoint实现(除非ignoreFailure属性被设置为true)。
+        通常这应该是BasicAuthenticationEntryPoint，它将提示用户通过基本身份验证再次进行身份验证。
+        基本身份验证是一种很有吸引力的协议，因为它简单且部署广泛。但是，它仍然以明文传输密码，因此在许多情况下是不可取的。
+        Spring Security也提供了摘要身份验证，应该尽可能使用它来代替基本身份验证。看到DigestAuthenticationFilter。
+        注意，如果设置了RememberMeServices，此过滤器将自动将RememberMeServices详细信息发送回客户端。因此，后续请求不需要提供基本身份验证头，
+        因为将使用remember-me机制对它们进行身份验证。
+
+
+        这里没有这个消息头，所以直接过
+
+    6.RequestCacheAwareFilter
+        Spring Security Web对请求提供了缓存机制，如果某个请求被缓存，它的提取和使用是交给RequestCacheAwareFilter完成的。
+
+        系统在启动时，Spring Security Web会首先尝试从容器中获取一个RequestCache bean,获取失败的话，
+        会构建一个缺省的RequestCache对象，然后实例化该过滤器 。
+
+        如果容器中不存在RequestCache bean,Spring Security Web所使用的缺省RequestCache是一个HttpSessionRequestCache,
+        它会将请求保存在http session中，而且不是所有的请求都会被缓存，而是只有符合以下条件的请求才被缓存 ：
+
+        必须是 GET /**
+        并且不能是 /**/favicon.*
+        并且不能是 application.json
+        并且不能是 XMLHttpRequest (也就是一般意义上的 ajax 请求)
+        上面请求缓存条件的定义在RequestCacheConfigurer#createDefaultSavedRequestMatcher中
+
+        这个filter的用途官方解释是 用于用户登录成功后，重新恢复因为登录被打断的请求
+        这个解释也有几点需要说明 被打算的请求：简单点说就是出现了AuthenticationException、AccessDeniedException两类异常
+        重新恢复：既然能够恢复，那肯定请求信息被保存到cache中了 首先看被打断请求是如何保存到cache中的 实际上，
+        上一篇的ExceptionTranslationFilter分析已经提到了 requestCache.saveRequest(request, response) 是的，
+        如果出现AuthenticationException或者是匿名登录的抛出了AccessDeniedException，
+        都会把当前request保存到cache中。这里的cache是HttpSessionRequestCache
+
+
+        这里没有用到
+

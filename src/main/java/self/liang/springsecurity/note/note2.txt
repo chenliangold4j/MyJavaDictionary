@@ -1,0 +1,32 @@
+7.SecurityContextHolderAwareRequestFilter
+    这个过滤器主要是包装请求对象request的
+
+    SecurityContextHolderAwareRequestWrapper类对request包装的目的主要是实现servlet api的一些接口方法isUserInRole、getRemoteUser
+
+8.AnonymousAuthenticationFilter
+    发现没有登录的时候，手工设置了一个匿名的登录人Authentication。
+
+    我们可以在其后的过滤器中，如果没有登录时，我们可以知道当前访问的是匿名用户。
+
+    我们可以通过如下代码获取当前人是匿名用户。
+
+    Authentication auth= SecurityContextHolder.getContext().getAuthentication();
+    if (auth==null || "anonymousUser".equals(auth.getPrincipal().toString()))
+
+9.ExceptionTranslationFilter
+    ExceptionTranslationFilter是个异常过滤器，
+    用来处理在认证授权过程中抛出的异常
+
+10.FilterSecurityInterceptor
+    该过滤器用于控制method级别的权限控制. 官方提供了2种默认的方法权限控制写法
+    一种是在方法上加注释实现, 另一种是在configure配置中通过
+
+    @Secured("ROLE_ADMIN") //法1, 方法定义处加注释, 需先在具体的配置里开启此类配置
+    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+
+    法2, 在复写的configure里直接定义
+    .antMatchers("your match rule").authenticated()
+    .antMatchers("your match rule").hasRole("ADMIN") //使用时权限会自动加前缀ROLE_ADMIN
+    具体细节的代码就不贴了, 官方文档一模一样的都有.
+    上面两种方法最终都会生成一个FilterSecurityInterceptor实例, 放在上面过滤链底部. 用于方法级的鉴权.
+
