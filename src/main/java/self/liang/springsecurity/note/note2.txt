@@ -30,3 +30,28 @@
     具体细节的代码就不贴了, 官方文档一模一样的都有.
     上面两种方法最终都会生成一个FilterSecurityInterceptor实例, 放在上面过滤链底部. 用于方法级的鉴权.
 
+
+
+
+
+一些类的说明：
+    1.UserDetails
+	Collection<? extends GrantedAuthority> getAuthorities();
+	String getPassword();
+	String getUsername();
+	boolean isAccountNonExpired(); //是否没过期
+	boolean isAccountNonLocked(); //是否没有锁定
+	boolean isCredentialsNonExpired();//密码是否没过期
+	boolean isEnabled();//是否可用
+
+
+    2.在普通的用户名密码登录中：
+        AbstractAuthenticationProcessingFilter的successfulAuthentication 设置	SecurityContextHolder.getContext().setAuthentication(authResult);
+        把成功的信息设置到当前线程
+
+        SecurityContextPersistenceFilter 是过滤器最前面的filter
+        它有一个SecurityContextRepository  是HttpSessionSecurityContextRepository 用于保存认证信息
+
+
+
+
