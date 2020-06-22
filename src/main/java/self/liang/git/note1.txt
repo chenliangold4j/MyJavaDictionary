@@ -265,3 +265,7 @@
         7.跨团队协作：fork    pull request
 
 
+        git update-index --assume-unchanged <PATH>
+        这个命令能让Git假装看不见目标文件的改变，但文件本身还是在 Git 的历史记录里的，
+        所以团队的每个人在 fetch 的时候都会拉到目标 文件 的 变更。团队要每次对运行改命令，否则忽略不掉
+
