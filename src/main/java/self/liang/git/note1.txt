@@ -265,7 +265,34 @@
         7.跨团队协作：fork    pull request
 
 
+        8.忽略文件：
+
         git update-index --assume-unchanged <PATH>
         这个命令能让Git假装看不见目标文件的改变，但文件本身还是在 Git 的历史记录里的，
         所以团队的每个人在 fetch 的时候都会拉到目标 文件 的 变更。团队要每次对运行改命令，否则忽略不掉
 
+        git update-index --no-assume-unchanged   sp_edaijia/protected/controllers/ApiController.php  //恢复跟踪
+
+        如果忽略的文件多了，可以使用以下命令查看忽略列表
+
+        git uls-files -v | grep '^h\ '
+        提取文件路径，方法如下
+
+        git ls-files -v | grep '^h\ ' | awk '{print $2}'
+        所有被忽略的文件，取消忽略的方法，如下
+
+        git ls-files -v | grep '^h' | awk '{print $2}' |xargs git update-index --no-assume-unchanged
+
+
+        9.远程分支创建以及直接push
+        git push --set-upstream origin dev_liang 创建远程dev_liang分支 并将本地分支推送上去。
+
+
+        10 删除远程
+         git push origin --delete
+
+        11.关联远程分支
+         git branch --set-upstream-to=origin/dev
+
+        12.推送到远程
+         git push origin HEAD:dev_liang

@@ -45,6 +45,5 @@ public class StreamExample {
         System.out.println("列表中最小的数 : " + stats.getMin());
         System.out.println("所有数之和 : " + stats.getSum());
         System.out.println("平均数 : " + stats.getAverage());
-
     }
 }

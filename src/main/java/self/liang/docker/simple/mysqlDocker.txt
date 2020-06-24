@@ -19,3 +19,7 @@
  通过 docker ps 命令查看是否安装成功：
 
  docker exec -it 3cd...  /bin/bash 进入bash操作
+
+
+ 4.查看docker容器内文件，全拷贝出来看。
+  docker cp testrs:/  D:/test
