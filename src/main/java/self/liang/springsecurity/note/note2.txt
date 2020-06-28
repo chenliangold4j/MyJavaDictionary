@@ -53,5 +53,9 @@
         它有一个SecurityContextRepository  是HttpSessionSecurityContextRepository 用于保存认证信息
 
 
+    3.remember-me 是用cookie
+        注册PersistentTokenRepository 来提供 JdbcTokenRepositoryImpl 将token存入数据库 然后用userDetailService来查询用户。完成记住
+        使用了RememberMeAuthenticationFilter 这个filter来处理
+
 
 

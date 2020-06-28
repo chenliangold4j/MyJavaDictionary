@@ -1,0 +1,43 @@
+https://blog.csdn.net/isea533/article/details/83045335
+https://github.com/abel533/Mapper/wiki
+
+1.常用方法：
+    1）selectOne
+    封装了条件where
+        使用非空的值生成where子句
+        在条件表达式中使用‘=’进行比较
+        要求返回一个，多个会异常
+    2）xxxByPrimaryKey
+        需要@Id注解明确标志
+    3）insert
+        返回主键需要 @GeneratedValue(strategy = GenerationType.IDENTITY) 注解在主键上
+    4) insertSelective
+        为空的字段不插入，主键不管怎么样都会有。
+    5）updateByPrimaryKeySelective
+         用主键：需要注解。非空设置。
+    6） delete  and deleteByPrimaryKey
+         小心 为空 delete删除所有。用deleteByPrimaryKey
+    7）Example  Criteria（n. 标准，条件（criterion 的复数））
+      1.简单示例
+        Example example1 = new Example(Questions.class);
+        Example.Criteria criteria1 = example1.createCriteria();
+        Example.Criteria criteria2 = example1.createCriteria();
+        criteria1.andGreaterThan("salary",7000).andLessThan(" age","25");
+        criteria2.andLessThan("salary",10000 ).andGreaterThan("age",30);
+        example1.or(criteria2);  //注意这里，没有criteria1 只要criteria2
+
+      2.其他设置
+        example1.orderBy("id").asc().orderBy("age").desc();  排序
+        example.setDistinct(true); 去重
+        example.selectProperties("name ,age"); 设置查询字段。
+
+      3.默认的分页是全查，不用
+    8）
+2.常用注解：
+    @Table   注解表明
+    @Column  注解字段对应的数据库列名，默认驼峰转_
+    @Id      注解主键，不然用主键查询不起作用
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  注解主键，说明在insert的时候主键是自增的、
+    @Transient   非数据库字段。框架不处理
+
+3.逆向工程
