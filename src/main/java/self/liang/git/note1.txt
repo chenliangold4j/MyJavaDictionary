@@ -275,7 +275,7 @@
 
         如果忽略的文件多了，可以使用以下命令查看忽略列表
 
-        git uls-files -v | grep '^h\ '
+         git ls-files -v | grep '^h\ '
         提取文件路径，方法如下
 
         git ls-files -v | grep '^h\ ' | awk '{print $2}'
@@ -296,3 +296,5 @@
 
         12.推送到远程
          git push origin HEAD:dev_liang
+
+
