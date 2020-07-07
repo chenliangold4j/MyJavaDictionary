@@ -41,3 +41,4 @@ https://github.com/abel533/Mapper/wiki
     @Transient   非数据库字段。框架不处理
 
 3.逆向工程
+    https://github.com/abel533/Mapper/wiki/4.1.mappergenerator
