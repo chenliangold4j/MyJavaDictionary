@@ -1,0 +1,4 @@
+1.linux buff/cache 非常多。
+2. 查看发现pay微服务每秒产生大量内存  500M
+3. 用arthas 查看 org.springframework.amqp.rabbit.RabbitListenerEndpointContainer cpu占用高。
+4. 添加配置 publisher-returns: false #支持消息发送失败返回队列
