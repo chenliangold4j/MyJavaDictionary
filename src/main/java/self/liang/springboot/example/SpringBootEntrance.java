@@ -143,6 +143,11 @@ import javax.sql.DataSource;
  *     在properties文件中添加mybatis相关代码
  *
  *
+ * ComponentScanAnnotationParser 包扫描的实际实施类
+ *
+ *  ClassPathBeanDefinitionScanner doScan 方法可以debug到扫描的包。
+ *
+ *
  */
 //@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})//这里配置不自动初始化datasource ，没有配置datasource的配置文件
 @SpringBootApplication

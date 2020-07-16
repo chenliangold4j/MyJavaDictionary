@@ -1,0 +1,3 @@
+1. client 流程分析
+    org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration 自动配置EnurekaClient
+    默认调用 RefreshableEurekaClientConfiguration 的eurekaClient 方法注册bean

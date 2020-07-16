@@ -264,7 +264,6 @@
 
         7.跨团队协作：fork    pull request
 
-
         8.忽略文件：
 
         git update-index --assume-unchanged <PATH>
@@ -275,7 +274,7 @@
 
         如果忽略的文件多了，可以使用以下命令查看忽略列表
 
-        git uls-files -v | grep '^h\ '
+         git ls-files -v | grep '^h\ '
         提取文件路径，方法如下
 
         git ls-files -v | grep '^h\ ' | awk '{print $2}'
@@ -289,10 +288,19 @@
 
 
         10 删除远程
-         git push origin --delete
+         git push origin --delete [branch_name]
 
         11.关联远程分支
          git branch --set-upstream-to=origin/dev
 
         12.推送到远程
          git push origin HEAD:dev_liang
+
+
+        比如我们要回滚 main.js 文件
+
+        git log 查看 hash
+        git log main.js 首先要找到要回滚的版本的hash值，上图中hash值是 2d1ed0e066fd9fde6aef913c102fd808e86161fa
+        git checkout 2d1ed0 main.js 利用 hash 回滚特定文件，注意，这里为了方便操作，使用 hash 的前六位就可以
+        git commit -m '回滚main.js' 回滚后需要提交
+
