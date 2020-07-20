@@ -70,6 +70,8 @@
    #docker -v挂载宿主机的一个目录。  docker create ：创建一个新的容器但不启动它
    docker create --name master01 -v /data/mysql/master/data:/var/lib/mysql -v /data/mysql/master01/conf:/etc/my.cnf.d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7.28
    docker create --name master01 -v D:/docker/master01:/var/lib/mysql -v D:/docker/master01/conf:/etc/mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7.28
+
+   docker create --name master01 -v D:/dockerConfig/mysql/data:/var/lib/mysql -v D:/dockerConfig/mysql/conf:/etc/mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7.28
    #启动
                    # docker logs [OPTIONS] CONTAINER
                       Options:

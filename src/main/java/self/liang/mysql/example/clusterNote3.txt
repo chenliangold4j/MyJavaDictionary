@@ -36,6 +36,8 @@ MyCat中间件
         docker create --name master01 -v D:/docker/master02/conf:/etc/mysql -p 3316:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7.28
         docker create --name slave02 -v D:/docker/slave02/conf:/etc/mysql -p 3317:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7.28
 
+        docker create --name master01 -v D:/dockerConfig/mysql/conf:/etc/mysql -p 3316:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7.28
+
         #master
          create user 'itcast'@'%' identified by 'itcast'
            grant replication slave on *.* to 'itcast'@'%';
