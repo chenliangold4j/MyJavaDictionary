@@ -72,6 +72,7 @@
    docker create --name master01 -v D:/docker/master01:/var/lib/mysql -v D:/docker/master01/conf:/etc/mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7.28
 
    docker create --name master01 -v D:/dockerConfig/mysql/data:/var/lib/mysql -v D:/dockerConfig/mysql/conf:/etc/mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7.28
+   docker create --name binlog_test -v D:/docker/binlog_test/data:/var/lib/mysql -v D:/docker/binlog_test/conf:/etc/mysql -p 3336:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7.28
    #启动
                    # docker logs [OPTIONS] CONTAINER
                       Options:

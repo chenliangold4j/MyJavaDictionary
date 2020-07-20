@@ -152,22 +152,6 @@
                      1.切换到被合并的分支上。例如 hot fix 要与master 合并，需要切换到master; git checkout master
                      2.执行 git merge hot_fix
                  5.解决冲突
-                         apple
-                         <<<<<<< HEAD
-                         dsafdasf
-                         apple
-
-                         asdfasdf
-                         asdfsdaf
-                         =======
-                         dfsdfsdf
-                         sdfdsf
-                         ddddddd
-                         dfsafdas
-                         >>>>>>> dev
-                   从<<<<<<< HEAD 到 ======= 是当前分支的内容。
-                   从======= 到  >>>>>>> dev 是另外分支的内容。
-
                    解决网冲突 需要 再 git add  git commit 完成解决冲突
                    解决冲突的git commit 不能带文件名
                 6.删除分支
