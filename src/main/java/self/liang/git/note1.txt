@@ -288,3 +288,7 @@
         git checkout 2d1ed0 main.js 利用 hash 回滚特定文件，注意，这里为了方便操作，使用 hash 的前六位就可以
         git commit -m '回滚main.js' 回滚后需要提交
 
+
+//删除所有target  之后再commit
+git rm --cached */target/*
+
