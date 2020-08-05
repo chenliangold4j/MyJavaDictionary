@@ -289,6 +289,6 @@
         git commit -m '回滚main.js' 回滚后需要提交
 
 
-//删除所有target  之后再commit
-git rm --cached */target/*
+        //删除所有target  之后再commit
+        git rm --cached */target/*
 
