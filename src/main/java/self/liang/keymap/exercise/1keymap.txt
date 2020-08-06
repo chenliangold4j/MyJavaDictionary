@@ -8,6 +8,7 @@
     1. alt + 1 project
     2. alt + f12
     3. 其他见 view - tool windows
+    4. 大多数区域 按esc 跳回光标处
 
 三.代码区域选择：
     1. ctrl + w  按一次选单词，多次按范围扩大
