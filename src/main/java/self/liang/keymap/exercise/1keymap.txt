@@ -1,12 +1,12 @@
 一，新建类流程
     1. alt + 1 选择project空间
     2. alt + ctrl + insert 新建package 和 类
-    3. ctrl + b enter the class
+    3. ctrl + b enter the class   ，ctrl + alt +b 进入实现类
     4. ctrl + g chose line number
 
 二.区域跳转
     1. alt + 1 project
-    2. alt + f12
+    2. alt + f12 terminal
     3. 其他见 view - tool windows
     4. 大多数区域 按esc 跳回光标处
 
@@ -21,6 +21,7 @@
 四.编辑
     1.ctrl + alt + enter 插入到上一行
     2.shift + enter 插入到下一行
-
+    3.alt f1,1 找到当前类。
+    4.ctrl f4 关闭当前类
 
 
