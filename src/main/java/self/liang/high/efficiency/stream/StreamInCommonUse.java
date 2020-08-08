@@ -41,7 +41,7 @@ public class StreamInCommonUse {
 //
 //        可用 Stream 替换值，并将多个 Stream 流合并成一个 Stream 流。
         List<Integer> list = (List<Integer>) Stream.of(Arrays.asList(1, 2, 3, 4, 5, 6), Arrays.asList(8, 9, 10, 11, 12))
-                .flatMap(test -> test.stream()).collect(Collectors.toList());
+                .flatMap(Collection::stream).collect(Collectors.toList());
 
         for (int i = 0, length = list.size(); i < length; i++) {
             System.out.println(list.get(i));
@@ -93,7 +93,7 @@ public class StreamInCommonUse {
 
         List<String> strings = Arrays.asList("abc", "", "bc", "efg", "abcd", "", "jkl");
 
-        int asInt = strings.parallelStream().mapToInt(s -> s.length()).max().getAsInt();
+        int asInt = strings.parallelStream().mapToInt(String::length).max().getAsInt();
         System.out.println(asInt);
 
         List<String> list = Arrays.asList("Geeks", "GFG",
@@ -120,7 +120,7 @@ public class StreamInCommonUse {
             return string.isEmpty();
         }).count();
         System.out.println(count);
-        String collect = strings.stream().collect(Collectors.joining(","));
+        String collect = String.join(",", strings);
         System.out.println(collect);
     }
 
@@ -132,10 +132,6 @@ public class StreamInCommonUse {
             list.add(Integer.toString(num));
         });
 
-        List<String> arrs = list.stream().filter(str -> {
-            return Integer.parseInt(str) > 0;
-        }).collect(Collectors.toList());
-
-        System.out.println(Arrays.toString(arrs.toArray()));
+        System.out.println(Arrays.toString(list.stream().filter(str -> Integer.parseInt(str) > 0).toArray()));
     }
 }
