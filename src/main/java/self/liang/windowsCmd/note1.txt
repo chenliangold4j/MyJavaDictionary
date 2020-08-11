@@ -1,0 +1,65 @@
+Linux的alias命令是个非常实用的工具，任何命令通过alias可以精简到很短，
+
+比如：
+
+alias l='ls -l'
+下次我们用l就可以达到ls -l一样的效果。
+
+Windows也有alias类似的命令，就是：doskey。
+
+开启方法也很简单。
+
+1、编写bat文件，内容：
+
+@doskey ls=dir /b $*
+@doskey l=dir /od/p/q/tw $*
+其中，
+
+等号左边是右边的别名
+$*表示这个命令还可能有其他参数
+@表示执行这条命令时不显示这条命令本身
+2、保存这个文件，比如用户目录下：C:\Users\XX(我的用户名)\fastkey.bat
+
+3、编写一个注册表修改文件，名为：fastkey.reg，内容：
+
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Microsoft\Command Processor]
+"AutoRun"="%USERPROFILE%\\fastkey.bat"
+然后双击执行这个文件。
+
+再打开DOS命令行，输入ls或者l就能看到效果了。
+完成后可以删除fastkey.reg文件。
+
+
+
+查看可用的别名
+查看可用的别名，可以通过” ls alias:” 或者 ”Get-Alias“
+如何查看所有以Remove打头的cmdlet的命令的别名呢？
+
+
+创建自己的别名
+给记事本创建一个别名，并查看该别名；
+
+PS C:\PS> Set-Alias -Name Edit -Value notepad
+PS C:\PS> Edit
+PS C:\PS> $alias:Edit
+notepad
+
+删除自己的别名
+别名不用删除，自定义的别名在powershell退出时会自动清除。但是请放心，powershell内置别名（诸如ls,dir,fl等）不会清除。如果你非得手工删除别名。请使用
+
+PS C:\PS> del alias:Edit
+
+保存自己的别名
+可以使用Export-Alias将别名导出到文件，需要时再通过Import-Alias导入。但是导入时可能会有异常，提示别名已经存在无法导入：
+
+PS C:\PS> Import-Alias alias.ps1
+Import-Alias : Alias not allowed because an alias with the name 'ac' already exists.
+At line:1 char:13
++ Import-Alias <<<<  alias.ps1
+    + CategoryInfo          : ResourceExists: (ac:String) [Import-Alias], SessionStateException
+    + FullyQualifiedErrorId : AliasAlreadyExists,Microsoft.PowerShell.Commands.ImportAliasCommand
+这时可以使用Force强制导入。
+PS C:\PS> Export-Alias alias.ps1
+PS C:\PS> Import-Alias -Force alias.ps1
