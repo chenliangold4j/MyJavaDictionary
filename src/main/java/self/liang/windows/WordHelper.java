@@ -17,6 +17,7 @@ public class WordHelper {
         String xml = FileUtil.readString(file, "UTF8");
         List<Map<String, String>> allItemFromXmlString = Dom4jUtilForWord.getAllItemFromXmlString(xml);
         TrayIconUtil.startToast(allItemFromXmlString);
+
     }
 
     private void printDir() {
