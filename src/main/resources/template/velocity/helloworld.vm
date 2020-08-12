@@ -1,0 +1,36 @@
+
+##1.变量
+#set($name ="velocity")
+#set($hello ="hello $name")
+Welcome $name to $hello
+
+
+##2.循环
+#foreach($element in $list)
+This is $element
+    $velocityCount
+#end
+
+##条件语句
+##Velocity 引擎提供了 AND、OR 和 NOT 操作符，分别对应&&、||和! 例如：
+#if(2>1)
+#elseif(1<6)
+#else
+#end
+
+
+##2.5 宏
+##Velocity 中的宏可以理解为函数定义。定义的语法如下：
+#macro(sayHello $name)
+hello $name
+#end
+
+#sayHello("velocity")
+
+##2.6 内嵌和引用
+###parse 和 #include 指令的功能都是在外部引用文件，二者的区别是：
+##
+###parse会将引用的内容当成类似于源码文件，会将内容在引入的地方进行解析
+###include是将引入文件当成资源文件，会将引入内容原封不动地以文本输出
+
+
