@@ -1,7 +1,5 @@
 package self.liang.reconsitution.example.eighth;
 
-import com.sun.xml.internal.ws.api.model.wsdl.WSDLFault;
-
 /**
  * 以子类取代类型码
  * <p>
