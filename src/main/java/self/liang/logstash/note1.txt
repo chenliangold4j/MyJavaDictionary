@@ -2,4 +2,4 @@
 
 docker run  -d -it -p 4567:4567 --name logstash -v D:\dockerConfig\logstash\pipeline:/usr/share/logstash/pipeline/ logstash:6.4.3
 
-
+docker run  -d -it -p 9888:4567 -p9889:4568 -p 9890:4569 --name logstash -v D:\dockerConfig\logstash\pipeline:/usr/share/logstash/pipeline/ logstash:6.4.3
