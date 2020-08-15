@@ -14,7 +14,9 @@ public class TrayIconUtil {
             new Thread(() -> {
                 Random random = new Random(System.currentTimeMillis());
                 while (true) {
+                    System.out.println("size:"+words.size());
                     int i = random.nextInt(words.size());
+                    System.out.println("index："+i);
                     Map<String, String> stringStringMap = words.get(i);
                     try {
                         TrayIconUtil.displayTray(stringStringMap.get("word"), stringStringMap.get("trans"), stringStringMap.get("phonetic"));
@@ -22,7 +24,7 @@ public class TrayIconUtil {
                         e.printStackTrace();
                     }
                     try {
-                        Thread.sleep(30* 1000);
+                        Thread.sleep(15* 1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

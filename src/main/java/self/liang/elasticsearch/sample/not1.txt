@@ -5,6 +5,9 @@
 2.安装：
    docker run -d  -p 9300:9300 -p 9200:9200  -e "discovery.type=single-node" --name es01 elasticsearch:6.4.3
    docker run -d  -p 9013:9300 -p 9012:9200  -e "discovery.type=single-node" --name es01 elasticsearch:6.4.3
+
+     如需数据
+     docker run -d  -p 9300:9300 -p 9200:9200   -v D:\dockerConfig\esdata:/usr/share/elasticsearch/data  -e "discovery.type=single-node" --name es01 elasticsearch:6.4.3
    进入docker 安装分词器
    ./elasticsearch-plugin install https://litemall-liang-test.oss-cn-zhangjiakou.aliyuncs.com/elasticsearch-analysis-ik-6.4.3.zip
 3.文档
