@@ -1,2 +1,2 @@
 docker run -it -d -p5601:5601 -e ELASTICSEARCH_URL=http://172.17.0.1:9200  -e "I18N_LOCALE=zh-CN" --name kibana  kibana:6.4.3
-docker run -it -d -p5601:5601 -e ELASTICSEARCH_URL=http://172.17.0.1:9012  -e "I18N_LOCALE=zh-CN" --name kibana  kibana:6.4.3
+docker run -it -d -p15601:5601 -e ELASTICSEARCH_URL=http://172.17.0.1:9012  -e "I18N_LOCALE=zh-CN" --name kibana  kibana:6.4.3

@@ -1,0 +1,12 @@
+# yaml 配置实例
+version: '3'
+services:
+  demo:
+    ports:
+      - "6060:6060"
+    image: es-test:latest
+    external_links:
+      - elasticsearch:elasticsearch
+      - redis:redis
+      - rabbitmq:rabbitmq
+    container_name: es-test

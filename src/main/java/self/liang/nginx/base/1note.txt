@@ -1,6 +1,6 @@
 1.基本：
     反向代理，负载均衡，正向代理，动静分离（动态资源和静态资源分离。如 img 静态 servlet 动态）。
-     docker run -d --name mynginx -vD:\docker\nginx\nginx:/etc/nginx -p80:80 -p8000:8000 nginx:1.12.0
+    docker run -d --name mynginx -vD:\docker\nginx\nginx:/etc/nginx -p80:80 -p8000:8000  nginx:1.12.0
 
 2.配置文件：
     第一部分：全局块：

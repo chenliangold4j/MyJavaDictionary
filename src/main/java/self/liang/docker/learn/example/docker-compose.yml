@@ -1,0 +1,24 @@
+# yaml 配置实例
+version: '3'
+services:
+  elasticsearch:
+    image: elasticsearch:6.4.3
+    container_name: elasticsearch-es-test
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  redis:
+    image: redis:3.2
+    container_name: redis-es-test
+    command: redis-server --appendonly yes
+  rabbitmq:
+    image: rabbitmq:3.7.15-management
+    container_name: rabbitmq-es-test
+  demo:
+    ports:
+      - "6060:6060"
+    image: es-test:latest
+    links:
+      - elasticsearch:elasticsearch
+      - redis:redis
+      - rabbitmq:rabbitmq
+    container_name: es-test
