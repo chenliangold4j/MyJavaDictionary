@@ -1,14 +1,11 @@
 package self.liang.windows;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.json.JSONUtil;
-import self.liang.xml.example.Dom4jUtil;
 import self.liang.xml.example.Dom4jUtilForWord;
 
 import java.io.File;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 public class WordHelper {
 

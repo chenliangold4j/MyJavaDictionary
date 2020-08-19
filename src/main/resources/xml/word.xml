@@ -1,212 +1,186 @@
-<wordbook>
-    <item>
-        <word>balance</word>
-        <trans><![CDATA[n. 平衡；余额；匀称
+<wordbook><item>
+		<word>balance</word>
+		<trans><![CDATA[n. 平衡；余额；匀称
 
 vt. 使平衡；结算；使相称
 
 vi. 保持平衡；相称；抵销
 
 n. (Balance)人名；(西)巴兰塞]]></trans>
-        <phonetic><![CDATA[[ˈbæləns]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>donut</word>
-        <trans><![CDATA[n. 炸面圈，多纳圈（doughnut 的另一种拼法）]]></trans>
-        <phonetic><![CDATA[[ˈdəʊnʌt]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>metric</word>
-        <trans><![CDATA[adj. 公制的；米制的；公尺的
+		<phonetic><![CDATA[[ˈbæləns]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>donut</word>
+		<trans><![CDATA[n. 炸面圈，多纳圈（doughnut 的另一种拼法）]]></trans>
+		<phonetic><![CDATA[[ˈdəʊnʌt]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>metric</word>
+		<trans><![CDATA[adj. 公制的；米制的；公尺的
 
 n. 度量标准]]></trans>
-        <phonetic><![CDATA[[ˈmetrɪk]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>aggregation</word>
-        <trans><![CDATA[n. [地质][数] 聚合，聚集；聚集体，集合体]]></trans>
-        <phonetic><![CDATA[[ˌæɡrɪˈɡeɪʃn]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>visualize</word>
-        <trans><![CDATA[vt. 形象，形象化；想像，设想
+		<phonetic><![CDATA[[ˈmetrɪk]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>aggregation</word>
+		<trans><![CDATA[n. [地质][数] 聚合，聚集；聚集体，集合体]]></trans>
+		<phonetic><![CDATA[[ˌæɡrɪˈɡeɪʃn]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>visualize</word>
+		<trans><![CDATA[vt. 形象，形象化；想像，设想
 
 vi. 显现]]></trans>
-        <phonetic><![CDATA[[ˈvɪʒuəlaɪz]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>significant</word>
-        <trans><![CDATA[adj. 重大的；有效的；有意义的；值得注意的；意味深长的
+		<phonetic><![CDATA[[ˈvɪʒuəlaɪz]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>significant</word>
+		<trans><![CDATA[adj. 重大的；有效的；有意义的；值得注意的；意味深长的
 
 n. 象征；有意义的事物]]></trans>
-        <phonetic><![CDATA[[sɪɡˈnɪfɪkənt]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>histogram</word>
-        <trans><![CDATA[n. [统计] 直方图；柱状图]]></trans>
-        <phonetic><![CDATA[[ˈhɪstəɡræm]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>trunc</word>
-        <trans><![CDATA[n. 将数字截尾取整
+		<phonetic><![CDATA[[sɪɡˈnɪfɪkənt]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>histogram</word>
+		<trans><![CDATA[n. [统计] 直方图；柱状图]]></trans>
+		<phonetic><![CDATA[[ˈhɪstəɡræm]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>trunc</word>
+		<trans><![CDATA[n. 将数字截尾取整
 
 n. (Trunc)人名；(捷)特伦茨]]></trans>
-        <phonetic><![CDATA[]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>expressions</word>
-        <trans><![CDATA[n. [数] 表达式；表情；公式；表示式（expression是复数形式）]]></trans>
-        <phonetic><![CDATA[[ɪk'spreʃ(ə)nz]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>timestamp</word>
-        <trans><![CDATA[n. 时间戳；时间邮票]]></trans>
-        <phonetic><![CDATA[[ˈtaɪmstæmp]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>similarly</word>
-        <trans><![CDATA[adv. 类似地，差不多地；同样地，也]]></trans>
-        <phonetic><![CDATA[[ˈsɪmələli]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>nested</word>
-        <trans><![CDATA[adj. 嵌套的，内装的
+		<phonetic><![CDATA[]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>expressions</word>
+		<trans><![CDATA[n. [数] 表达式；表情；公式；表示式（expression是复数形式）]]></trans>
+		<phonetic><![CDATA[[ɪk'spreʃ(ə)nz]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>timestamp</word>
+		<trans><![CDATA[n. 时间戳；时间邮票]]></trans>
+		<phonetic><![CDATA[[ˈtaɪmstæmp]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>similarly</word>
+		<trans><![CDATA[adv. 类似地，差不多地；同样地，也]]></trans>
+		<phonetic><![CDATA[[ˈsɪmələli]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>nested</word>
+		<trans><![CDATA[adj. 嵌套的，内装的
 
 v. 筑巢；嵌入（nest的过去分词）]]></trans>
-        <phonetic><![CDATA[['nestɪd]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>omit</word>
-        <trans><![CDATA[vt. 省略；遗漏；删除；疏忽]]></trans>
-        <phonetic><![CDATA[[əˈmɪt]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>evaluate</word>
-        <trans><![CDATA[vt. 评价；估价；求…的值
+		<phonetic><![CDATA[['nestɪd]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>omit</word>
+		<trans><![CDATA[vt. 省略；遗漏；删除；疏忽]]></trans>
+		<phonetic><![CDATA[[əˈmɪt]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>evaluate</word>
+		<trans><![CDATA[vt. 评价；估价；求…的值
 
 vi. 评价；估价]]></trans>
-        <phonetic><![CDATA[[ɪˈvæljueɪt]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>existence</word>
-        <trans><![CDATA[n. 存在，实在；生存，生活；存在物，实在物]]></trans>
-        <phonetic><![CDATA[[ɪɡˈzɪstəns]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>accessing</word>
-        <trans><![CDATA[n. [计] 访问
+		<phonetic><![CDATA[[ɪˈvæljueɪt]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>existence</word>
+		<trans><![CDATA[n. 存在，实在；生存，生活；存在物，实在物]]></trans>
+		<phonetic><![CDATA[[ɪɡˈzɪstəns]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>accessing</word>
+		<trans><![CDATA[n. [计] 访问
 
 v. [计] 访问（access的ing形式）；接近；到达]]></trans>
-        <phonetic><![CDATA[[ˈæksesɪŋ]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>favor</word>
-        <trans><![CDATA[v. 较喜欢；偏袒；有利于；（非正式）长得像；悉心照料
+		<phonetic><![CDATA[[ˈæksesɪŋ]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>favor</word>
+		<trans><![CDATA[v. 较喜欢；偏袒；有利于；（非正式）长得像；悉心照料
 
 n. 帮助；提拔；徽章；赞同；偏袒；同意性交]]></trans>
-        <phonetic><![CDATA[[ˈfeɪvə(r)]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>deprecated</word>
-        <trans><![CDATA[v. 不赞成；弃用；不宜用（deprecate的过去式及过去分词形式）]]></trans>
-        <phonetic><![CDATA[[ˈdeprəkeɪtɪd]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>consist</word>
-        <trans><![CDATA[vi. 由…组成；在于；符合]]></trans>
-        <phonetic><![CDATA[[kənˈsɪst]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>section</word>
-        <trans><![CDATA[n. 截面；部分；部门；地区；章节
+		<phonetic><![CDATA[[ˈfeɪvə(r)]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>deprecated</word>
+		<trans><![CDATA[v. 不赞成；弃用；不宜用（deprecate的过去式及过去分词形式）]]></trans>
+		<phonetic><![CDATA[[ˈdeprəkeɪtɪd]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>consist</word>
+		<trans><![CDATA[vi. 由…组成；在于；符合]]></trans>
+		<phonetic><![CDATA[[kənˈsɪst]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>section</word>
+		<trans><![CDATA[n. 截面；部分；部门；地区；章节
 
 vi. 被切割成片；被分成部分
 
 vt. 把…分段；将…切片；对…进行划分]]></trans>
-        <phonetic><![CDATA[[ˈsekʃn]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>criteria</word>
-        <trans><![CDATA[n. 标准，条件（criterion 的复数）]]></trans>
-        <phonetic><![CDATA[[kraɪ'tɪərɪə]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>upgrading</word>
-        <trans><![CDATA[v. （使）（机器、计算机系统等）升级；提高（设施、服务等的）档次；给（飞机乘客或酒店住客）升级；给（某人）升职；提高（某事物的）地位（upgrade 的现在分词）]]></trans>
-        <phonetic><![CDATA[[ˌʌpˈɡreɪdɪŋ]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>persist</word>
-        <trans><![CDATA[vi. 存留，坚持；持续，固执
+		<phonetic><![CDATA[[ˈsekʃn]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>criteria</word>
+		<trans><![CDATA[n. 标准，条件（criterion 的复数）]]></trans>
+		<phonetic><![CDATA[[kraɪ'tɪərɪə]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>upgrading</word>
+		<trans><![CDATA[v. （使）（机器、计算机系统等）升级；提高（设施、服务等的）档次；给（飞机乘客或酒店住客）升级；给（某人）升职；提高（某事物的）地位（upgrade 的现在分词）]]></trans>
+		<phonetic><![CDATA[[ˌʌpˈɡreɪdɪŋ]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>persist</word>
+		<trans><![CDATA[vi. 存留，坚持；持续，固执
 
 vt. 坚持说，反复说]]></trans>
-        <phonetic><![CDATA[[pəˈsɪst]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>excessive</word>
-        <trans><![CDATA[adj. 过多的，极度的；过分的]]></trans>
-        <phonetic><![CDATA[[ɪkˈsesɪv]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>particular</word>
-        <trans><![CDATA[adj. 特别的；详细的；独有的；挑剔的
+		<phonetic><![CDATA[[pəˈsɪst]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>excessive</word>
+		<trans><![CDATA[adj. 过多的，极度的；过分的]]></trans>
+		<phonetic><![CDATA[[ɪkˈsesɪv]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>particular</word>
+		<trans><![CDATA[adj. 特别的；详细的；独有的；挑剔的
 
 n. 详细说明；个别项目]]></trans>
-        <phonetic><![CDATA[[pəˈtɪkjələ(r)]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>mount</word>
-        <trans><![CDATA[vt. 增加；爬上；使骑上马；安装，架置；镶嵌，嵌入；准备上演；成立（军队等）
+		<phonetic><![CDATA[[pəˈtɪkjələ(r)]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>mount</word>
+		<trans><![CDATA[vt. 增加；爬上；使骑上马；安装，架置；镶嵌，嵌入；准备上演；成立（军队等）
 
 vi. 爬；增加；上升
 
@@ -215,1033 +189,906 @@ n. 山峰；底座；乘骑用马；攀，登；运载工具；底座
 n. （英）芒特（人名）
 
 v. 登上；骑上]]></trans>
-        <phonetic><![CDATA[[maʊnt]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>approach</word>
-        <trans><![CDATA[v. 走进；与……接洽；处理；临近，逐渐接近（某时间或事件）；几乎达到（某水平或状态）
+		<phonetic><![CDATA[[maʊnt]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>approach</word>
+		<trans><![CDATA[v. 走进；与……接洽；处理；临近，逐渐接近（某时间或事件）；几乎达到（某水平或状态）
 
 n. 方法，方式；接近；接洽；（某事的）临近；路径；进场（着陆）；相似的事物]]></trans>
-        <phonetic><![CDATA[[əˈprəʊtʃ]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>essential</word>
-        <trans><![CDATA[adj. 基本的；必要的；本质的；精华的
+		<phonetic><![CDATA[[əˈprəʊtʃ]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>essential</word>
+		<trans><![CDATA[adj. 基本的；必要的；本质的；精华的
 
 n. 本质；要素；要点；必需品]]></trans>
-        <phonetic><![CDATA[[ɪˈsenʃl]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>batch</word>
-        <trans><![CDATA[n. 一批；一炉；一次所制之量
+		<phonetic><![CDATA[[ɪˈsenʃl]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>batch</word>
+		<trans><![CDATA[n. 一批；一炉；一次所制之量
 
 vt. 分批处理
 
 n. (Batch)人名；(英)巴奇]]></trans>
-        <phonetic><![CDATA[[bætʃ]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>notation</word>
-        <trans><![CDATA[n. 符号；乐谱；注释；记号法]]></trans>
-        <phonetic><![CDATA[[nəʊˈteɪʃn]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>hierarchical</word>
-        <trans><![CDATA[adj. 分层的；等级体系的]]></trans>
-        <phonetic><![CDATA[[ˌhaɪəˈrɑːkɪkl]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>specify</word>
-        <trans><![CDATA[vt. 指定；详细说明；列举；把…列入说明书]]></trans>
-        <phonetic><![CDATA[[ˈspesɪfaɪ]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>convenient</word>
-        <trans><![CDATA[adj. 方便的；[废语]适当的；[口语]近便的；实用的]]></trans>
-        <phonetic><![CDATA[[kənˈviːniənt]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>shrink</word>
-        <trans><![CDATA[v. （使）缩小，（使）收缩；（尤指因恐惧而）退缩，畏缩，回避；（衣服、布料）缩水
+		<phonetic><![CDATA[[bætʃ]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>notation</word>
+		<trans><![CDATA[n. 符号；乐谱；注释；记号法]]></trans>
+		<phonetic><![CDATA[[nəʊˈteɪʃn]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>hierarchical</word>
+		<trans><![CDATA[adj. 分层的；等级体系的]]></trans>
+		<phonetic><![CDATA[[ˌhaɪəˈrɑːkɪkl]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>specify</word>
+		<trans><![CDATA[vt. 指定；详细说明；列举；把…列入说明书]]></trans>
+		<phonetic><![CDATA[[ˈspesɪfaɪ]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>convenient</word>
+		<trans><![CDATA[adj. 方便的；[废语]适当的；[口语]近便的；实用的]]></trans>
+		<phonetic><![CDATA[[kənˈviːniənt]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>shrink</word>
+		<trans><![CDATA[v. （使）缩小，（使）收缩；（尤指因恐惧而）退缩，畏缩，回避；（衣服、布料）缩水
 
 n. 收缩；畏缩；（非正式）精神病医生，精神病学家，心理学家]]></trans>
-        <phonetic><![CDATA[[ʃrɪŋk]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>conformance</word>
-        <trans><![CDATA[n. 一致性；顺应]]></trans>
-        <phonetic><![CDATA[[kənˈfɔːməns]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>Material</word>
-        <trans><![CDATA[n. （巴、美、印、墨）妈特力娅乐（人名）]]></trans>
-        <phonetic><![CDATA[[məˈtɪriəl]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>assign</word>
-        <trans><![CDATA[vt. 分配；指派；[计][数] 赋值
+		<phonetic><![CDATA[[ʃrɪŋk]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>conformance</word>
+		<trans><![CDATA[n. 一致性；顺应]]></trans>
+		<phonetic><![CDATA[[kənˈfɔːməns]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>Material</word>
+		<trans><![CDATA[n. （巴、美、印、墨）妈特力娅乐（人名）]]></trans>
+		<phonetic><![CDATA[[məˈtɪriəl]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>assign</word>
+		<trans><![CDATA[vt. 分配；指派；[计][数] 赋值
 
 vi. 将财产过户（尤指过户给债权人）]]></trans>
-        <phonetic><![CDATA[[əˈsaɪn]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>archive</word>
-        <trans><![CDATA[n. 档案馆；档案文件
+		<phonetic><![CDATA[[əˈsaɪn]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>archive</word>
+		<trans><![CDATA[n. 档案馆；档案文件
 
 vt. 把…存档]]></trans>
-        <phonetic><![CDATA[[ˈɑːrkaɪv]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>distribution</word>
-        <trans><![CDATA[n. 分布；分配；供应]]></trans>
-        <phonetic><![CDATA[[ˌdɪstrɪˈbjuːʃn]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>translate</word>
-        <trans><![CDATA[vt. 翻译；转化；解释；转变为；调动
+		<phonetic><![CDATA[[ˈɑːrkaɪv]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>distribution</word>
+		<trans><![CDATA[n. 分布；分配；供应]]></trans>
+		<phonetic><![CDATA[[ˌdɪstrɪˈbjuːʃn]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>translate</word>
+		<trans><![CDATA[vt. 翻译；转化；解释；转变为；调动
 
 vi. 翻译]]></trans>
-        <phonetic><![CDATA[[trænzˈleɪt; trænsˈleɪt]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>district</word>
-        <trans><![CDATA[n. 区域；地方；行政区]]></trans>
-        <phonetic><![CDATA[[ˈdɪstrɪkt]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>acquisition</word>
-        <trans><![CDATA[n. 获得物，获得；收购
+		<phonetic><![CDATA[[trænzˈleɪt; trænsˈleɪt]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>district</word>
+		<trans><![CDATA[n. 区域；地方；行政区]]></trans>
+		<phonetic><![CDATA[[ˈdɪstrɪkt]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>acquisition</word>
+		<trans><![CDATA[n. 获得物，获得；收购 
 Acquisition: 收购 ; 获得 ; 购买]]></trans>
-        <phonetic><![CDATA[[,ækwɪ'zɪʃ(ə)n]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>generic</word>
-        <trans><![CDATA[adj. 类的；一般的；属的；非商标的]]></trans>
-        <phonetic><![CDATA[[dʒə'nɛrɪk]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>invocation</word>
-        <trans><![CDATA[n. 祈祷；符咒；【法律】(法院对另案的)文件调取；(法权的)行使]]></trans>
-        <phonetic><![CDATA[[,ɪnvə'keʃən]]]></phonetic>
-        <tags></tags>
-        <progress>2</progress>
-    </item>
-    <item>
-        <word>direct</word>
-        <trans><![CDATA[adj. 直接的；直系的；亲身的；恰好的
+		<phonetic><![CDATA[[,ækwɪ'zɪʃ(ə)n]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>generic</word>
+		<trans><![CDATA[adj. 类的；一般的；属的；非商标的]]></trans>
+		<phonetic><![CDATA[[dʒə'nɛrɪk]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>invocation</word>
+		<trans><![CDATA[n. 祈祷；符咒；【法律】(法院对另案的)文件调取；(法权的)行使]]></trans>
+		<phonetic><![CDATA[[,ɪnvə'keʃən]]]></phonetic>
+		<tags></tags>
+		<progress>2</progress>
+	</item><item>
+		<word>direct</word>
+		<trans><![CDATA[adj. 直接的；直系的；亲身的；恰好的
 vt. 管理；指挥；导演；指向
 vi. 指导；指挥
 adv. 直接地；正好；按直系关系]]></trans>
-        <phonetic><![CDATA[[dəˈrɛkt; daɪˈrɛkt]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>relinquish</word>
-        <trans><![CDATA[vt. 放弃；放手；让渡]]></trans>
-        <phonetic><![CDATA[[rɪ'lɪŋkwɪʃ]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>proceed</word>
-        <trans><![CDATA[vi. 开始；继续进行；发生；行进
+		<phonetic><![CDATA[[dəˈrɛkt; daɪˈrɛkt]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>relinquish</word>
+		<trans><![CDATA[vt. 放弃；放手；让渡]]></trans>
+		<phonetic><![CDATA[[rɪ'lɪŋkwɪʃ]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>proceed</word>
+		<trans><![CDATA[vi. 开始；继续进行；发生；行进
 n. 收入，获利]]></trans>
-        <phonetic><![CDATA[[pro'sid]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>awakened</word>
-        <trans><![CDATA[adj. 觉醒的
+		<phonetic><![CDATA[[pro'sid]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>awakened</word>
+		<trans><![CDATA[adj. 觉醒的
 v. 唤醒（awaken的过去式）]]></trans>
-        <phonetic><![CDATA[]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>discretion</word>
-        <trans><![CDATA[n. 自由裁量权；谨慎；判断力；判定；考虑周到]]></trans>
-        <phonetic><![CDATA[[dɪ'skrɛʃən]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>occur</word>
-        <trans><![CDATA[vi. 发生；出现；存在]]></trans>
-        <phonetic><![CDATA[[ə'kɝ]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>arbitrary</word>
-        <trans><![CDATA[任意的；武断的；专制的]]></trans>
-        <phonetic><![CDATA[[ˈɑːrbətreri]]]></phonetic>
-        <tags></tags>
-        <progress>2</progress>
-    </item>
-    <item>
-        <word>willing</word>
-        <trans><![CDATA[adj. 乐意的；自愿的；心甘情愿的
+		<phonetic><![CDATA[]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>discretion</word>
+		<trans><![CDATA[n. 自由裁量权；谨慎；判断力；判定；考虑周到]]></trans>
+		<phonetic><![CDATA[[dɪ'skrɛʃən]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>occur</word>
+		<trans><![CDATA[vi. 发生；出现；存在]]></trans>
+		<phonetic><![CDATA[[ə'kɝ]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>arbitrary</word>
+		<trans><![CDATA[任意的；武断的；专制的]]></trans>
+		<phonetic><![CDATA[[ˈɑːrbətreri]]]></phonetic>
+		<tags></tags>
+		<progress>2</progress>
+	</item><item>
+		<word>willing</word>
+		<trans><![CDATA[adj. 乐意的；自愿的；心甘情愿的
 v. 决心；用意志力驱使；将（财产等）遗赠某人（will的现在分词）
 n. (Willing)人名；(德、芬、瑞典)维林；(英)威林]]></trans>
-        <phonetic><![CDATA[['wɪlɪŋ]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>disclose</word>
-        <trans><![CDATA[vt. 公开；揭露]]></trans>
-        <phonetic><![CDATA[[dɪs'kloz]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>representation</word>
-        <trans><![CDATA[n. 代表；表现；表示法；陈述]]></trans>
-        <phonetic><![CDATA[['rɛprɪzɛn'teʃən]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>resolved</word>
-        <trans><![CDATA[adj. 下定决心的；已解决的；断然的
+		<phonetic><![CDATA[['wɪlɪŋ]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>disclose</word>
+		<trans><![CDATA[vt. 公开；揭露]]></trans>
+		<phonetic><![CDATA[[dɪs'kloz]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>representation</word>
+		<trans><![CDATA[n. 代表；表现；表示法；陈述]]></trans>
+		<phonetic><![CDATA[['rɛprɪzɛn'teʃən]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>resolved</word>
+		<trans><![CDATA[adj. 下定决心的；已解决的；断然的
 v. 解决；决定；分解；转变（resolve的过去分词）]]></trans>
-        <phonetic><![CDATA[[rɪ'zɑlvd]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>nexus</word>
-        <trans><![CDATA[n. 关系；连结，连系]]></trans>
-        <phonetic><![CDATA[['nɛksəs]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>repository</word>
-        <trans><![CDATA[n. 贮藏室，仓库；知识库；智囊团]]></trans>
-        <phonetic><![CDATA[[rɪ'pɑzə'tɔri]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>artifact</word>
-        <trans><![CDATA[n. 人工制品；手工艺品]]></trans>
-        <phonetic><![CDATA[['ɑrtə,fækt]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>perspective</word>
-        <trans><![CDATA[n. 观点；远景；透视图
+		<phonetic><![CDATA[[rɪ'zɑlvd]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>nexus</word>
+		<trans><![CDATA[n. 关系；连结，连系]]></trans>
+		<phonetic><![CDATA[['nɛksəs]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>repository</word>
+		<trans><![CDATA[n. 贮藏室，仓库；知识库；智囊团]]></trans>
+		<phonetic><![CDATA[[rɪ'pɑzə'tɔri]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>artifact</word>
+		<trans><![CDATA[n. 人工制品；手工艺品]]></trans>
+		<phonetic><![CDATA[['ɑrtə,fækt]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>perspective</word>
+		<trans><![CDATA[n. 观点；远景；透视图
 adj. 透视的]]></trans>
-        <phonetic><![CDATA[[pɚ'spɛktɪv]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>associated</word>
-        <trans><![CDATA[adj. 关联的；联合的
+		<phonetic><![CDATA[[pɚ'spɛktɪv]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>associated</word>
+		<trans><![CDATA[adj. 关联的；联合的
 v. 联系（associate的过去式和过去分词）]]></trans>
-        <phonetic><![CDATA[[ə'soʃɪetɪd]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>enumerable</word>
-        <trans><![CDATA[adj. 可列举的；可点数的]]></trans>
-        <phonetic><![CDATA[[ɪ'njʊmərəbl]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>released</word>
-        <trans><![CDATA[v. 释放（release的过去式）；已发布]]></trans>
-        <phonetic><![CDATA[[rɪ'li:st]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>configurable</word>
-        <trans><![CDATA[adj. 可配置的；结构的]]></trans>
-        <phonetic><![CDATA[[configurable]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>syntax</word>
-        <trans><![CDATA[n. 语法；句法；有秩序的排列]]></trans>
-        <phonetic><![CDATA[['sɪntæks]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>strict</word>
-        <trans><![CDATA[adj. 严格的；绝对的；精确的；详细的]]></trans>
-        <phonetic><![CDATA[[strɪkt]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>prototype</word>
-        <trans><![CDATA[n. 原型；标准，模范]]></trans>
-        <phonetic><![CDATA[['protə'taɪp]]]></phonetic>
-        <tags></tags>
-        <progress>2</progress>
-    </item>
-    <item>
-        <word>sib</word>
-        <trans><![CDATA[n. 亲属；亲族
+		<phonetic><![CDATA[[ə'soʃɪetɪd]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>enumerable</word>
+		<trans><![CDATA[adj. 可列举的；可点数的]]></trans>
+		<phonetic><![CDATA[[ɪ'njʊmərəbl]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>released</word>
+		<trans><![CDATA[v. 释放（release的过去式）；已发布]]></trans>
+		<phonetic><![CDATA[[rɪ'li:st]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>configurable</word>
+		<trans><![CDATA[adj. 可配置的；结构的]]></trans>
+		<phonetic><![CDATA[[configurable]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>syntax</word>
+		<trans><![CDATA[n. 语法；句法；有秩序的排列]]></trans>
+		<phonetic><![CDATA[['sɪntæks]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>strict</word>
+		<trans><![CDATA[adj. 严格的；绝对的；精确的；详细的]]></trans>
+		<phonetic><![CDATA[[strɪkt]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>prototype</word>
+		<trans><![CDATA[n. 原型；标准，模范]]></trans>
+		<phonetic><![CDATA[['protə'taɪp]]]></phonetic>
+		<tags></tags>
+		<progress>2</progress>
+	</item><item>
+		<word>sib</word>
+		<trans><![CDATA[n. 亲属；亲族
 adj. 近亲的，有血缘关系的
 n. (Sib)人名；(英)茜布(教名Sibyl、Sibylla、Sybil的昵称)]]></trans>
-        <phonetic><![CDATA[[sɪb]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>pervious</word>
-        <trans><![CDATA[adj. 能被通过的；能接受的；可渗透的]]></trans>
-        <phonetic><![CDATA[['pɝvɪəs]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>implied</word>
-        <trans><![CDATA[vt. 暗示；意味（imply的过去式）
+		<phonetic><![CDATA[[sɪb]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>pervious</word>
+		<trans><![CDATA[adj. 能被通过的；能接受的；可渗透的]]></trans>
+		<phonetic><![CDATA[['pɝvɪəs]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>implied</word>
+		<trans><![CDATA[vt. 暗示；意味（imply的过去式）
 adj. 含蓄的；暗指的]]></trans>
-        <phonetic><![CDATA[[ɪm'plaɪd]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>required</word>
-        <trans><![CDATA[adj. 必需的；（美）必修的
+		<phonetic><![CDATA[[ɪm'plaɪd]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>required</word>
+		<trans><![CDATA[adj. 必需的；（美）必修的
 v. 需要（require的过去式及过去分词形式）；要求]]></trans>
-        <phonetic><![CDATA[[rɪ'kwaɪrd]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>statement</word>
-        <trans><![CDATA[n. 声明；陈述，叙述；报表，清单]]></trans>
-        <phonetic><![CDATA[['stetmənt]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>achieves</word>
-        <trans><![CDATA[实现]]></trans>
-        <phonetic><![CDATA[[achieves]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>external</word>
-        <trans><![CDATA[adj. 外部的；表面的；[药] 外用的；外国的；外面的
+		<phonetic><![CDATA[[rɪ'kwaɪrd]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>statement</word>
+		<trans><![CDATA[n. 声明；陈述，叙述；报表，清单]]></trans>
+		<phonetic><![CDATA[['stetmənt]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>achieves</word>
+		<trans><![CDATA[实现]]></trans>
+		<phonetic><![CDATA[[achieves]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>external</word>
+		<trans><![CDATA[adj. 外部的；表面的；[药] 外用的；外国的；外面的
 n. 外部；外观；外面]]></trans>
-        <phonetic><![CDATA[[ɪk'stɝnl]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>permute</word>
-        <trans><![CDATA[vt. 交换；变更；排列]]></trans>
-        <phonetic><![CDATA[[pɚ'mjʊt]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>square</word>
-        <trans><![CDATA[adj. 平方的；正方形的；直角的；正直的
+		<phonetic><![CDATA[[ɪk'stɝnl]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>permute</word>
+		<trans><![CDATA[vt. 交换；变更；排列]]></trans>
+		<phonetic><![CDATA[[pɚ'mjʊt]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>square</word>
+		<trans><![CDATA[adj. 平方的；正方形的；直角的；正直的
 vt. 使成方形；与…一致
 vi. 一致；成方形
 n. 平方；广场；正方形
 adv. 成直角地]]></trans>
-        <phonetic><![CDATA[[skwɛr]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>shape</word>
-        <trans><![CDATA[n. 形状；模型；身材；具体化
+		<phonetic><![CDATA[[skwɛr]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>shape</word>
+		<trans><![CDATA[n. 形状；模型；身材；具体化
 vt. 形成；塑造，使成形；使符合
 vi. 形成；成形；成长
 n. (Shape)人名；(瑞典)沙佩]]></trans>
-        <phonetic><![CDATA[[ʃep]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>synchronized</word>
-        <trans><![CDATA[adj. 同步的；同步化的
+		<phonetic><![CDATA[[ʃep]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>synchronized</word>
+		<trans><![CDATA[adj. 同步的；同步化的
 v. 使协调（synchronize的过去分词）；同时发生；校准]]></trans>
-        <phonetic><![CDATA[['sɪŋkrənaɪzd]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>priority</word>
-        <trans><![CDATA[n. 优先；优先权；[数] 优先次序；优先考虑的事]]></trans>
-        <phonetic><![CDATA[[praɪ'ɔrəti]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>interrupted</word>
-        <trans><![CDATA[adj. 中断的；被打断的；不规则的
+		<phonetic><![CDATA[['sɪŋkrənaɪzd]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>priority</word>
+		<trans><![CDATA[n. 优先；优先权；[数] 优先次序；优先考虑的事]]></trans>
+		<phonetic><![CDATA[[praɪ'ɔrəti]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>interrupted</word>
+		<trans><![CDATA[adj. 中断的；被打断的；不规则的
 vt. 打断；中断（interrupt的过去分词）]]></trans>
-        <phonetic><![CDATA[[,ɪntə'rʌptɪd]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>state</word>
-        <trans><![CDATA[n. 国家；州；情形
+		<phonetic><![CDATA[[,ɪntə'rʌptɪd]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>state</word>
+		<trans><![CDATA[n. 国家；州；情形
 vt. 规定；声明；陈述
 adj. 国家的；州的；正式的
 n. (State)人名；(罗、瑞典)斯塔特；(英)斯泰特]]></trans>
-        <phonetic><![CDATA[[stet]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>illegal</word>
-        <trans><![CDATA[adj. [法] 非法的；违法的；违反规则的
+		<phonetic><![CDATA[[stet]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>illegal</word>
+		<trans><![CDATA[adj. [法] 非法的；违法的；违反规则的
 n. 非法移民，非法劳工]]></trans>
-        <phonetic><![CDATA[[ɪ'ligl]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>cast</word>
-        <trans><![CDATA[vt. 投，抛；计算；浇铸；投射（光、影、视线等）
+		<phonetic><![CDATA[[ɪ'ligl]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>cast</word>
+		<trans><![CDATA[vt. 投，抛；计算；浇铸；投射（光、影、视线等）
 n. 投掷，抛；铸件，[古生] 铸型；演员阵容；脱落物
 vi. 投，抛垂钓鱼钩；计算，把几个数字加起来
 n. (Cast)人名；(法)卡斯特]]></trans>
-        <phonetic><![CDATA[[kæst]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>extend</word>
-        <trans><![CDATA[vt. 延伸；扩大；推广；伸出；给予；使竭尽全力；对…估价
+		<phonetic><![CDATA[[kæst]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>extend</word>
+		<trans><![CDATA[vt. 延伸；扩大；推广；伸出；给予；使竭尽全力；对…估价
 vi. 延伸；扩大；伸展；使疏开]]></trans>
-        <phonetic><![CDATA[[ɪk'stɛnd]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>entry</word>
-        <trans><![CDATA[n. 进入；入口；条目；登记；报关手续；对土地的侵占]]></trans>
-        <phonetic><![CDATA[['ɛntri]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>solid</word>
-        <trans><![CDATA[adj. 固体的；可靠的；立体的；结实的；一致的
+		<phonetic><![CDATA[[ɪk'stɛnd]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>entry</word>
+		<trans><![CDATA[n. 进入；入口；条目；登记；报关手续；对土地的侵占]]></trans>
+		<phonetic><![CDATA[['ɛntri]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>solid</word>
+		<trans><![CDATA[adj. 固体的；可靠的；立体的；结实的；一致的
 n. 固体；立方体
 n. (Solid)人名；(瑞典)索利德]]></trans>
-        <phonetic><![CDATA[['sɑlɪd]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>memory cell</word>
-        <trans><![CDATA[[计] 存储单元（元件）]]></trans>
-        <phonetic><![CDATA[[memory+cell]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>stored</word>
-        <trans><![CDATA[adj. 储存的
+		<phonetic><![CDATA[['sɑlɪd]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>memory cell</word>
+		<trans><![CDATA[[计] 存储单元（元件）]]></trans>
+		<phonetic><![CDATA[[memory+cell]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>stored</word>
+		<trans><![CDATA[adj. 储存的
 v. 储存；容纳（store的过去分词）]]></trans>
-        <phonetic><![CDATA[[stɔ(r)d]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>align</word>
-        <trans><![CDATA[vt. 使结盟；使成一行；匹配
+		<phonetic><![CDATA[[stɔ(r)d]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>align</word>
+		<trans><![CDATA[vt. 使结盟；使成一行；匹配
 vi. 排列；排成一行]]></trans>
-        <phonetic><![CDATA[[ə'laɪn]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>decoration</word>
-        <trans><![CDATA[n. 装饰，装潢；装饰品；奖章]]></trans>
-        <phonetic><![CDATA[[,dɛkə'reʃən]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>pattern</word>
-        <trans><![CDATA[n. 模式；图案；样品
+		<phonetic><![CDATA[[ə'laɪn]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>decoration</word>
+		<trans><![CDATA[n. 装饰，装潢；装饰品；奖章]]></trans>
+		<phonetic><![CDATA[[,dɛkə'reʃən]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>pattern</word>
+		<trans><![CDATA[n. 模式；图案；样品
 vt. 模仿；以图案装饰
 vi. 形成图案]]></trans>
-        <phonetic><![CDATA[['pætɚn]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>properties</word>
-        <trans><![CDATA[n. 性能；道具，内容（property的复数形式）]]></trans>
-        <phonetic><![CDATA[['prɔpɚtɪz]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>delimiters</word>
-        <trans><![CDATA[n. [计] 分隔符（delimiter的复数）]]></trans>
-        <phonetic><![CDATA[[delimiters]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>refresh</word>
-        <trans><![CDATA[vt. 更新；使……恢复；使……清新；消除……的疲劳
+		<phonetic><![CDATA[['pætɚn]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>properties</word>
+		<trans><![CDATA[n. 性能；道具，内容（property的复数形式）]]></trans>
+		<phonetic><![CDATA[['prɔpɚtɪz]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>delimiters</word>
+		<trans><![CDATA[n. [计] 分隔符（delimiter的复数）]]></trans>
+		<phonetic><![CDATA[[delimiters]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>refresh</word>
+		<trans><![CDATA[vt. 更新；使……恢复；使……清新；消除……的疲劳
 vi. 恢复精神；喝饮料，吃点心；补充给养]]></trans>
-        <phonetic><![CDATA[[ri'frɛʃ]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>annotation</word>
-        <trans><![CDATA[n. 注释；注解；释文]]></trans>
-        <phonetic><![CDATA[[ˌænəˈteʃən]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>arguments</word>
-        <trans><![CDATA[n. 参数]]></trans>
-        <phonetic><![CDATA[['ɑrɡjumənts]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>connection</word>
-        <trans><![CDATA[n. 连接；关系；人脉；连接件]]></trans>
-        <phonetic><![CDATA[[kə'nɛkʃən]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>reference</word>
-        <trans><![CDATA[n. 参考，参照；涉及，提及；参考书目；介绍信；证明书
+		<phonetic><![CDATA[[ri'frɛʃ]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>annotation</word>
+		<trans><![CDATA[n. 注释；注解；释文]]></trans>
+		<phonetic><![CDATA[[ˌænəˈteʃən]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>arguments</word>
+		<trans><![CDATA[n. 参数]]></trans>
+		<phonetic><![CDATA[['ɑrɡjumənts]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>connection</word>
+		<trans><![CDATA[n. 连接；关系；人脉；连接件]]></trans>
+		<phonetic><![CDATA[[kə'nɛkʃən]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>reference</word>
+		<trans><![CDATA[n. 参考，参照；涉及，提及；参考书目；介绍信；证明书
 vi. 引用
 vt. 引用]]></trans>
-        <phonetic><![CDATA[['rɛfrəns]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>navigate</word>
-        <trans><![CDATA[vt. 驾驶，操纵；使通过；航行于
+		<phonetic><![CDATA[['rɛfrəns]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>navigate</word>
+		<trans><![CDATA[vt. 驾驶，操纵；使通过；航行于
 vi. 航行，航空]]></trans>
-        <phonetic><![CDATA[['nævə'get]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>revoke</word>
-        <trans><![CDATA[vt. 撤回，取消；废除
+		<phonetic><![CDATA[['nævə'get]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>revoke</word>
+		<trans><![CDATA[vt. 撤回，取消；废除
 vi. 有牌不跟
 n. 有牌不跟]]></trans>
-        <phonetic><![CDATA[[rɪ'vəʊk]]]></phonetic>
-        <tags></tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>grant</word>
-        <trans><![CDATA[vt. 授予；允许；承认
+		<phonetic><![CDATA[[rɪ'vəʊk]]]></phonetic>
+		<tags></tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>grant</word>
+		<trans><![CDATA[vt. 授予；允许；承认
 vi. 同意
 n. 拨款；[法] 授予物
 n. (Grant)人名；(瑞典、葡、西、俄、罗、英、塞、德、意)格兰特；(法)格朗]]></trans>
-        <phonetic><![CDATA[[grɑːnt]]]></phonetic>
-        <tags></tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>procedure</word>
-        <trans><![CDATA[n. 程序，手续；步骤]]></trans>
-        <phonetic><![CDATA[[prə'siːdʒə]]]></phonetic>
-        <tags></tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>fetch</word>
-        <trans><![CDATA[vt. 取来；接来；到达；吸引
+		<phonetic><![CDATA[[grɑːnt]]]></phonetic>
+		<tags></tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>procedure</word>
+		<trans><![CDATA[n. 程序，手续；步骤]]></trans>
+		<phonetic><![CDATA[[prə'siːdʒə]]]></phonetic>
+		<tags></tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>fetch</word>
+		<trans><![CDATA[vt. 取来；接来；到达；吸引
 vi. 拿；取物；卖得
 n. 取得；诡计]]></trans>
-        <phonetic><![CDATA[[fetʃ]]]></phonetic>
-        <tags></tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>descend</word>
-        <trans><![CDATA[vi. 下降；下去；下来；遗传；屈尊
+		<phonetic><![CDATA[[fetʃ]]]></phonetic>
+		<tags></tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>descend</word>
+		<trans><![CDATA[vi. 下降；下去；下来；遗传；屈尊
 vt. 下去；沿…向下]]></trans>
-        <phonetic><![CDATA[[dɪ'send]]]></phonetic>
-        <tags></tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>ascend</word>
-        <trans><![CDATA[vi. 上升；登高；追溯
+		<phonetic><![CDATA[[dɪ'send]]]></phonetic>
+		<tags></tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>ascend</word>
+		<trans><![CDATA[vi. 上升；登高；追溯
 vt. 攀登，上升]]></trans>
-        <phonetic><![CDATA[[ə'send]]]></phonetic>
-        <tags></tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>restrict</word>
-        <trans><![CDATA[vt. 限制；约束；限定]]></trans>
-        <phonetic><![CDATA[[rɪ'strɪkt]]]></phonetic>
-        <tags></tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>crucial</word>
-        <trans><![CDATA[adj. 重要的；决定性的；定局的；决断的]]></trans>
-        <phonetic><![CDATA[[ˈkruːʃl]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>smattering</word>
-        <trans><![CDATA[n. 一知半解；少数；略知
+		<phonetic><![CDATA[[ə'send]]]></phonetic>
+		<tags></tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>restrict</word>
+		<trans><![CDATA[vt. 限制；约束；限定]]></trans>
+		<phonetic><![CDATA[[rɪ'strɪkt]]]></phonetic>
+		<tags></tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>crucial</word>
+		<trans><![CDATA[adj. 重要的；决定性的；定局的；决断的]]></trans>
+		<phonetic><![CDATA[[ˈkruːʃl]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>smattering</word>
+		<trans><![CDATA[n. 一知半解；少数；略知
 
 adj. 肤浅的；些许的；点滴的
 
 v. 略知；肤浅地学习；粉碎（smatter的ing形式）]]></trans>
-        <phonetic><![CDATA[[ˈsmætərɪŋ]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>track</word>
-        <trans><![CDATA[n. 轨道；足迹，踪迹；小道
+		<phonetic><![CDATA[[ˈsmætərɪŋ]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>track</word>
+		<trans><![CDATA[n. 轨道；足迹，踪迹；小道
 
 vt. 追踪；通过；循路而行；用纤拉
 
 vi. 追踪；走；留下足迹]]></trans>
-        <phonetic><![CDATA[[træk]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>perform</word>
-        <trans><![CDATA[vt. 执行；完成；演奏
+		<phonetic><![CDATA[[træk]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>perform</word>
+		<trans><![CDATA[vt. 执行；完成；演奏
 
 vi. 执行，机器运转；表演]]></trans>
-        <phonetic><![CDATA[[pəˈfɔːm]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>corresponding</word>
-        <trans><![CDATA[adj. 相当的，相应的；一致的；通信的
+		<phonetic><![CDATA[[pəˈfɔːm]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>corresponding</word>
+		<trans><![CDATA[adj. 相当的，相应的；一致的；通信的
 
 v. 类似（correspond的ing形式）；相配]]></trans>
-        <phonetic><![CDATA[[ˌkɒrəˈspɒndɪŋ]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>desired</word>
-        <trans><![CDATA[adj. 渴望的；想要的；预期的
+		<phonetic><![CDATA[[ˌkɒrəˈspɒndɪŋ]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>desired</word>
+		<trans><![CDATA[adj. 渴望的；想要的；预期的
 
 v. 渴望，期望；被（某人）吸引，对……产生性欲；要求，恳求（desire 的过去式和过去分词）]]></trans>
-        <phonetic><![CDATA[[dɪ'zaɪəd]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>explicitly</word>
-        <trans><![CDATA[adv. 明确地；明白地]]></trans>
-        <phonetic><![CDATA[[ɪkˈsplɪsɪtli]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>plot</word>
-        <trans><![CDATA[n. 情节；图表；阴谋；（专用的）小块土地
+		<phonetic><![CDATA[[dɪ'zaɪəd]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>explicitly</word>
+		<trans><![CDATA[adv. 明确地；明白地]]></trans>
+		<phonetic><![CDATA[[ɪkˈsplɪsɪtli]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>plot</word>
+		<trans><![CDATA[n. 情节；图表；阴谋；（专用的）小块土地
 
 vt. 密谋；绘图；划分；标绘
 
 vi. 密谋；策划；绘制
 
 n. （Plot）（捷、法）普洛特；普洛（人名）]]></trans>
-        <phonetic><![CDATA[[plɒt]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>figure</word>
-        <trans><![CDATA[n. 数字；人物；图形；价格；（人的）体形；画像
+		<phonetic><![CDATA[[plɒt]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>figure</word>
+		<trans><![CDATA[n. 数字；人物；图形；价格；（人的）体形；画像
 
 vi. 计算；出现；扮演角色
 
 vt. 计算；认为；描绘；象征]]></trans>
-        <phonetic><![CDATA[[ˈfɪɡə(r)]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>coordinates</word>
-        <trans><![CDATA[n. [数] 坐标；相配之衣物
+		<phonetic><![CDATA[[ˈfɪɡə(r)]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>coordinates</word>
+		<trans><![CDATA[n. [数] 坐标；相配之衣物
 
 v. 使协调；使调和（coordinate的第三人称单数形式）]]></trans>
-        <phonetic><![CDATA[[kəʊ'ɔːdɪneɪts]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>axes</word>
-        <trans><![CDATA[n. 轴线；轴心；坐标轴（axis 的复数）；斧头（axe 的复数）]]></trans>
-        <phonetic><![CDATA[['æksiːz]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>tutorial</word>
-        <trans><![CDATA[adj. （与）大学导师（有关）的；（与）家庭教师（有关）的；（与）大学助教（有关）的；（与）辅导（有关）的
+		<phonetic><![CDATA[[kəʊ'ɔːdɪneɪts]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>axes</word>
+		<trans><![CDATA[n. 轴线；轴心；坐标轴（axis 的复数）；斧头（axe 的复数）]]></trans>
+		<phonetic><![CDATA[['æksiːz]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>tutorial</word>
+		<trans><![CDATA[adj. （与）大学导师（有关）的；（与）家庭教师（有关）的；（与）大学助教（有关）的；（与）辅导（有关）的
 
 n. （大学导师）个别指导时间，辅导课；辅导材料，使用说明书；软件教程]]></trans>
-        <phonetic><![CDATA[[tjuːˈtɔːriəl]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>pixmap</word>
-        <trans><![CDATA[n. 象素映射；象图]]></trans>
-        <phonetic><![CDATA[]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>progress</word>
-        <trans><![CDATA[n. 进步，发展；前进
+		<phonetic><![CDATA[[tjuːˈtɔːriəl]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>pixmap</word>
+		<trans><![CDATA[n. 象素映射；象图]]></trans>
+		<phonetic><![CDATA[]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>progress</word>
+		<trans><![CDATA[n. 进步，发展；前进
 
 vi. 前进，进步；进行
 
 n. (Progress)人名；(赞)普罗格雷斯]]></trans>
-        <phonetic><![CDATA[[ˈprəʊɡres]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>toggle</word>
-        <trans><![CDATA[n. 拴扣；切换键，开关；套索钉
+		<phonetic><![CDATA[[ˈprəʊɡres]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>toggle</word>
+		<trans><![CDATA[n. 拴扣；切换键，开关；套索钉
 
 v. 切换；拴牢，系紧]]></trans>
-        <phonetic><![CDATA[[ˈtɒɡl]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>splitter</word>
-        <trans><![CDATA[n. 劈（或切、割）的人；分类学家；（非正式）剧烈的头痛；快速指叉球]]></trans>
-        <phonetic><![CDATA[['splɪtə]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>slider</word>
-        <trans><![CDATA[n. 管龟，彩龟；滑动器，滑杆；浮动块，滑动块；滑行曲线球；滑雪者；小三明治]]></trans>
-        <phonetic><![CDATA[[ˈslaɪdə(r)]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>conversion</word>
-        <trans><![CDATA[n. 转换；变换；[金融] 兑换；改变信仰]]></trans>
-        <phonetic><![CDATA[[kənˈvɜːʃn]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>implicit</word>
-        <trans><![CDATA[adj. 含蓄的；暗示的；盲从的]]></trans>
-        <phonetic><![CDATA[[ɪmˈplɪsɪt]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>widget</word>
-        <trans><![CDATA[n. 装饰物；小机械；小部件；未定名的主要新产品]]></trans>
-        <phonetic><![CDATA[[ˈwɪdʒɪt]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>compose</word>
-        <trans><![CDATA[vt. 构成；写作；使平静；排…的版
+		<phonetic><![CDATA[[ˈtɒɡl]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>splitter</word>
+		<trans><![CDATA[n. 劈（或切、割）的人；分类学家；（非正式）剧烈的头痛；快速指叉球]]></trans>
+		<phonetic><![CDATA[['splɪtə]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>slider</word>
+		<trans><![CDATA[n. 管龟，彩龟；滑动器，滑杆；浮动块，滑动块；滑行曲线球；滑雪者；小三明治]]></trans>
+		<phonetic><![CDATA[[ˈslaɪdə(r)]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>conversion</word>
+		<trans><![CDATA[n. 转换；变换；[金融] 兑换；改变信仰]]></trans>
+		<phonetic><![CDATA[[kənˈvɜːʃn]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>implicit</word>
+		<trans><![CDATA[adj. 含蓄的；暗示的；盲从的]]></trans>
+		<phonetic><![CDATA[[ɪmˈplɪsɪt]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>widget</word>
+		<trans><![CDATA[n. 装饰物；小机械；小部件；未定名的主要新产品]]></trans>
+		<phonetic><![CDATA[[ˈwɪdʒɪt]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>compose</word>
+		<trans><![CDATA[vt. 构成；写作；使平静；排…的版
 
 vi. 组成；作曲；排字]]></trans>
-        <phonetic><![CDATA[[kəmˈpəʊz]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>compute</word>
-        <trans><![CDATA[vt. 计算；估算；用计算机计算
+		<phonetic><![CDATA[[kəmˈpəʊz]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>compute</word>
+		<trans><![CDATA[vt. 计算；估算；用计算机计算
 
 vi. 计算；估算；推断
 
 n. 计算；估计；推断]]></trans>
-        <phonetic><![CDATA[[kəmˈpjuːt]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>balance</word>
-        <trans><![CDATA[n. 平衡；余额；匀称
+		<phonetic><![CDATA[[kəmˈpjuːt]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>balance</word>
+		<trans><![CDATA[n. 平衡；余额；匀称
 
 vt. 使平衡；结算；使相称
 
 vi. 保持平衡；相称；抵销
 
 n. (Balance)人名；(西)巴兰塞]]></trans>
-        <phonetic><![CDATA[[ˈbæləns]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>donut</word>
-        <trans><![CDATA[n. 炸面圈，多纳圈（doughnut 的另一种拼法）]]></trans>
-        <phonetic><![CDATA[[ˈdəʊnʌt]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>metric</word>
-        <trans><![CDATA[adj. 公制的；米制的；公尺的
+		<phonetic><![CDATA[[ˈbæləns]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>donut</word>
+		<trans><![CDATA[n. 炸面圈，多纳圈（doughnut 的另一种拼法）]]></trans>
+		<phonetic><![CDATA[[ˈdəʊnʌt]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>metric</word>
+		<trans><![CDATA[adj. 公制的；米制的；公尺的
 
 n. 度量标准]]></trans>
-        <phonetic><![CDATA[[ˈmetrɪk]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>aggregation</word>
-        <trans><![CDATA[n. [地质][数] 聚合，聚集；聚集体，集合体]]></trans>
-        <phonetic><![CDATA[[ˌæɡrɪˈɡeɪʃn]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>visualize</word>
-        <trans><![CDATA[vt. 形象，形象化；想像，设想
+		<phonetic><![CDATA[[ˈmetrɪk]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>aggregation</word>
+		<trans><![CDATA[n. [地质][数] 聚合，聚集；聚集体，集合体]]></trans>
+		<phonetic><![CDATA[[ˌæɡrɪˈɡeɪʃn]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>visualize</word>
+		<trans><![CDATA[vt. 形象，形象化；想像，设想
 
 vi. 显现]]></trans>
-        <phonetic><![CDATA[[ˈvɪʒuəlaɪz]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>significant</word>
-        <trans><![CDATA[adj. 重大的；有效的；有意义的；值得注意的；意味深长的
+		<phonetic><![CDATA[[ˈvɪʒuəlaɪz]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>significant</word>
+		<trans><![CDATA[adj. 重大的；有效的；有意义的；值得注意的；意味深长的
 
 n. 象征；有意义的事物]]></trans>
-        <phonetic><![CDATA[[sɪɡˈnɪfɪkənt]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>histogram</word>
-        <trans><![CDATA[n. [统计] 直方图；柱状图]]></trans>
-        <phonetic><![CDATA[[ˈhɪstəɡræm]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>trunc</word>
-        <trans><![CDATA[n. 将数字截尾取整
+		<phonetic><![CDATA[[sɪɡˈnɪfɪkənt]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>histogram</word>
+		<trans><![CDATA[n. [统计] 直方图；柱状图]]></trans>
+		<phonetic><![CDATA[[ˈhɪstəɡræm]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>trunc</word>
+		<trans><![CDATA[n. 将数字截尾取整
 
 n. (Trunc)人名；(捷)特伦茨]]></trans>
-        <phonetic><![CDATA[]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>expressions</word>
-        <trans><![CDATA[n. [数] 表达式；表情；公式；表示式（expression是复数形式）]]></trans>
-        <phonetic><![CDATA[[ɪk'spreʃ(ə)nz]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>timestamp</word>
-        <trans><![CDATA[n. 时间戳；时间邮票]]></trans>
-        <phonetic><![CDATA[[ˈtaɪmstæmp]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>similarly</word>
-        <trans><![CDATA[adv. 类似地，差不多地；同样地，也]]></trans>
-        <phonetic><![CDATA[[ˈsɪmələli]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>nested</word>
-        <trans><![CDATA[adj. 嵌套的，内装的
+		<phonetic><![CDATA[]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>expressions</word>
+		<trans><![CDATA[n. [数] 表达式；表情；公式；表示式（expression是复数形式）]]></trans>
+		<phonetic><![CDATA[[ɪk'spreʃ(ə)nz]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>timestamp</word>
+		<trans><![CDATA[n. 时间戳；时间邮票]]></trans>
+		<phonetic><![CDATA[[ˈtaɪmstæmp]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>similarly</word>
+		<trans><![CDATA[adv. 类似地，差不多地；同样地，也]]></trans>
+		<phonetic><![CDATA[[ˈsɪmələli]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>nested</word>
+		<trans><![CDATA[adj. 嵌套的，内装的
 
 v. 筑巢；嵌入（nest的过去分词）]]></trans>
-        <phonetic><![CDATA[['nestɪd]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>omit</word>
-        <trans><![CDATA[vt. 省略；遗漏；删除；疏忽]]></trans>
-        <phonetic><![CDATA[[əˈmɪt]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>evaluate</word>
-        <trans><![CDATA[vt. 评价；估价；求…的值
+		<phonetic><![CDATA[['nestɪd]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>omit</word>
+		<trans><![CDATA[vt. 省略；遗漏；删除；疏忽]]></trans>
+		<phonetic><![CDATA[[əˈmɪt]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>evaluate</word>
+		<trans><![CDATA[vt. 评价；估价；求…的值
 
 vi. 评价；估价]]></trans>
-        <phonetic><![CDATA[[ɪˈvæljueɪt]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>existence</word>
-        <trans><![CDATA[n. 存在，实在；生存，生活；存在物，实在物]]></trans>
-        <phonetic><![CDATA[[ɪɡˈzɪstəns]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>accessing</word>
-        <trans><![CDATA[n. [计] 访问
+		<phonetic><![CDATA[[ɪˈvæljueɪt]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>existence</word>
+		<trans><![CDATA[n. 存在，实在；生存，生活；存在物，实在物]]></trans>
+		<phonetic><![CDATA[[ɪɡˈzɪstəns]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>accessing</word>
+		<trans><![CDATA[n. [计] 访问
 
 v. [计] 访问（access的ing形式）；接近；到达]]></trans>
-        <phonetic><![CDATA[[ˈæksesɪŋ]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>favor</word>
-        <trans><![CDATA[v. 较喜欢；偏袒；有利于；（非正式）长得像；悉心照料
+		<phonetic><![CDATA[[ˈæksesɪŋ]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>favor</word>
+		<trans><![CDATA[v. 较喜欢；偏袒；有利于；（非正式）长得像；悉心照料
 
 n. 帮助；提拔；徽章；赞同；偏袒；同意性交]]></trans>
-        <phonetic><![CDATA[[ˈfeɪvə(r)]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>deprecated</word>
-        <trans><![CDATA[v. 不赞成；弃用；不宜用（deprecate的过去式及过去分词形式）]]></trans>
-        <phonetic><![CDATA[[ˈdeprəkeɪtɪd]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>consist</word>
-        <trans><![CDATA[vi. 由…组成；在于；符合]]></trans>
-        <phonetic><![CDATA[[kənˈsɪst]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>section</word>
-        <trans><![CDATA[n. 截面；部分；部门；地区；章节
+		<phonetic><![CDATA[[ˈfeɪvə(r)]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>deprecated</word>
+		<trans><![CDATA[v. 不赞成；弃用；不宜用（deprecate的过去式及过去分词形式）]]></trans>
+		<phonetic><![CDATA[[ˈdeprəkeɪtɪd]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>consist</word>
+		<trans><![CDATA[vi. 由…组成；在于；符合]]></trans>
+		<phonetic><![CDATA[[kənˈsɪst]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>section</word>
+		<trans><![CDATA[n. 截面；部分；部门；地区；章节
 
 vi. 被切割成片；被分成部分
 
 vt. 把…分段；将…切片；对…进行划分]]></trans>
-        <phonetic><![CDATA[[ˈsekʃn]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>criteria</word>
-        <trans><![CDATA[n. 标准，条件（criterion 的复数）]]></trans>
-        <phonetic><![CDATA[[kraɪ'tɪərɪə]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>upgrading</word>
-        <trans><![CDATA[v. （使）（机器、计算机系统等）升级；提高（设施、服务等的）档次；给（飞机乘客或酒店住客）升级；给（某人）升职；提高（某事物的）地位（upgrade 的现在分词）]]></trans>
-        <phonetic><![CDATA[[ˌʌpˈɡreɪdɪŋ]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>persist</word>
-        <trans><![CDATA[vi. 存留，坚持；持续，固执
+		<phonetic><![CDATA[[ˈsekʃn]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>criteria</word>
+		<trans><![CDATA[n. 标准，条件（criterion 的复数）]]></trans>
+		<phonetic><![CDATA[[kraɪ'tɪərɪə]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>upgrading</word>
+		<trans><![CDATA[v. （使）（机器、计算机系统等）升级；提高（设施、服务等的）档次；给（飞机乘客或酒店住客）升级；给（某人）升职；提高（某事物的）地位（upgrade 的现在分词）]]></trans>
+		<phonetic><![CDATA[[ˌʌpˈɡreɪdɪŋ]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>persist</word>
+		<trans><![CDATA[vi. 存留，坚持；持续，固执
 
 vt. 坚持说，反复说]]></trans>
-        <phonetic><![CDATA[[pəˈsɪst]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>excessive</word>
-        <trans><![CDATA[adj. 过多的，极度的；过分的]]></trans>
-        <phonetic><![CDATA[[ɪkˈsesɪv]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>particular</word>
-        <trans><![CDATA[adj. 特别的；详细的；独有的；挑剔的
+		<phonetic><![CDATA[[pəˈsɪst]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>excessive</word>
+		<trans><![CDATA[adj. 过多的，极度的；过分的]]></trans>
+		<phonetic><![CDATA[[ɪkˈsesɪv]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>particular</word>
+		<trans><![CDATA[adj. 特别的；详细的；独有的；挑剔的
 
 n. 详细说明；个别项目]]></trans>
-        <phonetic><![CDATA[[pəˈtɪkjələ(r)]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>mount</word>
-        <trans><![CDATA[vt. 增加；爬上；使骑上马；安装，架置；镶嵌，嵌入；准备上演；成立（军队等）
+		<phonetic><![CDATA[[pəˈtɪkjələ(r)]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>mount</word>
+		<trans><![CDATA[vt. 增加；爬上；使骑上马；安装，架置；镶嵌，嵌入；准备上演；成立（军队等）
 
 vi. 爬；增加；上升
 
@@ -1250,629 +1097,1354 @@ n. 山峰；底座；乘骑用马；攀，登；运载工具；底座
 n. （英）芒特（人名）
 
 v. 登上；骑上]]></trans>
-        <phonetic><![CDATA[[maʊnt]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>approach</word>
-        <trans><![CDATA[v. 走进；与……接洽；处理；临近，逐渐接近（某时间或事件）；几乎达到（某水平或状态）
+		<phonetic><![CDATA[[maʊnt]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>approach</word>
+		<trans><![CDATA[v. 走进；与……接洽；处理；临近，逐渐接近（某时间或事件）；几乎达到（某水平或状态）
 
 n. 方法，方式；接近；接洽；（某事的）临近；路径；进场（着陆）；相似的事物]]></trans>
-        <phonetic><![CDATA[[əˈprəʊtʃ]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>essential</word>
-        <trans><![CDATA[adj. 基本的；必要的；本质的；精华的
+		<phonetic><![CDATA[[əˈprəʊtʃ]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>essential</word>
+		<trans><![CDATA[adj. 基本的；必要的；本质的；精华的
 
 n. 本质；要素；要点；必需品]]></trans>
-        <phonetic><![CDATA[[ɪˈsenʃl]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>batch</word>
-        <trans><![CDATA[n. 一批；一炉；一次所制之量
+		<phonetic><![CDATA[[ɪˈsenʃl]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>batch</word>
+		<trans><![CDATA[n. 一批；一炉；一次所制之量
 
 vt. 分批处理
 
 n. (Batch)人名；(英)巴奇]]></trans>
-        <phonetic><![CDATA[[bætʃ]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>notation</word>
-        <trans><![CDATA[n. 符号；乐谱；注释；记号法]]></trans>
-        <phonetic><![CDATA[[nəʊˈteɪʃn]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>hierarchical</word>
-        <trans><![CDATA[adj. 分层的；等级体系的]]></trans>
-        <phonetic><![CDATA[[ˌhaɪəˈrɑːkɪkl]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>specify</word>
-        <trans><![CDATA[vt. 指定；详细说明；列举；把…列入说明书]]></trans>
-        <phonetic><![CDATA[[ˈspesɪfaɪ]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>convenient</word>
-        <trans><![CDATA[adj. 方便的；[废语]适当的；[口语]近便的；实用的]]></trans>
-        <phonetic><![CDATA[[kənˈviːniənt]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>shrink</word>
-        <trans><![CDATA[v. （使）缩小，（使）收缩；（尤指因恐惧而）退缩，畏缩，回避；（衣服、布料）缩水
+		<phonetic><![CDATA[[bætʃ]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>notation</word>
+		<trans><![CDATA[n. 符号；乐谱；注释；记号法]]></trans>
+		<phonetic><![CDATA[[nəʊˈteɪʃn]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>hierarchical</word>
+		<trans><![CDATA[adj. 分层的；等级体系的]]></trans>
+		<phonetic><![CDATA[[ˌhaɪəˈrɑːkɪkl]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>specify</word>
+		<trans><![CDATA[vt. 指定；详细说明；列举；把…列入说明书]]></trans>
+		<phonetic><![CDATA[[ˈspesɪfaɪ]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>convenient</word>
+		<trans><![CDATA[adj. 方便的；[废语]适当的；[口语]近便的；实用的]]></trans>
+		<phonetic><![CDATA[[kənˈviːniənt]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>shrink</word>
+		<trans><![CDATA[v. （使）缩小，（使）收缩；（尤指因恐惧而）退缩，畏缩，回避；（衣服、布料）缩水
 
 n. 收缩；畏缩；（非正式）精神病医生，精神病学家，心理学家]]></trans>
-        <phonetic><![CDATA[[ʃrɪŋk]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>conformance</word>
-        <trans><![CDATA[n. 一致性；顺应]]></trans>
-        <phonetic><![CDATA[[kənˈfɔːməns]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>Material</word>
-        <trans><![CDATA[n. （巴、美、印、墨）妈特力娅乐（人名）]]></trans>
-        <phonetic><![CDATA[[məˈtɪriəl]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>assign</word>
-        <trans><![CDATA[vt. 分配；指派；[计][数] 赋值
+		<phonetic><![CDATA[[ʃrɪŋk]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>conformance</word>
+		<trans><![CDATA[n. 一致性；顺应]]></trans>
+		<phonetic><![CDATA[[kənˈfɔːməns]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>Material</word>
+		<trans><![CDATA[n. （巴、美、印、墨）妈特力娅乐（人名）]]></trans>
+		<phonetic><![CDATA[[məˈtɪriəl]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>assign</word>
+		<trans><![CDATA[vt. 分配；指派；[计][数] 赋值
 
 vi. 将财产过户（尤指过户给债权人）]]></trans>
-        <phonetic><![CDATA[[əˈsaɪn]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>archive</word>
-        <trans><![CDATA[n. 档案馆；档案文件
+		<phonetic><![CDATA[[əˈsaɪn]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>archive</word>
+		<trans><![CDATA[n. 档案馆；档案文件
 
 vt. 把…存档]]></trans>
-        <phonetic><![CDATA[[ˈɑːrkaɪv]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>distribution</word>
-        <trans><![CDATA[n. 分布；分配；供应]]></trans>
-        <phonetic><![CDATA[[ˌdɪstrɪˈbjuːʃn]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>translate</word>
-        <trans><![CDATA[vt. 翻译；转化；解释；转变为；调动
+		<phonetic><![CDATA[[ˈɑːrkaɪv]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>distribution</word>
+		<trans><![CDATA[n. 分布；分配；供应]]></trans>
+		<phonetic><![CDATA[[ˌdɪstrɪˈbjuːʃn]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>translate</word>
+		<trans><![CDATA[vt. 翻译；转化；解释；转变为；调动
 
 vi. 翻译]]></trans>
-        <phonetic><![CDATA[[trænzˈleɪt; trænsˈleɪt]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>district</word>
-        <trans><![CDATA[n. 区域；地方；行政区]]></trans>
-        <phonetic><![CDATA[[ˈdɪstrɪkt]]]></phonetic>
-        <tags>未分组</tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>acquisition</word>
-        <trans><![CDATA[n. 获得物，获得；收购
+		<phonetic><![CDATA[[trænzˈleɪt; trænsˈleɪt]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>district</word>
+		<trans><![CDATA[n. 区域；地方；行政区]]></trans>
+		<phonetic><![CDATA[[ˈdɪstrɪkt]]]></phonetic>
+		<tags>未分组</tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>acquisition</word>
+		<trans><![CDATA[n. 获得物，获得；收购 
 Acquisition: 收购 ; 获得 ; 购买]]></trans>
-        <phonetic><![CDATA[[,ækwɪ'zɪʃ(ə)n]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>generic</word>
-        <trans><![CDATA[adj. 类的；一般的；属的；非商标的]]></trans>
-        <phonetic><![CDATA[[dʒə'nɛrɪk]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>invocation</word>
-        <trans><![CDATA[n. 祈祷；符咒；【法律】(法院对另案的)文件调取；(法权的)行使]]></trans>
-        <phonetic><![CDATA[[,ɪnvə'keʃən]]]></phonetic>
-        <tags></tags>
-        <progress>2</progress>
-    </item>
-    <item>
-        <word>direct</word>
-        <trans><![CDATA[adj. 直接的；直系的；亲身的；恰好的
+		<phonetic><![CDATA[[,ækwɪ'zɪʃ(ə)n]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>generic</word>
+		<trans><![CDATA[adj. 类的；一般的；属的；非商标的]]></trans>
+		<phonetic><![CDATA[[dʒə'nɛrɪk]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>invocation</word>
+		<trans><![CDATA[n. 祈祷；符咒；【法律】(法院对另案的)文件调取；(法权的)行使]]></trans>
+		<phonetic><![CDATA[[,ɪnvə'keʃən]]]></phonetic>
+		<tags></tags>
+		<progress>2</progress>
+	</item><item>
+		<word>direct</word>
+		<trans><![CDATA[adj. 直接的；直系的；亲身的；恰好的
 vt. 管理；指挥；导演；指向
 vi. 指导；指挥
 adv. 直接地；正好；按直系关系]]></trans>
-        <phonetic><![CDATA[[dəˈrɛkt; daɪˈrɛkt]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>relinquish</word>
-        <trans><![CDATA[vt. 放弃；放手；让渡]]></trans>
-        <phonetic><![CDATA[[rɪ'lɪŋkwɪʃ]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>proceed</word>
-        <trans><![CDATA[vi. 开始；继续进行；发生；行进
+		<phonetic><![CDATA[[dəˈrɛkt; daɪˈrɛkt]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>relinquish</word>
+		<trans><![CDATA[vt. 放弃；放手；让渡]]></trans>
+		<phonetic><![CDATA[[rɪ'lɪŋkwɪʃ]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>proceed</word>
+		<trans><![CDATA[vi. 开始；继续进行；发生；行进
 n. 收入，获利]]></trans>
-        <phonetic><![CDATA[[pro'sid]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>awakened</word>
-        <trans><![CDATA[adj. 觉醒的
+		<phonetic><![CDATA[[pro'sid]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>awakened</word>
+		<trans><![CDATA[adj. 觉醒的
 v. 唤醒（awaken的过去式）]]></trans>
-        <phonetic><![CDATA[]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>discretion</word>
-        <trans><![CDATA[n. 自由裁量权；谨慎；判断力；判定；考虑周到]]></trans>
-        <phonetic><![CDATA[[dɪ'skrɛʃən]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>occur</word>
-        <trans><![CDATA[vi. 发生；出现；存在]]></trans>
-        <phonetic><![CDATA[[ə'kɝ]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>arbitrary</word>
-        <trans><![CDATA[任意的；武断的；专制的]]></trans>
-        <phonetic><![CDATA[[ˈɑːrbətreri]]]></phonetic>
-        <tags></tags>
-        <progress>2</progress>
-    </item>
-    <item>
-        <word>willing</word>
-        <trans><![CDATA[adj. 乐意的；自愿的；心甘情愿的
+		<phonetic><![CDATA[]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>discretion</word>
+		<trans><![CDATA[n. 自由裁量权；谨慎；判断力；判定；考虑周到]]></trans>
+		<phonetic><![CDATA[[dɪ'skrɛʃən]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>occur</word>
+		<trans><![CDATA[vi. 发生；出现；存在]]></trans>
+		<phonetic><![CDATA[[ə'kɝ]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>arbitrary</word>
+		<trans><![CDATA[任意的；武断的；专制的]]></trans>
+		<phonetic><![CDATA[[ˈɑːrbətreri]]]></phonetic>
+		<tags></tags>
+		<progress>2</progress>
+	</item><item>
+		<word>willing</word>
+		<trans><![CDATA[adj. 乐意的；自愿的；心甘情愿的
 v. 决心；用意志力驱使；将（财产等）遗赠某人（will的现在分词）
 n. (Willing)人名；(德、芬、瑞典)维林；(英)威林]]></trans>
-        <phonetic><![CDATA[['wɪlɪŋ]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>disclose</word>
-        <trans><![CDATA[vt. 公开；揭露]]></trans>
-        <phonetic><![CDATA[[dɪs'kloz]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>representation</word>
-        <trans><![CDATA[n. 代表；表现；表示法；陈述]]></trans>
-        <phonetic><![CDATA[['rɛprɪzɛn'teʃən]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>resolved</word>
-        <trans><![CDATA[adj. 下定决心的；已解决的；断然的
+		<phonetic><![CDATA[['wɪlɪŋ]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>disclose</word>
+		<trans><![CDATA[vt. 公开；揭露]]></trans>
+		<phonetic><![CDATA[[dɪs'kloz]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>representation</word>
+		<trans><![CDATA[n. 代表；表现；表示法；陈述]]></trans>
+		<phonetic><![CDATA[['rɛprɪzɛn'teʃən]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>resolved</word>
+		<trans><![CDATA[adj. 下定决心的；已解决的；断然的
 v. 解决；决定；分解；转变（resolve的过去分词）]]></trans>
-        <phonetic><![CDATA[[rɪ'zɑlvd]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>nexus</word>
-        <trans><![CDATA[n. 关系；连结，连系]]></trans>
-        <phonetic><![CDATA[['nɛksəs]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>repository</word>
-        <trans><![CDATA[n. 贮藏室，仓库；知识库；智囊团]]></trans>
-        <phonetic><![CDATA[[rɪ'pɑzə'tɔri]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>artifact</word>
-        <trans><![CDATA[n. 人工制品；手工艺品]]></trans>
-        <phonetic><![CDATA[['ɑrtə,fækt]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>perspective</word>
-        <trans><![CDATA[n. 观点；远景；透视图
+		<phonetic><![CDATA[[rɪ'zɑlvd]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>nexus</word>
+		<trans><![CDATA[n. 关系；连结，连系]]></trans>
+		<phonetic><![CDATA[['nɛksəs]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>repository</word>
+		<trans><![CDATA[n. 贮藏室，仓库；知识库；智囊团]]></trans>
+		<phonetic><![CDATA[[rɪ'pɑzə'tɔri]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>artifact</word>
+		<trans><![CDATA[n. 人工制品；手工艺品]]></trans>
+		<phonetic><![CDATA[['ɑrtə,fækt]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>perspective</word>
+		<trans><![CDATA[n. 观点；远景；透视图
 adj. 透视的]]></trans>
-        <phonetic><![CDATA[[pɚ'spɛktɪv]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>associated</word>
-        <trans><![CDATA[adj. 关联的；联合的
+		<phonetic><![CDATA[[pɚ'spɛktɪv]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>associated</word>
+		<trans><![CDATA[adj. 关联的；联合的
 v. 联系（associate的过去式和过去分词）]]></trans>
-        <phonetic><![CDATA[[ə'soʃɪetɪd]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>enumerable</word>
-        <trans><![CDATA[adj. 可列举的；可点数的]]></trans>
-        <phonetic><![CDATA[[ɪ'njʊmərəbl]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>released</word>
-        <trans><![CDATA[v. 释放（release的过去式）；已发布]]></trans>
-        <phonetic><![CDATA[[rɪ'li:st]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>configurable</word>
-        <trans><![CDATA[adj. 可配置的；结构的]]></trans>
-        <phonetic><![CDATA[[configurable]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>syntax</word>
-        <trans><![CDATA[n. 语法；句法；有秩序的排列]]></trans>
-        <phonetic><![CDATA[['sɪntæks]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>strict</word>
-        <trans><![CDATA[adj. 严格的；绝对的；精确的；详细的]]></trans>
-        <phonetic><![CDATA[[strɪkt]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>prototype</word>
-        <trans><![CDATA[n. 原型；标准，模范]]></trans>
-        <phonetic><![CDATA[['protə'taɪp]]]></phonetic>
-        <tags></tags>
-        <progress>2</progress>
-    </item>
-    <item>
-        <word>sib</word>
-        <trans><![CDATA[n. 亲属；亲族
+		<phonetic><![CDATA[[ə'soʃɪetɪd]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>enumerable</word>
+		<trans><![CDATA[adj. 可列举的；可点数的]]></trans>
+		<phonetic><![CDATA[[ɪ'njʊmərəbl]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>released</word>
+		<trans><![CDATA[v. 释放（release的过去式）；已发布]]></trans>
+		<phonetic><![CDATA[[rɪ'li:st]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>configurable</word>
+		<trans><![CDATA[adj. 可配置的；结构的]]></trans>
+		<phonetic><![CDATA[[configurable]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>syntax</word>
+		<trans><![CDATA[n. 语法；句法；有秩序的排列]]></trans>
+		<phonetic><![CDATA[['sɪntæks]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>strict</word>
+		<trans><![CDATA[adj. 严格的；绝对的；精确的；详细的]]></trans>
+		<phonetic><![CDATA[[strɪkt]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>prototype</word>
+		<trans><![CDATA[n. 原型；标准，模范]]></trans>
+		<phonetic><![CDATA[['protə'taɪp]]]></phonetic>
+		<tags></tags>
+		<progress>2</progress>
+	</item><item>
+		<word>sib</word>
+		<trans><![CDATA[n. 亲属；亲族
 adj. 近亲的，有血缘关系的
 n. (Sib)人名；(英)茜布(教名Sibyl、Sibylla、Sybil的昵称)]]></trans>
-        <phonetic><![CDATA[[sɪb]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>pervious</word>
-        <trans><![CDATA[adj. 能被通过的；能接受的；可渗透的]]></trans>
-        <phonetic><![CDATA[['pɝvɪəs]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>implied</word>
-        <trans><![CDATA[vt. 暗示；意味（imply的过去式）
+		<phonetic><![CDATA[[sɪb]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>pervious</word>
+		<trans><![CDATA[adj. 能被通过的；能接受的；可渗透的]]></trans>
+		<phonetic><![CDATA[['pɝvɪəs]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>implied</word>
+		<trans><![CDATA[vt. 暗示；意味（imply的过去式）
 adj. 含蓄的；暗指的]]></trans>
-        <phonetic><![CDATA[[ɪm'plaɪd]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>required</word>
-        <trans><![CDATA[adj. 必需的；（美）必修的
+		<phonetic><![CDATA[[ɪm'plaɪd]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>required</word>
+		<trans><![CDATA[adj. 必需的；（美）必修的
 v. 需要（require的过去式及过去分词形式）；要求]]></trans>
-        <phonetic><![CDATA[[rɪ'kwaɪrd]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>statement</word>
-        <trans><![CDATA[n. 声明；陈述，叙述；报表，清单]]></trans>
-        <phonetic><![CDATA[['stetmənt]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>achieves</word>
-        <trans><![CDATA[实现]]></trans>
-        <phonetic><![CDATA[[achieves]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>external</word>
-        <trans><![CDATA[adj. 外部的；表面的；[药] 外用的；外国的；外面的
+		<phonetic><![CDATA[[rɪ'kwaɪrd]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>statement</word>
+		<trans><![CDATA[n. 声明；陈述，叙述；报表，清单]]></trans>
+		<phonetic><![CDATA[['stetmənt]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>achieves</word>
+		<trans><![CDATA[实现]]></trans>
+		<phonetic><![CDATA[[achieves]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>external</word>
+		<trans><![CDATA[adj. 外部的；表面的；[药] 外用的；外国的；外面的
 n. 外部；外观；外面]]></trans>
-        <phonetic><![CDATA[[ɪk'stɝnl]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>permute</word>
-        <trans><![CDATA[vt. 交换；变更；排列]]></trans>
-        <phonetic><![CDATA[[pɚ'mjʊt]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>square</word>
-        <trans><![CDATA[adj. 平方的；正方形的；直角的；正直的
+		<phonetic><![CDATA[[ɪk'stɝnl]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>permute</word>
+		<trans><![CDATA[vt. 交换；变更；排列]]></trans>
+		<phonetic><![CDATA[[pɚ'mjʊt]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>square</word>
+		<trans><![CDATA[adj. 平方的；正方形的；直角的；正直的
 vt. 使成方形；与…一致
 vi. 一致；成方形
 n. 平方；广场；正方形
 adv. 成直角地]]></trans>
-        <phonetic><![CDATA[[skwɛr]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>shape</word>
-        <trans><![CDATA[n. 形状；模型；身材；具体化
+		<phonetic><![CDATA[[skwɛr]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>shape</word>
+		<trans><![CDATA[n. 形状；模型；身材；具体化
 vt. 形成；塑造，使成形；使符合
 vi. 形成；成形；成长
 n. (Shape)人名；(瑞典)沙佩]]></trans>
-        <phonetic><![CDATA[[ʃep]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>synchronized</word>
-        <trans><![CDATA[adj. 同步的；同步化的
+		<phonetic><![CDATA[[ʃep]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>synchronized</word>
+		<trans><![CDATA[adj. 同步的；同步化的
 v. 使协调（synchronize的过去分词）；同时发生；校准]]></trans>
-        <phonetic><![CDATA[['sɪŋkrənaɪzd]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>priority</word>
-        <trans><![CDATA[n. 优先；优先权；[数] 优先次序；优先考虑的事]]></trans>
-        <phonetic><![CDATA[[praɪ'ɔrəti]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>interrupted</word>
-        <trans><![CDATA[adj. 中断的；被打断的；不规则的
+		<phonetic><![CDATA[['sɪŋkrənaɪzd]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>priority</word>
+		<trans><![CDATA[n. 优先；优先权；[数] 优先次序；优先考虑的事]]></trans>
+		<phonetic><![CDATA[[praɪ'ɔrəti]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>interrupted</word>
+		<trans><![CDATA[adj. 中断的；被打断的；不规则的
 vt. 打断；中断（interrupt的过去分词）]]></trans>
-        <phonetic><![CDATA[[,ɪntə'rʌptɪd]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>state</word>
-        <trans><![CDATA[n. 国家；州；情形
+		<phonetic><![CDATA[[,ɪntə'rʌptɪd]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>state</word>
+		<trans><![CDATA[n. 国家；州；情形
 vt. 规定；声明；陈述
 adj. 国家的；州的；正式的
 n. (State)人名；(罗、瑞典)斯塔特；(英)斯泰特]]></trans>
-        <phonetic><![CDATA[[stet]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>illegal</word>
-        <trans><![CDATA[adj. [法] 非法的；违法的；违反规则的
+		<phonetic><![CDATA[[stet]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>illegal</word>
+		<trans><![CDATA[adj. [法] 非法的；违法的；违反规则的
 n. 非法移民，非法劳工]]></trans>
-        <phonetic><![CDATA[[ɪ'ligl]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>cast</word>
-        <trans><![CDATA[vt. 投，抛；计算；浇铸；投射（光、影、视线等）
+		<phonetic><![CDATA[[ɪ'ligl]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>cast</word>
+		<trans><![CDATA[vt. 投，抛；计算；浇铸；投射（光、影、视线等）
 n. 投掷，抛；铸件，[古生] 铸型；演员阵容；脱落物
 vi. 投，抛垂钓鱼钩；计算，把几个数字加起来
 n. (Cast)人名；(法)卡斯特]]></trans>
-        <phonetic><![CDATA[[kæst]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>extend</word>
-        <trans><![CDATA[vt. 延伸；扩大；推广；伸出；给予；使竭尽全力；对…估价
+		<phonetic><![CDATA[[kæst]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>extend</word>
+		<trans><![CDATA[vt. 延伸；扩大；推广；伸出；给予；使竭尽全力；对…估价
 vi. 延伸；扩大；伸展；使疏开]]></trans>
-        <phonetic><![CDATA[[ɪk'stɛnd]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>entry</word>
-        <trans><![CDATA[n. 进入；入口；条目；登记；报关手续；对土地的侵占]]></trans>
-        <phonetic><![CDATA[['ɛntri]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>solid</word>
-        <trans><![CDATA[adj. 固体的；可靠的；立体的；结实的；一致的
+		<phonetic><![CDATA[[ɪk'stɛnd]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>entry</word>
+		<trans><![CDATA[n. 进入；入口；条目；登记；报关手续；对土地的侵占]]></trans>
+		<phonetic><![CDATA[['ɛntri]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>solid</word>
+		<trans><![CDATA[adj. 固体的；可靠的；立体的；结实的；一致的
 n. 固体；立方体
 n. (Solid)人名；(瑞典)索利德]]></trans>
-        <phonetic><![CDATA[['sɑlɪd]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>memory cell</word>
-        <trans><![CDATA[[计] 存储单元（元件）]]></trans>
-        <phonetic><![CDATA[[memory+cell]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>stored</word>
-        <trans><![CDATA[adj. 储存的
+		<phonetic><![CDATA[['sɑlɪd]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>memory cell</word>
+		<trans><![CDATA[[计] 存储单元（元件）]]></trans>
+		<phonetic><![CDATA[[memory+cell]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>stored</word>
+		<trans><![CDATA[adj. 储存的
 v. 储存；容纳（store的过去分词）]]></trans>
-        <phonetic><![CDATA[[stɔ(r)d]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>align</word>
-        <trans><![CDATA[vt. 使结盟；使成一行；匹配
+		<phonetic><![CDATA[[stɔ(r)d]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>align</word>
+		<trans><![CDATA[vt. 使结盟；使成一行；匹配
 vi. 排列；排成一行]]></trans>
-        <phonetic><![CDATA[[ə'laɪn]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>decoration</word>
-        <trans><![CDATA[n. 装饰，装潢；装饰品；奖章]]></trans>
-        <phonetic><![CDATA[[,dɛkə'reʃən]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>pattern</word>
-        <trans><![CDATA[n. 模式；图案；样品
+		<phonetic><![CDATA[[ə'laɪn]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>decoration</word>
+		<trans><![CDATA[n. 装饰，装潢；装饰品；奖章]]></trans>
+		<phonetic><![CDATA[[,dɛkə'reʃən]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>pattern</word>
+		<trans><![CDATA[n. 模式；图案；样品
 vt. 模仿；以图案装饰
 vi. 形成图案]]></trans>
-        <phonetic><![CDATA[['pætɚn]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>properties</word>
-        <trans><![CDATA[n. 性能；道具，内容（property的复数形式）]]></trans>
-        <phonetic><![CDATA[['prɔpɚtɪz]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>delimiters</word>
-        <trans><![CDATA[n. [计] 分隔符（delimiter的复数）]]></trans>
-        <phonetic><![CDATA[[delimiters]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>refresh</word>
-        <trans><![CDATA[vt. 更新；使……恢复；使……清新；消除……的疲劳
+		<phonetic><![CDATA[['pætɚn]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>properties</word>
+		<trans><![CDATA[n. 性能；道具，内容（property的复数形式）]]></trans>
+		<phonetic><![CDATA[['prɔpɚtɪz]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>delimiters</word>
+		<trans><![CDATA[n. [计] 分隔符（delimiter的复数）]]></trans>
+		<phonetic><![CDATA[[delimiters]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>refresh</word>
+		<trans><![CDATA[vt. 更新；使……恢复；使……清新；消除……的疲劳
 vi. 恢复精神；喝饮料，吃点心；补充给养]]></trans>
-        <phonetic><![CDATA[[ri'frɛʃ]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>annotation</word>
-        <trans><![CDATA[n. 注释；注解；释文]]></trans>
-        <phonetic><![CDATA[[ˌænəˈteʃən]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>arguments</word>
-        <trans><![CDATA[n. 参数]]></trans>
-        <phonetic><![CDATA[['ɑrɡjumənts]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>connection</word>
-        <trans><![CDATA[n. 连接；关系；人脉；连接件]]></trans>
-        <phonetic><![CDATA[[kə'nɛkʃən]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>reference</word>
-        <trans><![CDATA[n. 参考，参照；涉及，提及；参考书目；介绍信；证明书
+		<phonetic><![CDATA[[ri'frɛʃ]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>annotation</word>
+		<trans><![CDATA[n. 注释；注解；释文]]></trans>
+		<phonetic><![CDATA[[ˌænəˈteʃən]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>arguments</word>
+		<trans><![CDATA[n. 参数]]></trans>
+		<phonetic><![CDATA[['ɑrɡjumənts]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>connection</word>
+		<trans><![CDATA[n. 连接；关系；人脉；连接件]]></trans>
+		<phonetic><![CDATA[[kə'nɛkʃən]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>reference</word>
+		<trans><![CDATA[n. 参考，参照；涉及，提及；参考书目；介绍信；证明书
 vi. 引用
 vt. 引用]]></trans>
-        <phonetic><![CDATA[['rɛfrəns]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>navigate</word>
-        <trans><![CDATA[vt. 驾驶，操纵；使通过；航行于
+		<phonetic><![CDATA[['rɛfrəns]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>navigate</word>
+		<trans><![CDATA[vt. 驾驶，操纵；使通过；航行于
 vi. 航行，航空]]></trans>
-        <phonetic><![CDATA[['nævə'get]]]></phonetic>
-        <tags></tags>
-        <progress>1</progress>
-    </item>
-    <item>
-        <word>revoke</word>
-        <trans><![CDATA[vt. 撤回，取消；废除
+		<phonetic><![CDATA[['nævə'get]]]></phonetic>
+		<tags></tags>
+		<progress>1</progress>
+	</item><item>
+		<word>revoke</word>
+		<trans><![CDATA[vt. 撤回，取消；废除
 vi. 有牌不跟
 n. 有牌不跟]]></trans>
-        <phonetic><![CDATA[[rɪ'vəʊk]]]></phonetic>
-        <tags></tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>grant</word>
-        <trans><![CDATA[vt. 授予；允许；承认
+		<phonetic><![CDATA[[rɪ'vəʊk]]]></phonetic>
+		<tags></tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>grant</word>
+		<trans><![CDATA[vt. 授予；允许；承认
 vi. 同意
 n. 拨款；[法] 授予物
 n. (Grant)人名；(瑞典、葡、西、俄、罗、英、塞、德、意)格兰特；(法)格朗]]></trans>
-        <phonetic><![CDATA[[grɑːnt]]]></phonetic>
-        <tags></tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>procedure</word>
-        <trans><![CDATA[n. 程序，手续；步骤]]></trans>
-        <phonetic><![CDATA[[prə'siːdʒə]]]></phonetic>
-        <tags></tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>fetch</word>
-        <trans><![CDATA[vt. 取来；接来；到达；吸引
+		<phonetic><![CDATA[[grɑːnt]]]></phonetic>
+		<tags></tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>procedure</word>
+		<trans><![CDATA[n. 程序，手续；步骤]]></trans>
+		<phonetic><![CDATA[[prə'siːdʒə]]]></phonetic>
+		<tags></tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>fetch</word>
+		<trans><![CDATA[vt. 取来；接来；到达；吸引
 vi. 拿；取物；卖得
 n. 取得；诡计]]></trans>
-        <phonetic><![CDATA[[fetʃ]]]></phonetic>
-        <tags></tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>descend</word>
-        <trans><![CDATA[vi. 下降；下去；下来；遗传；屈尊
+		<phonetic><![CDATA[[fetʃ]]]></phonetic>
+		<tags></tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>descend</word>
+		<trans><![CDATA[vi. 下降；下去；下来；遗传；屈尊
 vt. 下去；沿…向下]]></trans>
-        <phonetic><![CDATA[[dɪ'send]]]></phonetic>
-        <tags></tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>ascend</word>
-        <trans><![CDATA[vi. 上升；登高；追溯
+		<phonetic><![CDATA[[dɪ'send]]]></phonetic>
+		<tags></tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>ascend</word>
+		<trans><![CDATA[vi. 上升；登高；追溯
 vt. 攀登，上升]]></trans>
-        <phonetic><![CDATA[[ə'send]]]></phonetic>
-        <tags></tags>
-        <progress>-1</progress>
-    </item>
-    <item>
-        <word>restrict</word>
-        <trans><![CDATA[vt. 限制；约束；限定]]></trans>
-        <phonetic><![CDATA[[rɪ'strɪkt]]]></phonetic>
-        <tags></tags>
-        <progress>-1</progress>
-    </item>
-</wordbook>
+		<phonetic><![CDATA[[ə'send]]]></phonetic>
+		<tags></tags>
+		<progress>-1</progress>
+	</item><item>
+		<word>restrict</word>
+		<trans><![CDATA[vt. 限制；约束；限定]]></trans>
+		<phonetic><![CDATA[[rɪ'strɪkt]]]></phonetic>
+		<tags></tags>
+		<progress>-1</progress>
+	</item><item>    <word>legend</word>
+    <trans><![CDATA[n. 传奇；说明；图例；刻印文字
+
+n. (Legend)人名；(西)莱亨德；(英)莱金德]]></trans>
+    <phonetic><![CDATA[[ˈledʒənd]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>pseudo</word>
+    <trans><![CDATA[n. 伪君子；假冒的人
+
+adj. 冒充的，假的]]></trans>
+    <phonetic><![CDATA[[ˈsuːdəʊ; ˈsjuːdəʊ]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>contour</word>
+    <trans><![CDATA[n. 轮廓；等高线；周线；电路；概要
+
+vt. 画轮廓；画等高线
+
+n. (Contour)人名；(法)孔图尔]]></trans>
+    <phonetic><![CDATA[[ˈkɒntʊə(r)]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>scatter</word>
+    <trans><![CDATA[v. 撒播；散开；散布；驱散；散布于……上；散射（电磁辐射或粒子）；（棒球）有效投（球）
+
+n. 零星散布的东西；离差；散射]]></trans>
+    <phonetic><![CDATA[[ˈskætə(r)]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>performance</word>
+    <trans><![CDATA[n. 性能；绩效；表演；执行；表现]]></trans>
+    <phonetic><![CDATA[[pəˈfɔːməns]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>splitting</word>
+    <trans><![CDATA[adj. （头痛）欲裂的；极快的；滑稽的
+
+v. 裂开；（人群）分成多组；（非正式）头剧痛（split 的现在分词）]]></trans>
+    <phonetic><![CDATA[[ˈsplɪtɪŋ]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>simplification</word>
+    <trans><![CDATA[n. 简单化；单纯化]]></trans>
+    <phonetic><![CDATA[[ˌsɪmplɪfɪˈkeɪʃn]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>pop up</word>
+    <trans><![CDATA[v. 突然出现]]></trans>
+    <phonetic><![CDATA[]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>ordinary</word>
+    <trans><![CDATA[adj. 普通的；平凡的；平常的
+
+n. 普通；平常的人（或事）]]></trans>
+    <phonetic><![CDATA[[ˈɔːdnri]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>interactive</word>
+    <trans><![CDATA[adj. 交互式的；相互作用的]]></trans>
+    <phonetic><![CDATA[[ˌɪntərˈæktɪv]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>preferable</word>
+    <trans><![CDATA[adj. 更好的，更可取的；更合意的]]></trans>
+    <phonetic><![CDATA[[ˈprefrəbl]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>patch</word>
+    <trans><![CDATA[n. 眼罩；斑点；碎片；小块土地
+
+vt. 修补；解决；掩饰
+
+vi. 打补丁
+
+n. (Patch)人名；(英)帕奇]]></trans>
+    <phonetic><![CDATA[[pætʃ]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>take care of</word>
+    <trans><![CDATA[照顾；注意；抚养]]></trans>
+    <phonetic><![CDATA[]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>be aware of</word>
+    <trans><![CDATA[知道]]></trans>
+    <phonetic><![CDATA[]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>crucial</word>
+    <trans><![CDATA[adj. 重要的；决定性的；定局的；决断的]]></trans>
+    <phonetic><![CDATA[[ˈkruːʃl]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>smattering</word>
+    <trans><![CDATA[n. 一知半解；少数；略知
+
+adj. 肤浅的；些许的；点滴的
+
+v. 略知；肤浅地学习；粉碎（smatter的ing形式）]]></trans>
+    <phonetic><![CDATA[[ˈsmætərɪŋ]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>track</word>
+    <trans><![CDATA[n. 轨道；足迹，踪迹；小道
+
+vt. 追踪；通过；循路而行；用纤拉
+
+vi. 追踪；走；留下足迹]]></trans>
+    <phonetic><![CDATA[[træk]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>perform</word>
+    <trans><![CDATA[vt. 执行；完成；演奏
+
+vi. 执行，机器运转；表演]]></trans>
+    <phonetic><![CDATA[[pəˈfɔːm]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>corresponding</word>
+    <trans><![CDATA[adj. 相当的，相应的；一致的；通信的
+
+v. 类似（correspond的ing形式）；相配]]></trans>
+    <phonetic><![CDATA[[ˌkɒrəˈspɒndɪŋ]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>desired</word>
+    <trans><![CDATA[adj. 渴望的；想要的；预期的
+
+v. 渴望，期望；被（某人）吸引，对……产生性欲；要求，恳求（desire 的过去式和过去分词）]]></trans>
+    <phonetic><![CDATA[[dɪ'zaɪəd]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>explicitly</word>
+    <trans><![CDATA[adv. 明确地；明白地]]></trans>
+    <phonetic><![CDATA[[ɪkˈsplɪsɪtli]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>plot</word>
+    <trans><![CDATA[n. 情节；图表；阴谋；（专用的）小块土地
+
+vt. 密谋；绘图；划分；标绘
+
+vi. 密谋；策划；绘制
+
+n. （Plot）（捷、法）普洛特；普洛（人名）]]></trans>
+    <phonetic><![CDATA[[plɒt]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>figure</word>
+    <trans><![CDATA[n. 数字；人物；图形；价格；（人的）体形；画像
+
+vi. 计算；出现；扮演角色
+
+vt. 计算；认为；描绘；象征]]></trans>
+    <phonetic><![CDATA[[ˈfɪɡə(r)]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>coordinates</word>
+    <trans><![CDATA[n. [数] 坐标；相配之衣物
+
+v. 使协调；使调和（coordinate的第三人称单数形式）]]></trans>
+    <phonetic><![CDATA[[kəʊ'ɔːdɪneɪts]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>axes</word>
+    <trans><![CDATA[n. 轴线；轴心；坐标轴（axis 的复数）；斧头（axe 的复数）]]></trans>
+    <phonetic><![CDATA[['æksiːz]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>tutorial</word>
+    <trans><![CDATA[adj. （与）大学导师（有关）的；（与）家庭教师（有关）的；（与）大学助教（有关）的；（与）辅导（有关）的
+
+n. （大学导师）个别指导时间，辅导课；辅导材料，使用说明书；软件教程]]></trans>
+    <phonetic><![CDATA[[tjuːˈtɔːriəl]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>pixmap</word>
+    <trans><![CDATA[n. 象素映射；象图]]></trans>
+    <phonetic><![CDATA[]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>progress</word>
+    <trans><![CDATA[n. 进步，发展；前进
+
+vi. 前进，进步；进行
+
+n. (Progress)人名；(赞)普罗格雷斯]]></trans>
+    <phonetic><![CDATA[[ˈprəʊɡres]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>toggle</word>
+    <trans><![CDATA[n. 拴扣；切换键，开关；套索钉
+
+v. 切换；拴牢，系紧]]></trans>
+    <phonetic><![CDATA[[ˈtɒɡl]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>splitter</word>
+    <trans><![CDATA[n. 劈（或切、割）的人；分类学家；（非正式）剧烈的头痛；快速指叉球]]></trans>
+    <phonetic><![CDATA[['splɪtə]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>slider</word>
+    <trans><![CDATA[n. 管龟，彩龟；滑动器，滑杆；浮动块，滑动块；滑行曲线球；滑雪者；小三明治]]></trans>
+    <phonetic><![CDATA[[ˈslaɪdə(r)]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>conversion</word>
+    <trans><![CDATA[n. 转换；变换；[金融] 兑换；改变信仰]]></trans>
+    <phonetic><![CDATA[[kənˈvɜːʃn]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>implicit</word>
+    <trans><![CDATA[adj. 含蓄的；暗示的；盲从的]]></trans>
+    <phonetic><![CDATA[[ɪmˈplɪsɪt]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>widget</word>
+    <trans><![CDATA[n. 装饰物；小机械；小部件；未定名的主要新产品]]></trans>
+    <phonetic><![CDATA[[ˈwɪdʒɪt]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>compose</word>
+    <trans><![CDATA[vt. 构成；写作；使平静；排…的版
+
+vi. 组成；作曲；排字]]></trans>
+    <phonetic><![CDATA[[kəmˈpəʊz]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>compute</word>
+    <trans><![CDATA[vt. 计算；估算；用计算机计算
+
+vi. 计算；估算；推断
+
+n. 计算；估计；推断]]></trans>
+    <phonetic><![CDATA[[kəmˈpjuːt]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>balance</word>
+    <trans><![CDATA[n. 平衡；余额；匀称
+
+vt. 使平衡；结算；使相称
+
+vi. 保持平衡；相称；抵销
+
+n. (Balance)人名；(西)巴兰塞]]></trans>
+    <phonetic><![CDATA[[ˈbæləns]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>donut</word>
+    <trans><![CDATA[n. 炸面圈，多纳圈（doughnut 的另一种拼法）]]></trans>
+    <phonetic><![CDATA[[ˈdəʊnʌt]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>metric</word>
+    <trans><![CDATA[adj. 公制的；米制的；公尺的
+
+n. 度量标准]]></trans>
+    <phonetic><![CDATA[[ˈmetrɪk]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>aggregation</word>
+    <trans><![CDATA[n. [地质][数] 聚合，聚集；聚集体，集合体]]></trans>
+    <phonetic><![CDATA[[ˌæɡrɪˈɡeɪʃn]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>visualize</word>
+    <trans><![CDATA[vt. 形象，形象化；想像，设想
+
+vi. 显现]]></trans>
+    <phonetic><![CDATA[[ˈvɪʒuəlaɪz]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>significant</word>
+    <trans><![CDATA[adj. 重大的；有效的；有意义的；值得注意的；意味深长的
+
+n. 象征；有意义的事物]]></trans>
+    <phonetic><![CDATA[[sɪɡˈnɪfɪkənt]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>histogram</word>
+    <trans><![CDATA[n. [统计] 直方图；柱状图]]></trans>
+    <phonetic><![CDATA[[ˈhɪstəɡræm]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>trunc</word>
+    <trans><![CDATA[n. 将数字截尾取整
+
+n. (Trunc)人名；(捷)特伦茨]]></trans>
+    <phonetic><![CDATA[]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>expressions</word>
+    <trans><![CDATA[n. [数] 表达式；表情；公式；表示式（expression是复数形式）]]></trans>
+    <phonetic><![CDATA[[ɪk'spreʃ(ə)nz]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>timestamp</word>
+    <trans><![CDATA[n. 时间戳；时间邮票]]></trans>
+    <phonetic><![CDATA[[ˈtaɪmstæmp]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>similarly</word>
+    <trans><![CDATA[adv. 类似地，差不多地；同样地，也]]></trans>
+    <phonetic><![CDATA[[ˈsɪmələli]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>nested</word>
+    <trans><![CDATA[adj. 嵌套的，内装的
+
+v. 筑巢；嵌入（nest的过去分词）]]></trans>
+    <phonetic><![CDATA[['nestɪd]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>omit</word>
+    <trans><![CDATA[vt. 省略；遗漏；删除；疏忽]]></trans>
+    <phonetic><![CDATA[[əˈmɪt]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>evaluate</word>
+    <trans><![CDATA[vt. 评价；估价；求…的值
+
+vi. 评价；估价]]></trans>
+    <phonetic><![CDATA[[ɪˈvæljueɪt]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>existence</word>
+    <trans><![CDATA[n. 存在，实在；生存，生活；存在物，实在物]]></trans>
+    <phonetic><![CDATA[[ɪɡˈzɪstəns]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>accessing</word>
+    <trans><![CDATA[n. [计] 访问
+
+v. [计] 访问（access的ing形式）；接近；到达]]></trans>
+    <phonetic><![CDATA[[ˈæksesɪŋ]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>favor</word>
+    <trans><![CDATA[v. 较喜欢；偏袒；有利于；（非正式）长得像；悉心照料
+
+n. 帮助；提拔；徽章；赞同；偏袒；同意性交]]></trans>
+    <phonetic><![CDATA[[ˈfeɪvə(r)]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>deprecated</word>
+    <trans><![CDATA[v. 不赞成；弃用；不宜用（deprecate的过去式及过去分词形式）]]></trans>
+    <phonetic><![CDATA[[ˈdeprəkeɪtɪd]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>consist</word>
+    <trans><![CDATA[vi. 由…组成；在于；符合]]></trans>
+    <phonetic><![CDATA[[kənˈsɪst]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>section</word>
+    <trans><![CDATA[n. 截面；部分；部门；地区；章节
+
+vi. 被切割成片；被分成部分
+
+vt. 把…分段；将…切片；对…进行划分]]></trans>
+    <phonetic><![CDATA[[ˈsekʃn]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>criteria</word>
+    <trans><![CDATA[n. 标准，条件（criterion 的复数）]]></trans>
+    <phonetic><![CDATA[[kraɪ'tɪərɪə]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>upgrading</word>
+    <trans><![CDATA[v. （使）（机器、计算机系统等）升级；提高（设施、服务等的）档次；给（飞机乘客或酒店住客）升级；给（某人）升职；提高（某事物的）地位（upgrade 的现在分词）]]></trans>
+    <phonetic><![CDATA[[ˌʌpˈɡreɪdɪŋ]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>persist</word>
+    <trans><![CDATA[vi. 存留，坚持；持续，固执
+
+vt. 坚持说，反复说]]></trans>
+    <phonetic><![CDATA[[pəˈsɪst]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>excessive</word>
+    <trans><![CDATA[adj. 过多的，极度的；过分的]]></trans>
+    <phonetic><![CDATA[[ɪkˈsesɪv]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>particular</word>
+    <trans><![CDATA[adj. 特别的；详细的；独有的；挑剔的
+
+n. 详细说明；个别项目]]></trans>
+    <phonetic><![CDATA[[pəˈtɪkjələ(r)]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>mount</word>
+    <trans><![CDATA[vt. 增加；爬上；使骑上马；安装，架置；镶嵌，嵌入；准备上演；成立（军队等）
+
+vi. 爬；增加；上升
+
+n. 山峰；底座；乘骑用马；攀，登；运载工具；底座
+
+n. （英）芒特（人名）
+
+v. 登上；骑上]]></trans>
+    <phonetic><![CDATA[[maʊnt]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>approach</word>
+    <trans><![CDATA[v. 走进；与……接洽；处理；临近，逐渐接近（某时间或事件）；几乎达到（某水平或状态）
+
+n. 方法，方式；接近；接洽；（某事的）临近；路径；进场（着陆）；相似的事物]]></trans>
+    <phonetic><![CDATA[[əˈprəʊtʃ]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>essential</word>
+    <trans><![CDATA[adj. 基本的；必要的；本质的；精华的
+
+n. 本质；要素；要点；必需品]]></trans>
+    <phonetic><![CDATA[[ɪˈsenʃl]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>batch</word>
+    <trans><![CDATA[n. 一批；一炉；一次所制之量
+
+vt. 分批处理
+
+n. (Batch)人名；(英)巴奇]]></trans>
+    <phonetic><![CDATA[[bætʃ]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>notation</word>
+    <trans><![CDATA[n. 符号；乐谱；注释；记号法]]></trans>
+    <phonetic><![CDATA[[nəʊˈteɪʃn]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>hierarchical</word>
+    <trans><![CDATA[adj. 分层的；等级体系的]]></trans>
+    <phonetic><![CDATA[[ˌhaɪəˈrɑːkɪkl]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>specify</word>
+    <trans><![CDATA[vt. 指定；详细说明；列举；把…列入说明书]]></trans>
+    <phonetic><![CDATA[[ˈspesɪfaɪ]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>convenient</word>
+    <trans><![CDATA[adj. 方便的；[废语]适当的；[口语]近便的；实用的]]></trans>
+    <phonetic><![CDATA[[kənˈviːniənt]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>shrink</word>
+    <trans><![CDATA[v. （使）缩小，（使）收缩；（尤指因恐惧而）退缩，畏缩，回避；（衣服、布料）缩水
+
+n. 收缩；畏缩；（非正式）精神病医生，精神病学家，心理学家]]></trans>
+    <phonetic><![CDATA[[ʃrɪŋk]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>conformance</word>
+    <trans><![CDATA[n. 一致性；顺应]]></trans>
+    <phonetic><![CDATA[[kənˈfɔːməns]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>Material</word>
+    <trans><![CDATA[n. （巴、美、印、墨）妈特力娅乐（人名）]]></trans>
+    <phonetic><![CDATA[[məˈtɪriəl]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>assign</word>
+    <trans><![CDATA[vt. 分配；指派；[计][数] 赋值
+
+vi. 将财产过户（尤指过户给债权人）]]></trans>
+    <phonetic><![CDATA[[əˈsaɪn]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>archive</word>
+    <trans><![CDATA[n. 档案馆；档案文件
+
+vt. 把…存档]]></trans>
+    <phonetic><![CDATA[[ˈɑːrkaɪv]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>distribution</word>
+    <trans><![CDATA[n. 分布；分配；供应]]></trans>
+    <phonetic><![CDATA[[ˌdɪstrɪˈbjuːʃn]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>translate</word>
+    <trans><![CDATA[vt. 翻译；转化；解释；转变为；调动
+
+vi. 翻译]]></trans>
+    <phonetic><![CDATA[[trænzˈleɪt; trænsˈleɪt]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>district</word>
+    <trans><![CDATA[n. 区域；地方；行政区]]></trans>
+    <phonetic><![CDATA[[ˈdɪstrɪkt]]]></phonetic>
+    <tags>未分组</tags>
+    <progress>-1</progress>
+</item><item>    <word>acquisition</word>
+    <trans><![CDATA[n. 获得物，获得；收购 
+Acquisition: 收购 ; 获得 ; 购买]]></trans>
+    <phonetic><![CDATA[[,ækwɪ'zɪʃ(ə)n]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>generic</word>
+    <trans><![CDATA[adj. 类的；一般的；属的；非商标的]]></trans>
+    <phonetic><![CDATA[[dʒə'nɛrɪk]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>invocation</word>
+    <trans><![CDATA[n. 祈祷；符咒；【法律】(法院对另案的)文件调取；(法权的)行使]]></trans>
+    <phonetic><![CDATA[[,ɪnvə'keʃən]]]></phonetic>
+    <tags></tags>
+    <progress>2</progress>
+</item><item>    <word>direct</word>
+    <trans><![CDATA[adj. 直接的；直系的；亲身的；恰好的
+vt. 管理；指挥；导演；指向
+vi. 指导；指挥
+adv. 直接地；正好；按直系关系]]></trans>
+    <phonetic><![CDATA[[dəˈrɛkt; daɪˈrɛkt]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>relinquish</word>
+    <trans><![CDATA[vt. 放弃；放手；让渡]]></trans>
+    <phonetic><![CDATA[[rɪ'lɪŋkwɪʃ]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>proceed</word>
+    <trans><![CDATA[vi. 开始；继续进行；发生；行进
+n. 收入，获利]]></trans>
+    <phonetic><![CDATA[[pro'sid]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>awakened</word>
+    <trans><![CDATA[adj. 觉醒的
+v. 唤醒（awaken的过去式）]]></trans>
+    <phonetic><![CDATA[]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>discretion</word>
+    <trans><![CDATA[n. 自由裁量权；谨慎；判断力；判定；考虑周到]]></trans>
+    <phonetic><![CDATA[[dɪ'skrɛʃən]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>occur</word>
+    <trans><![CDATA[vi. 发生；出现；存在]]></trans>
+    <phonetic><![CDATA[[ə'kɝ]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>arbitrary</word>
+    <trans><![CDATA[任意的；武断的；专制的]]></trans>
+    <phonetic><![CDATA[[ˈɑːrbətreri]]]></phonetic>
+    <tags></tags>
+    <progress>2</progress>
+</item><item>    <word>willing</word>
+    <trans><![CDATA[adj. 乐意的；自愿的；心甘情愿的
+v. 决心；用意志力驱使；将（财产等）遗赠某人（will的现在分词）
+n. (Willing)人名；(德、芬、瑞典)维林；(英)威林]]></trans>
+    <phonetic><![CDATA[['wɪlɪŋ]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>disclose</word>
+    <trans><![CDATA[vt. 公开；揭露]]></trans>
+    <phonetic><![CDATA[[dɪs'kloz]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>representation</word>
+    <trans><![CDATA[n. 代表；表现；表示法；陈述]]></trans>
+    <phonetic><![CDATA[['rɛprɪzɛn'teʃən]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>resolved</word>
+    <trans><![CDATA[adj. 下定决心的；已解决的；断然的
+v. 解决；决定；分解；转变（resolve的过去分词）]]></trans>
+    <phonetic><![CDATA[[rɪ'zɑlvd]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>nexus</word>
+    <trans><![CDATA[n. 关系；连结，连系]]></trans>
+    <phonetic><![CDATA[['nɛksəs]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>repository</word>
+    <trans><![CDATA[n. 贮藏室，仓库；知识库；智囊团]]></trans>
+    <phonetic><![CDATA[[rɪ'pɑzə'tɔri]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>artifact</word>
+    <trans><![CDATA[n. 人工制品；手工艺品]]></trans>
+    <phonetic><![CDATA[['ɑrtə,fækt]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>perspective</word>
+    <trans><![CDATA[n. 观点；远景；透视图
+adj. 透视的]]></trans>
+    <phonetic><![CDATA[[pɚ'spɛktɪv]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>associated</word>
+    <trans><![CDATA[adj. 关联的；联合的
+v. 联系（associate的过去式和过去分词）]]></trans>
+    <phonetic><![CDATA[[ə'soʃɪetɪd]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>enumerable</word>
+    <trans><![CDATA[adj. 可列举的；可点数的]]></trans>
+    <phonetic><![CDATA[[ɪ'njʊmərəbl]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>released</word>
+    <trans><![CDATA[v. 释放（release的过去式）；已发布]]></trans>
+    <phonetic><![CDATA[[rɪ'li:st]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>configurable</word>
+    <trans><![CDATA[adj. 可配置的；结构的]]></trans>
+    <phonetic><![CDATA[[configurable]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>syntax</word>
+    <trans><![CDATA[n. 语法；句法；有秩序的排列]]></trans>
+    <phonetic><![CDATA[['sɪntæks]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>strict</word>
+    <trans><![CDATA[adj. 严格的；绝对的；精确的；详细的]]></trans>
+    <phonetic><![CDATA[[strɪkt]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>prototype</word>
+    <trans><![CDATA[n. 原型；标准，模范]]></trans>
+    <phonetic><![CDATA[['protə'taɪp]]]></phonetic>
+    <tags></tags>
+    <progress>2</progress>
+</item><item>    <word>sib</word>
+    <trans><![CDATA[n. 亲属；亲族
+adj. 近亲的，有血缘关系的
+n. (Sib)人名；(英)茜布(教名Sibyl、Sibylla、Sybil的昵称)]]></trans>
+    <phonetic><![CDATA[[sɪb]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>pervious</word>
+    <trans><![CDATA[adj. 能被通过的；能接受的；可渗透的]]></trans>
+    <phonetic><![CDATA[['pɝvɪəs]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>implied</word>
+    <trans><![CDATA[vt. 暗示；意味（imply的过去式）
+adj. 含蓄的；暗指的]]></trans>
+    <phonetic><![CDATA[[ɪm'plaɪd]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>required</word>
+    <trans><![CDATA[adj. 必需的；（美）必修的
+v. 需要（require的过去式及过去分词形式）；要求]]></trans>
+    <phonetic><![CDATA[[rɪ'kwaɪrd]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>statement</word>
+    <trans><![CDATA[n. 声明；陈述，叙述；报表，清单]]></trans>
+    <phonetic><![CDATA[['stetmənt]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>achieves</word>
+    <trans><![CDATA[实现]]></trans>
+    <phonetic><![CDATA[[achieves]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>external</word>
+    <trans><![CDATA[adj. 外部的；表面的；[药] 外用的；外国的；外面的
+n. 外部；外观；外面]]></trans>
+    <phonetic><![CDATA[[ɪk'stɝnl]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>permute</word>
+    <trans><![CDATA[vt. 交换；变更；排列]]></trans>
+    <phonetic><![CDATA[[pɚ'mjʊt]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>square</word>
+    <trans><![CDATA[adj. 平方的；正方形的；直角的；正直的
+vt. 使成方形；与…一致
+vi. 一致；成方形
+n. 平方；广场；正方形
+adv. 成直角地]]></trans>
+    <phonetic><![CDATA[[skwɛr]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>synchronized</word>
+    <trans><![CDATA[adj. 同步的；同步化的
+v. 使协调（synchronize的过去分词）；同时发生；校准]]></trans>
+    <phonetic><![CDATA[['sɪŋkrənaɪzd]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>priority</word>
+    <trans><![CDATA[n. 优先；优先权；[数] 优先次序；优先考虑的事]]></trans>
+    <phonetic><![CDATA[[praɪ'ɔrəti]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>interrupted</word>
+    <trans><![CDATA[adj. 中断的；被打断的；不规则的
+vt. 打断；中断（interrupt的过去分词）]]></trans>
+    <phonetic><![CDATA[[,ɪntə'rʌptɪd]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>state</word>
+    <trans><![CDATA[n. 国家；州；情形
+vt. 规定；声明；陈述
+adj. 国家的；州的；正式的
+n. (State)人名；(罗、瑞典)斯塔特；(英)斯泰特]]></trans>
+    <phonetic><![CDATA[[stet]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>illegal</word>
+    <trans><![CDATA[adj. [法] 非法的；违法的；违反规则的
+n. 非法移民，非法劳工]]></trans>
+    <phonetic><![CDATA[[ɪ'ligl]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>cast</word>
+    <trans><![CDATA[vt. 投，抛；计算；浇铸；投射（光、影、视线等）
+n. 投掷，抛；铸件，[古生] 铸型；演员阵容；脱落物
+vi. 投，抛垂钓鱼钩；计算，把几个数字加起来
+n. (Cast)人名；(法)卡斯特]]></trans>
+    <phonetic><![CDATA[[kæst]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>extend</word>
+    <trans><![CDATA[vt. 延伸；扩大；推广；伸出；给予；使竭尽全力；对…估价
+vi. 延伸；扩大；伸展；使疏开]]></trans>
+    <phonetic><![CDATA[[ɪk'stɛnd]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>memory cell</word>
+    <trans><![CDATA[[计] 存储单元（元件）]]></trans>
+    <phonetic><![CDATA[[memory+cell]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>align</word>
+    <trans><![CDATA[vt. 使结盟；使成一行；匹配
+vi. 排列；排成一行]]></trans>
+    <phonetic><![CDATA[[ə'laɪn]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>decoration</word>
+    <trans><![CDATA[n. 装饰，装潢；装饰品；奖章]]></trans>
+    <phonetic><![CDATA[[,dɛkə'reʃən]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>delimiters</word>
+    <trans><![CDATA[n. [计] 分隔符（delimiter的复数）]]></trans>
+    <phonetic><![CDATA[[delimiters]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>navigate</word>
+    <trans><![CDATA[vt. 驾驶，操纵；使通过；航行于
+vi. 航行，航空]]></trans>
+    <phonetic><![CDATA[['nævə'get]]]></phonetic>
+    <tags></tags>
+    <progress>1</progress>
+</item><item>    <word>revoke</word>
+    <trans><![CDATA[vt. 撤回，取消；废除
+vi. 有牌不跟
+n. 有牌不跟]]></trans>
+    <phonetic><![CDATA[[rɪ'vəʊk]]]></phonetic>
+    <tags></tags>
+    <progress>-1</progress>
+</item><item>    <word>grant</word>
+    <trans><![CDATA[vt. 授予；允许；承认
+vi. 同意
+n. 拨款；[法] 授予物
+n. (Grant)人名；(瑞典、葡、西、俄、罗、英、塞、德、意)格兰特；(法)格朗]]></trans>
+    <phonetic><![CDATA[[grɑːnt]]]></phonetic>
+    <tags></tags>
+    <progress>-1</progress>
+</item><item>    <word>procedure</word>
+    <trans><![CDATA[n. 程序，手续；步骤]]></trans>
+    <phonetic><![CDATA[[prə'siːdʒə]]]></phonetic>
+    <tags></tags>
+    <progress>-1</progress>
+</item><item>    <word>fetch</word>
+    <trans><![CDATA[vt. 取来；接来；到达；吸引
+vi. 拿；取物；卖得
+n. 取得；诡计]]></trans>
+    <phonetic><![CDATA[[fetʃ]]]></phonetic>
+    <tags></tags>
+    <progress>-1</progress>
+</item><item>    <word>descend</word>
+    <trans><![CDATA[vi. 下降；下去；下来；遗传；屈尊
+vt. 下去；沿…向下]]></trans>
+    <phonetic><![CDATA[[dɪ'send]]]></phonetic>
+    <tags></tags>
+    <progress>-1</progress>
+</item><item>    <word>ascend</word>
+    <trans><![CDATA[vi. 上升；登高；追溯
+vt. 攀登，上升]]></trans>
+    <phonetic><![CDATA[[ə'send]]]></phonetic>
+    <tags></tags>
+    <progress>-1</progress>
+</item><item>    <word>restrict</word>
+    <trans><![CDATA[vt. 限制；约束；限定]]></trans>
+    <phonetic><![CDATA[[rɪ'strɪkt]]]></phonetic>
+    <tags></tags>
+    <progress>-1</progress>
+</item></wordbook>
