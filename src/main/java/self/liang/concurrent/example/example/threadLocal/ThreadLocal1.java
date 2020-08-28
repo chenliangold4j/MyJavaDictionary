@@ -13,6 +13,7 @@ public class ThreadLocal1 {
      */
     public static void main(String[] args) {
         ThreadLocal test;
+        System.out.println("test");
     }
 
 }
