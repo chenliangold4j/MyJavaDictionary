@@ -4,7 +4,7 @@ mysqlbinlog --start-datetime="2020-07-17 21:00:45" --stop-datetime="2020-09-20 0
 
  mysqlbinlog --no-defaults  --base64-output=decode-rows -v --database=test --stop-datetime="2020-09-19 07:59:50" /var/lib/mysql/mysql-bin.000003
 
-恢复数组
+恢复数据
 /usr/bin/mysqlbinlog  --start-position=345 --stop-position=1892 --database=test  /var/lib/mysql/mysql-bin.000003 | /usr/bin/mysql -uroot -p123456 -v test
 
 
