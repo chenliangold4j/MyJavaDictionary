@@ -32,5 +32,5 @@ https://www.jianshu.com/p/1bd66db5dc46
 
    该接口的实现，我们可以整理出如上图所示的结构。我们可以看到BaseloadBalancer类实现了基础的负载均衡，
    而DynamicServerListLoadBalancer和ZoneAwareLoadBalancer在负载均衡的策略上做了一些功能的扩展。
-
+g
    默认采用ZoneAvoidanceRule来实现负载均衡器。
