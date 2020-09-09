@@ -1,2 +1,34 @@
 docker run -it -d -p5601:5601 -e ELASTICSEARCH_URL=http://172.17.0.1:9200  -e "I18N_LOCALE=zh-CN" --name kibana  kibana:6.4.3
 docker run -it -d -p15601:5601 -e ELASTICSEARCH_URL=http://172.17.0.1:9012  -e "I18N_LOCALE=zh-CN" --name kibana  kibana:6.4.3
+
+
+编辑kibana的配置文件，对server.basePath进行定义，配置路径。
+
+Copy
+# cat /etc/kibana/kibana.yml
+# Default Kibana configuration for docker target
+server.name: kibana
+server.host: "0"
+server.basePath: "/elk"
+elasticsearch.hosts: [ "http://elasticsearch:9200" ]
+xpack.monitoring.ui.container.elasticsearch.enabled: true
+i18n.locale: "zh-CN"
+
+
+配置nginx#
+编写一个代理配置文件
+
+Copy
+# cat /etc/nginx/conf.d/proxy_kibana.conf
+server {
+    listen 80;
+    server_name 172.24.115.4;
+    location /elk/ {
+        proxy_pass http://172.24.115.45:5601;
+        rewrite ^/elk/(.*)$ /$1 break;
+        proxy_set_header  X-Real-IP  $remote_addr;
+        proxy_set_header  Host $host:$server_port;
+        proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_http_version 1.1;
+    }
+}
