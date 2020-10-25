@@ -1,6 +1,5 @@
 package self.liang.concurrent.example.example.threadLocal;
 
-import cn.hutool.cron.task.RunnableTask;
 import com.alibaba.ttl.TransmittableThreadLocal;
 import com.alibaba.ttl.TtlRunnable;
 
