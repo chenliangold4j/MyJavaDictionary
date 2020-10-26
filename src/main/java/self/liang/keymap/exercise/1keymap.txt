@@ -16,7 +16,8 @@
     3. 如果想选中一行的话，可以通过Home、End 和Shift键实现。
     4. shift+alt+ mouse-left 可以选择多行
     5. Alt键+鼠标左键拖动选择各行的部分内容
-
+    6.ctrl+alt+[
+      ctrl+alt+]   切换窗口
 
 四.编辑
     1.ctrl + alt + enter 插入到上一行

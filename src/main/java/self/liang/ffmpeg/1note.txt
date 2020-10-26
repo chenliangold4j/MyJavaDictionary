@@ -1,0 +1,1 @@
+ffmpeg.exe -re -i 123.mp4 -f flv rtmp://127.0.0.1:1935/live/123
