@@ -45,6 +45,7 @@ public class Solution1 {
     List<Integer> list = new ArrayList<>();
 
     public int sumNumbers(TreeNode root) {
+        if (root == null) return 0;
         sumSon(root, 0);
         int result = 0;
         for (Integer i : list) {
