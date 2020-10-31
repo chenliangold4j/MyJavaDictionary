@@ -1,5 +1,7 @@
 package self.liang.high.efficiency.stream;
 
+import cn.hutool.json.JSONUtil;
+
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
@@ -29,13 +31,15 @@ public class StreamInCommonUse {
         List<Stream<int[]>> collect = nums2List.stream().map(i -> nums3List.stream().map(j -> new int[]{i, j})).collect(Collectors.toList());
 
 
-        res2.forEach(item ->{
+        res2.forEach(item -> {
             System.out.println(Arrays.toString(item));
         });
-
+        collect.forEach(item -> {
+            item.collect(Collectors.toList()).forEach(e -> System.out.println(Arrays.toString(e)));
+        });
     }
 
-    public void test4(){
+    public void test4() {
 
 //        flatMap 中间操作:
 //
@@ -89,7 +93,7 @@ public class StreamInCommonUse {
 
     }
 
-    public void test3(){
+    public void test3() {
 
         List<String> strings = Arrays.asList("abc", "", "bc", "efg", "abcd", "", "jkl");
 
