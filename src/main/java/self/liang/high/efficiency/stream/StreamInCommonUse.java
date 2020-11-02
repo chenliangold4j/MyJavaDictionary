@@ -37,6 +37,13 @@ public class StreamInCommonUse {
         collect.forEach(item -> {
             item.collect(Collectors.toList()).forEach(e -> System.out.println(Arrays.toString(e)));
         });
+
+        // 代码实现了对numList中的元素累加。lambada表达式的a参数是表达式的执行结果的缓存，也就是表达式这一次的执行结果会被作为下一次执行的参数
+        // ，而第二个参数b则是依次为stream中每个元素。如果表达式是第一次被执行，a则是stream中的第一个元素。
+        List<Integer> numList = Arrays.asList(1,2,3,4,5);
+        int result = numList.stream().reduce((a,b) -> a + b ).get();
+        System.out.println(result);
+
     }
 
     public void test4() {
