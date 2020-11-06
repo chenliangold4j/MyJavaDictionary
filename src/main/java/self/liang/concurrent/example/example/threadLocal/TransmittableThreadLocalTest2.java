@@ -45,4 +45,13 @@ public class TransmittableThreadLocalTest2 {
 
     }
 
+
+    class TestHandler implements RejectedExecutionHandler {
+
+        @Override
+        public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+
+        }
+    }
+
 }
