@@ -216,5 +216,5 @@ docker run -d -e MYSQL_ROOT_PASSWORD=123456 –-name mysql_query -v E:\docker\my
     group by st.s_id
     order by avg(sc4.s_score) desc
 
-
+    18 union 和 union all  用于不相连的表的合并
 
