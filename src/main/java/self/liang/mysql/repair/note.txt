@@ -9,3 +9,5 @@ mysqlbinlog --start-datetime="2020-07-17 21:00:45" --stop-datetime="2020-09-20 0
 
 
  show binlog events in 'mysql-bin.000003'
+
+

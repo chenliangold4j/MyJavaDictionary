@@ -157,4 +157,7 @@ public class SpringBootEntrance {
     public static void main(String[] args) {
         SpringApplication.run(SpringBootEntrance.class);
     }
+
 }
+
+//    nohup java -jar BiuBiuBiu.jar >output 2>&1 &

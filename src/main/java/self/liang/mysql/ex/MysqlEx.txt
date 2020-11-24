@@ -1,4 +1,15 @@
 docker run -d -e MYSQL_ROOT_PASSWORD=123456 –-name mysql_query -v E:\docker\mysql:/var/lib/mysql -p 3306:3306 mysql:5.7.28
+
+dockermysql:docker create --name mysqlzx -v /root/liangzheng/data:/var/lib/mysql  -p 3306:3306 -e MYSQL_ROOT_PASSWORD=zx@$3030 mysql:5.7.28
+
+docker run --name=mysql1 -d  -v/root/zhengxie/data:/var/lib/mysql  -p 3306:3306 mysql/mysql-server
+
+    修改协议
+    ALTER USER 'root'@'%' IDENTIFIED BY 'zhengxie!#2020' PASSWORD EXPIRE NEVER;
+    ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'zhengxie!#2020';
+    FLUSH PRIVILEGES;
+
+
 1.mysql的语句练习：
     建立表语句：
     CREATE TABLE `student`(
