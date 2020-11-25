@@ -1,7 +1,5 @@
 package self.liang.windows;
 
-import lombok.SneakyThrows;
-
 import java.awt.*;
 import java.util.List;
 import java.util.Map;
@@ -14,9 +12,9 @@ public class TrayIconUtil {
             new Thread(() -> {
                 Random random = new Random(System.currentTimeMillis());
                 while (true) {
-                    System.out.println("size:"+words.size());
+                    System.out.println("size:" + words.size());
                     int i = random.nextInt(words.size());
-                    System.out.println("index："+i);
+                    System.out.println("index：" + i);
                     Map<String, String> stringStringMap = words.get(i);
                     try {
                         TrayIconUtil.displayTray(stringStringMap.get("word"), stringStringMap.get("trans"), stringStringMap.get("phonetic"));
@@ -24,7 +22,7 @@ public class TrayIconUtil {
                         e.printStackTrace();
                     }
                     try {
-                        Thread.sleep(15* 1000);
+                        Thread.sleep(15 * 1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -51,7 +49,7 @@ public class TrayIconUtil {
         trayIcon.setToolTip("System tray icon demo");
         tray.add(trayIcon);
 
-        trayIcon.displayMessage(word, trans+"\n"+phonetic, TrayIcon.MessageType.INFO);
+        trayIcon.displayMessage(word, trans + "\n" + phonetic, TrayIcon.MessageType.INFO);
 
     }
 
