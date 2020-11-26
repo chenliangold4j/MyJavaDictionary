@@ -1,0 +1,3 @@
+ docker network create --subnet=172.172.172.0/24 zentaonet
+
+ docker run --name zentao -p 80:80 --network=zentaonet --ip 172.172.172.172 --mac-address 02:42:ac:11:00:00 -v D:/docker/www/zentaopms:/www/zentaopms -v D:/docker/www/mysqldata:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -d easysoft/zentao:12.3.3
