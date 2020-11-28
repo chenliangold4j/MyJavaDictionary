@@ -1,10 +1,16 @@
 package self.liang.leetcode.classical.tree;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MyRBTree<T extends Comparable<T>, D> {
+
+    public static void main(String[] args) {
+
+    }
+
 
     private RBNode<T, D> root;//根节点
     /**
@@ -112,7 +118,6 @@ public class MyRBTree<T extends Comparable<T>, D> {
 
     //寻找为key值的节点
     public RBNode<T, D> search(T key, RBNode<T, D> node) {
-
         if (node != null) {
             //查找的过程，就是一直递归比较到叶子为止
             int com = key.compareTo(node.key);
@@ -123,14 +128,12 @@ public class MyRBTree<T extends Comparable<T>, D> {
             } else {
                 return node;
             }
-
         }
         return null;
     }
 
     //寻找后继节点，即大于该节点的最小节点
     public RBNode<T, D> min(RBNode<T, D> node) {
-
         //一直往左走，最左端的就是最小值，这是二叉树的性质
         if (node.leftChild == null) {
             return node;
@@ -161,7 +164,6 @@ public class MyRBTree<T extends Comparable<T>, D> {
         while ((y != null) && (y.rightChild == node)) {
             node = y;
             y = y.parent;
-
         }
         return y;
 
@@ -197,7 +199,6 @@ public class MyRBTree<T extends Comparable<T>, D> {
             this.root = y;
         }
         x.parent = y;
-
     }
 
     //对某个节点进行右旋
@@ -206,7 +207,6 @@ public class MyRBTree<T extends Comparable<T>, D> {
 
         if (y.rightChild != null) {
             y.rightChild.parent = x;
-
         }
 
         y.parent = x.parent;
@@ -219,15 +219,11 @@ public class MyRBTree<T extends Comparable<T>, D> {
 
             } else {
                 x.parent.rightChild = y;
-
             }
-
         } else {
             this.root = y;
-
         }
         x.parent = y;
-
     }
 
 
@@ -297,6 +293,7 @@ public class MyRBTree<T extends Comparable<T>, D> {
                          其实理解了AVL树的平衡调整，这里其实也是一个“双旋转”的过程，只有被删节点与父亲不同侧时才需要双旋
                          继续接着上面的双红情况，因为颜色不对，这时需要变色
                                     黑祖          红祖
+
                                    /   \          /   \
                                 红插   黑叔 --> 黑插  黑叔
                                /                /
