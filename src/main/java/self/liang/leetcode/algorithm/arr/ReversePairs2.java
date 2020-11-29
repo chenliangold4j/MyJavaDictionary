@@ -1,4 +1,4 @@
-package self.liang.leetcode.algorithm.tree;
+package self.liang.leetcode.algorithm.arr;
 
 public class ReversePairs2 {
     /**
