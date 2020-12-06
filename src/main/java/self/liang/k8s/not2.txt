@@ -1,0 +1,9 @@
+ APISERVER ： 所有服务统一的入口
+ controllerManager: 维持副本期望的数目
+ scheduler: 负责介绍任务，选择合适的系欸但进行分配任务
+ ETCD  键值对数据库，存储k8s集群所有重要信息（持久化）
+ kubelet : 直接跟容器交互实现容器的生命周期管理
+ kube-proxy： 负责写入规则到iptables,ipvs  实现服务映射访问的
+
+ coreDNS ： 可以为集群中的svc创建一个域名ip的对应关系解析
+
