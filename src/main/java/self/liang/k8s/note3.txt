@@ -1,0 +1,59 @@
+1.核心组件
+    配置存储中心：etcd服务
+    主控节点:master
+        kube-apiserver
+        kube-controller-manager
+        kube-scheduler
+    运算节点 node
+        kube-kubelet
+        kube-proxy
+
+    cli 客户端
+        ckubectl
+
+
+    核心附件
+        cni 网络插件-》 flannel /calico
+        服务发现插件-> coredns
+        服务暴露插件-> traefik
+        gui管理插件-> dashboard
+
+
+
+apiServer
+    提供集群管理的rest api接口
+    负责其他模块之间数据的交互，承担通信枢纽的功能
+    是资源配额控制的入口
+    提供完备的集群安全机制
+
+controller-manager
+    由一系列控制器组成，通过apiServer监控整个集群的状态，并确保集群处于预期的工作状态
+    node controller
+    deployment controller
+    service controller
+    volume controller
+    endpoint controller
+    garbage controller
+    namespace controller
+    job controller
+    resource quta controller
+
+
+scheduler
+    1.接收调度pod到适合的运算节点上
+    2.预算策略 （ predict)
+    3 优选测率 （priorities)
+
+kubelet
+    定时获取状态，并调用对应的容器平台达到这个状态
+    定时汇报节点状态给apiServer，以供调度的时候使用
+    镜像和容器的清理工作，保证节点上镜像不会占满磁盘空间，退出的容器不会占用太多的资源
+
+kube-proxy
+    是k8s在每个节点上运行网络代理，service资源的载体
+    建立了pod网络和集群网路的关系（clusterip->podip)
+    常用三种流量调度模式
+        Userspace (废弃)
+        iptables (濒临废弃)
+        ipvs (推荐)
+    负责建立和删除更新调度规则，通知apiServer自己的更新，或者从apiServer那里获取其他kube-proxy的调度规则变化来更新自己

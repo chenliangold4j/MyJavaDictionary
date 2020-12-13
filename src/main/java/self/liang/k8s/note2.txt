@@ -1,0 +1,52 @@
+1.基本概念
+
+pod
+    pod 是最小的逻辑单元
+    1个pod里可以有多个容器，共享UTS+NET+IPC 名称空间
+
+pod 控制器
+    pod控制器是pod启动的一种模板，用来保证k8s里启动的pod应始终按照人们的预期运行（副本数，周期，健康检查）
+    控制器类型：
+        deployment
+        daemonSet
+        replicaSet
+        statefulSet
+        job
+        cronJob
+
+name:
+    1.由于使用“资源”定义逻辑概念，每种资源都应该有自己的name
+    2.“资源” 有apiVersion ，kind , metadata,spec,status 等配置信息
+    3. name  通常定义在“资源”的metadata 信息里
+
+
+namespace
+    1.隔离k8s内的各种资源的方法
+    2.可以理解为虚拟集群
+    3.k8s默认的名称空间有：default，kube-system,kube-public
+    4.k8s里特定的资源要带上名称空间
+
+label
+    1.便于分类管理资源对象
+    2.一个label对应多个资源，一个资源也可以有多个label ,多对多
+    3.label =  key:value
+    4.类似的还有 注解（annotations）
+
+label selector
+    1.给资源打label后，可以使用 selector 过滤指定的标签
+    2.目前有两个选择器： 1. 基于等值关系   2. 基于集合关系（属于，不属于，存在）
+    3. 许多起源支持内嵌标签字段：
+        matchLabel;
+        matchExpressions
+
+service
+    1.每个pod会被分配一个单独地址，但是这个ip地址会随着pod的销毁而消失
+    2. service 用来解决这个问题
+    3. 一个service可以看作一组提供相同服务的pod的对外访问接口
+    4. service 作用与哪些pod是用 label selector 来定义
+
+Ingress
+    1. ingress是k8s集群里工作在osi 网络参考模型下，第7层的应用，对外暴露接口
+    2. service只能进行l4 流量调度，表现形式为ip+port
+    3. ingress 则可以调度不同业务域，不同url访问路径的业务流量
+

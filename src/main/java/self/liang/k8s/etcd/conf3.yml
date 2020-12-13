@@ -1,0 +1,9 @@
+name: etcd03
+data-dir: /opt/etcd/data
+listen-client-urls: http://172.26.216.152:2379,http://127.0.0.1:2379
+advertise-client-urls: http://172.26.216.152:2379,http://127.0.0.1:2379
+listen-peer-urls:  http://172.26.216.152:2380
+initial-advertise-peer-urls: http://172.26.216.152:2380
+initial-cluster: etcd01=http://172.26.216.151:2380,etcd02=http://172.26.216.150:2380,etcd03=http://172.26.216.152:2380
+initial-cluster-token: etcd-cluster-token
+initial-cluster-state: new

@@ -1,0 +1,41 @@
+1.k8s 失败，然后才来看的etcd
+
+2. wget 从git获取并解压
+
+    配置conf.yml
+
+ 启动：
+    ./etcd --config-file=/etc/etcd/conf.yml
+
+    nohup ./etcd --config-file=/etc/etcd/conf.yml >> test.log 2>&1 &
+
+ 查看集群成员信息：
+    ./etcdctl member list
+
+ 查看集群状态
+    ./etcdctl cluster-health
+
+ 查看leader
+    curl http://127.0.0.1:2379/v2/stats/leader
+
+ 查看自己状态
+    curl http://127.0.0.1:2379/v2/stats/self
+
+
+
+ 主要命令
+    1. key value  operations
+
+        ./etcdctl set /message hello
+        ./etcdctl get /message
+        ./etcdctl get mess -prefix
+        ./etcdctl rm /messsage
+
+    2.expire time
+        ./etcdctl set -ttl 10 /message hello
+    3.observe
+        in one terminal
+             curl http://127.0.0.1:2379/v2/keys/foo?wait=true
+        in another terminal
+            curl http://127.0.0.1:2379/v2/keys/foo -XPUT -d value=bar
+

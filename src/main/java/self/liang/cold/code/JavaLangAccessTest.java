@@ -11,6 +11,7 @@ import sun.misc.SharedSecrets;
  * 这个类还可以访问被保护的方法，而不用反射。
  */
 public class JavaLangAccessTest {
+    private String test;
     public static void main(String[] args) {
         JavaLangAccessTest javaLangAccessTes = new JavaLangAccessTest();
         javaLangAccessTes.test();
@@ -21,6 +22,7 @@ public class JavaLangAccessTest {
     }
 
     public void testPrint() {
+
         JavaLangAccess access = SharedSecrets.getJavaLangAccess();
         Throwable throwable = new Throwable();
 
@@ -31,5 +33,8 @@ public class JavaLangAccessTest {
             StackTraceElement frame = access.getStackTraceElement(throwable, i);
             System.out.println("--->"+frame);
         }
+
+
     }
+
 }
