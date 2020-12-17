@@ -1,0 +1,24 @@
+一些技巧的记录：  dracula theme看起来还不错 （教程推荐主题）
+1. ctrl  shift p 无敌
+2. emmet: go to matching pair  方便找html的闭合标签
+3. 查找的时候，可以有很多选项，正则已经目录等
+
+4. ctrl shift <- 或者 ->  按单词选择
+5. alt shift <- 或者 ->   智能选择
+6.  selection -> curor 多光标
+
+7. 通用：按住alt 选择菜单下划线的字母即可打开菜单
+8. zen mode 很帅很重要
+9. view - apperance 修改各种的显隐 其中高手很多都关掉
+10 ctrl + ro -  修改字体大小
+
+11.editor layout -》 各种分屏设置
+12.ctrl ` 开启terminal
+13.toggle word wrap 折叠长行
+
+14.go菜单也很重要，idea是navigate
+15 go to symbol in file (重要功能,文件内跳转)
+16 go to definaton 需要有语言和插件支持
+17 还有很多go to 都是字面意思
+18 ctrl g  go to line
+19 ctrl p 找文件需要很熟
