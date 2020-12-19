@@ -1,0 +1,134 @@
+安装
+1. ctrl shift p  -> install extensions
+2. vim 安装
+3.
+
+设置全局快捷键
+1. open keyboard shortcuts (json)  通过json设置快捷键
+2. open default keyboard shortcuts (json)   获取所有默认的快捷键
+
+{
+        "key": "f12",
+        "command": "workbench.action.togglePanel"
+},
+这个panel比较常用，用f12 和浏览器的panel相同，方便记忆
+
+{
+        "key": "ctrl+]",
+        "command": "editor.action.goToTypeDefinition"
+},
+转到定义
+
+{
+        "key": "ctrl+T",
+        "command": "workbench.action.navigateBack"
+},
+返回
+
+3. 全局优化配置
+暂时先固化使用 setting.json 里面的配置，这里面的配置必须vscode安装了vim插件 最好把matchit插件也装上
+
+4.file菜单优化
+  "vim.leader": "," 以及 visualModeKeyBindingsNonRecursive normalModeKeyBindingsNonRecursive ， 意思是，先用‘，’，然后输入命令就会执行相应的命令 例如,qq 会使用findinfile
+
+        1. open recent  
+        {
+        "before": ["<leader>","r", "r"],
+        "commands": ["workbench.action.openRecent"]
+        },   
+        ,rr
+        打开最近的文件
+
+
+        2. open file
+        {
+        "before": ["<leader>","x", "f"],
+        "commands": ["workbench.action.files.openFile"]
+        }
+        ,xf
+
+        3 save
+        ,xs
+
+
+5. undo/redo 直接用vim 的 u  ctrl r
+
+6. find and replace  
+   //regular expression 正则
+    ,qq findInFile
+    ,ss find 
+    之后在使用 ctrl h 开启替换
+    之后 alt r 开启正则
+    正则查找很方便
+
+7.注释 ，原来感觉更快
+{
+      "before": ["<leader>","c", "i"],
+      "commands": ["editor.action.commentLine"]
+},
+
+8.find in file  
+        ctrl shift f
+        ,qq
+       之后ctrl shift h 可以全局替换
+
+9.有关正则：
+   （）（）是一个个组
+   在replace 的时候 $1 $2 代表各个组，$0 代表全部
+
+10.选择文本
+   select expand   ,xx 扩大  ,zz 缩小
+   这里我自己修改为 ctrl w 和idea保持一致
+   
+   vit  vat（完成的tag选择）
+   vi [符号（例如：{[<）] 选择这个标签里面的 （t代表<>，html标签）
+   va 包括标签
+
+   cs {"  把{} 换成 "" 
+
+   //vim text object 这个有很多选择的技巧
+11.showCommands
+   ,xm   这个随意
+
+12. zenmode
+     ,ff
+
+13. 向下右开窗口
+        ,x2
+        ,x3
+        ,x4 2x2 windows
+        ,x1 single
+        ,x0 close group
+14,上一次编辑出： ctrl o ctrl i 即可,
+
+15 open file
+  ,kk 很常用
+  ctrl p
+
+16. go line   [number] gg
+17. go to bracket 去到该闭合标签
+18 选中代码块
+   v % 选择括号之间的内容 
+   然后 ctrl h 可以方便切换
+
+   将expand换为v键之后，可以直接按几次v，效率更高
+
+19.自动补全
+        补全出来之后 ctrl n 下一个  ctrl p 上一个
+
+    ctrl x ctrl l  完成行
+
+20 去到定义
+   
+   go to definition  
+   这里没有快捷键直接 用 go to declaration 
+
+21.打开当前光标下的文件
+   gf
+
+22.当前文件搜索字符串
+        在一个字符串上面按*   
+        # 从下往上搜单词
+        先高亮选中 然后一次*  之后n
+23.vscode vim 和neovim 结合
+        

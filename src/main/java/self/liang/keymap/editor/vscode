@@ -26,4 +26,15 @@
 20 back and forward 也要熟练
 21 last edit location 很常用，可以考虑换快捷键
 
-22
+22 switch editor 多窗口改变编辑的窗口
+23 ctrl 1 ctrl 2  跳转窗口组  ctrl tab 切换组内的文件
+
+24 peek defination 看一眼
+25 go to bracket 找到闭合标签--很常用，
+
+26 next change previous change 版本控制改变的代码
+
+27 如何选择插件
+    
+
+
