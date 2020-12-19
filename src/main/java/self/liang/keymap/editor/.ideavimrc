@@ -61,4 +61,4 @@ noremap ,wh <C-W>h
 noremap ,wl <C-W>l
 noremap ,wj <C-W>j
 noremap ,wk <C-W>k
-noremap ,xx :action EditorSelectWord<CR>
+noremap ,xx :action EditorSelectWord<C>
