@@ -1,7 +1,10 @@
 1.安装
 
 
-2.
+2.设置
+ 右的快捷键不起作用，需要在vimEmulation中修改一下
+ 特地的 replace 改为ctrl h 
+ 以及弃用ctrl f  
+ 这几个在核心快捷键之外
 
-
-3.
+3.action 用  actionlist 【pattern】 来查找命令的action
