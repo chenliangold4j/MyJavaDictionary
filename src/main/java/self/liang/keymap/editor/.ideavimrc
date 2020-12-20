@@ -6,7 +6,6 @@ set softtabstop=4   " number of spaces in tab when editing
 set shiftwidth=4    " spaces in newline start
 set expandtab       " tabs are spaces
 set number              " show line numbers
-set rnu                 " show relative line numbers
 set showcmd             " show command in bottom bar
 set cursorline          " highlight current line
 set surround            " use surround shortcuts
@@ -49,7 +48,7 @@ noremap ,kk :action GotoFile<CR>
 noremap ,ii :action GotoSymbol<CR>
 noremap <C-]> :action GotoImplementation<CR>
 noremap ,xz :action ActivateTerminalToolWindow<CR>
-
+noremap <C-[> :action ShowUsages<CR>
 " ideavim don't support numberic character in hotkey in 0.55
 " it's fixed in 0.55.1
 noremap ,x1 <C-W>o
