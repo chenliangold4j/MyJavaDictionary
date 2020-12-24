@@ -1,0 +1,14 @@
+1. docker network --help
+
+2. docker network create --driver bridge --subnet 192.168.0.0/16 --gateway  192.168.0.1 mynet
+
+3. docker network ps
+
+4.docker network inspect mynet
+
+5.docker run -d --name tomcat --net mynet tomcat:latest
+
+ 加入自己创建的birdge 网络可以直接ping name
+
+5.docker network connect mynet tomcat01
+  这里将容器加入网络
