@@ -468,6 +468,7 @@ EOF
             "kubernetes.default.svc",
             "kubernetes.default.svc.cluster",
             "kubernetes.default.svc.cluster.local",
+            "server.phantom5702.com",
             "172.26.216.164",
             "172.26.216.163",
             "172.26.216.162",
@@ -621,40 +622,462 @@ EOF
 
     nohup sh ./kube-apiserver.sh >> test.log 2>&1 &
 
+
     部署启动所有apiserver机器
     集群其他机器的部署,没有不同的地方,所以略
 
 10.配置反向代理两个apiServer,
     视频里面有用keepAlive做高可用，由于我这里用的阿里云,不做高可用，直接单机反代
 
-stream{
-    upstream kube-apiserver{
-        server 172.26.216.159:6433      max_fails=3 fail_timeout=30s;
-        server 172.26.216.160:6433      max_fails=3 fail_timeout=30s;
+    stream{
+        upstream kube-apiserver{
+            server 172.26.216.163:6433      max_fails=3 fail_timeout=30s;
+            server 172.26.216.164:6433      max_fails=3 fail_timeout=30s;
+        }
+        server{
+            listen 7443;
+            proxy_connect_timeout 2s;
+            proxy_timeout 900s;
+            proxy_pass kube-apiserver;
+        }
     }
-    server{
-        listen 7443;
-        proxy_connect_timeout 2s;
-        proxy_timeout 900s;
-        proxy_pass kube-apiserver;
-    }
-}
 
+    注意这里要配置在http外面
 
 
 11.controller-manager 和 scheduler
-    执行脚本
+
+    部署controller-manager服务
+    apiserve、controller-manager、kube-scheduler三个服务所需的软件在同一套压缩包里面的，因此后两个服务不需要在单独解包
+    而且这三个服务是在同一个主机上，互相之间通过http://127.0.0.1,也不需要证书
+
+    4.5.1 创建controller-manager启动脚本
+
+    cat >/opt/kubernetes/server/bin/kube-controller-manager.sh <<'EOF'
+    #!/bin/sh
+    ./kube-controller-manager \
+      --cluster-cidr 172.7.0.0/16 \
+      --leader-elect true \
+      --log-dir /data/logs/kubernetes/kube-controller-manager \
+      --master http://127.0.0.1:8080 \
+      --service-account-private-key-file ./cert/ca-key.pem \
+      --service-cluster-ip-range 192.168.0.0/16 \
+      --root-ca-file ./cert/ca.pem \
+      --v 2
+    EOF
+    # 授权
+    chmod +x /opt/kubernetes/server/bin/kube-controller-manager.sh
+
+    nohup sh ./kube-controller-manager.sh >> test2.log 2>&1 &
+
+    4.6 部署kube-scheduler服务
+
+    cat >/opt/kubernetes/server/bin/kube-scheduler.sh <<'EOF'
+    #!/bin/sh
+    ./kube-scheduler \
+      --leader-elect  \
+      --log-dir /data/logs/kubernetes/kube-scheduler \
+      --master http://127.0.0.1:8080 \
+      --v 2
+    EOF
+    # 授权
+    chmod +x  /opt/kubernetes/server/bin/kube-scheduler.sh
+
+     nohup sh ./kube-scheduler.sh >> test3.log 2>&1 &
+
+
     执行命令查看是否ok
-    ./kubectl get cs
+
+    [root@iZ8vbijyckskmvy6mpnognZ bin]# ./kubectl get cs
     NAME                 STATUS    MESSAGE             ERROR
     controller-manager   Healthy   ok
     scheduler            Healthy   ok
+    etcd-0               Healthy   {"health":"true"}
     etcd-1               Healthy   {"health":"true"}
     etcd-2               Healthy   {"health":"true"}
-    etcd-0               Healthy   {"health":"true"}
 
 
-12.kubelet
 
-    证书
+
+12.部署node节点
+    签发kubelet证书
+
+    cd /opt/certs/
+    cat >/opt/certs/kubelet-csr.json <<EOF
+    {
+        "CN": "k8s-kubelet",
+        "hosts": [
+        "127.0.0.1",
+        "172.26.216.164",
+        "172.26.216.163",
+        "172.26.216.162",
+        "172.26.216.161",
+        "172.26.216.142"
+        ],
+        "key": {
+            "algo": "rsa",
+            "size": 2048
+        },
+        "names": [
+            {
+                "C": "CN",
+                "ST": "beijing",
+                "L": "beijing",
+                "O": "zq",
+                "OU": "ops"
+            }
+        ]
+    }
+    EOF
+
+    cfssl gencert \
+          -ca=ca.pem \
+          -ca-key=ca-key.pem \
+          -config=ca-config.json \
+          -profile=server \
+          kubelet-csr.json | cfssljson -bare kubelet
+
+    6.2 创建kubelet服务
+    6.2.1 拷贝证书至node节点
+        cd /opt/kubernetes/server/bin/cert
+        scp hdss7-200:/opt/certs/kubelet.pem .
+        scp hdss7-200:/opt/certs/kubelet-key.pem .
+
+
+    6.2.2 创建kubelet配置
+        创建kubelet的配置文件kubelet.kubeconfig比较麻烦,需要四步操作才能完成
+        (1) set-cluster(设置集群参数)
+        使用ca证书创建集群myk8s,使用的apiserver信息是10.4.7.10这个VIP
+        cd /opt/kubernetes/server/conf/
+        kubectl config set-cluster myk8s \
+            --certificate-authority=/opt/kubernetes/server/bin/cert/ca.pem \
+            --embed-certs=true \
+            --server=https://server.phantom5702.com:7443 \
+            --kubeconfig=kubelet.kubeconfig
+        (2) set-credentials(设置客户端认证参数)
+        使用client证书创建用户k8s-node
+        kubectl config set-credentials k8s-node \
+            --client-certificate=/opt/kubernetes/server/bin/cert/client.pem \
+            --client-key=/opt/kubernetes/server/bin/cert/client-key.pem \
+            --embed-certs=true \
+            --kubeconfig=kubelet.kubeconfig
+        (3) set-context(绑定namespace)
+        创建myk8s-context,关联集群myk8s和用户k8s-node
+        kubectl config set-context myk8s-context \
+            --cluster=myk8s \
+            --user=k8s-node \
+            --kubeconfig=kubelet.kubeconfig
+        (4) use-context
+        使用生成的配置文件向apiserver注册,注册信息会写入etcd,所以只需要注册一次即可
+        kubectl config use-context myk8s-context --kubeconfig=kubelet.kubeconfig
+        (5) 查看生成的kubelet.kubeconfig
+        [root@hdss7-21 conf]# cat kubelet.kubeconfig
+        apiVersion: v1
+        clusters:
+        - cluster:
+            certificate-authority-data: xxxxxxxx
+            server: https://10.4.7.10:7443
+          name: myk8s
+        contexts:
+        - context:
+            cluster: myk8s
+            user: k8s-node
+          name: myk8s-context
+        current-context: myk8s-context
+        kind: Config
+        preferences: {}
+        users:
+        - name: k8s-node
+          user:
+            client-certificate-data: xxxxxxxx
+            client-key-data: xxxxxxxx
+        可以看出来,这个配置文件里面包含了集群名字,用户名字,集群认证的公钥,用户的公私钥等
+
+    6.2.3 创建k8s-node.yaml配置文件
+        cat >/opt/kubernetes/server/conf/k8s-node.yaml <<EOF
+        apiVersion: rbac.authorization.k8s.io/v1
+        kind: ClusterRoleBinding
+        metadata:
+          name: k8s-node
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: system:node
+        subjects:
+        - apiGroup: rbac.authorization.k8s.io
+          kind: User
+          name: k8s-node
+        EOF
+        使用RBAC鉴权规则,创建了一个ClusterRoleBinding的资源
+        此资源中定义了一个user叫k8s-node
+        给k8s-node用户绑定了角色ClusterRole,角色名为system:node
+        使这个用户具有成为集群运算节点角色的权限
+        由于这个用户名,同时也是kubeconfig中指定的用户,
+        所以通过kubeconfig配置启动的kubelet节点,就能够成为node节点
+    6.2.4 应用资源配置
+        应用资源配置,并查看结果
+        # 应用资源配置
+        kubectl create -f /opt/kubernetes/server/conf/k8s-node.yaml
+        # 查看集群角色和角色属性
+        [root@hdss7-21 conf]# kubectl get clusterrolebinding k8s-node
+        NAME       AGE
+        k8s-node   13s
+        [root@hdss7-21 conf]# kubectl get clusterrolebinding k8s-node -o yaml
+        apiVersion: rbac.authorization.k8s.io/v1
+        kind: ClusterRoleBinding
+        metadata:
+          creationTimestamp: "2020-04-22T14:38:09Z"
+          name: k8s-node
+          resourceVersion: "21217"
+          selfLink: /apis/rbac.authorization.k8s.io/v1/clusterrolebindings/k8s-node
+          uid: 597ffb0f-f92d-4eb5-aca2-2fe73397e2e4
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: system:node
+        subjects:
+        - apiGroup: rbac.authorization.k8s.io
+          kind: User
+          name: k8s-node
+
+        #此时只是创建了相应的资源,还没有具体的node,如下验证
+        [root@hdss7-21 conf]# kubectl get nodes
+        No resources found.
+    6.2.5 创建kubelet启动脚本
+        --hostname-override参数每个node节点都不一样,是节点的主机名,注意修改
+        cat >/opt/kubernetes/server/bin/kubelet.sh <<'EOF'
+        #!/bin/sh
+        ./kubelet \
+          --hostname-override node164 \
+          --anonymous-auth=false \
+          --cgroup-driver systemd \
+          --cluster-dns 192.168.0.2 \
+          --cluster-domain cluster.local \
+          --runtime-cgroups=/systemd/system.slice \
+          --kubelet-cgroups=/systemd/system.slice \
+          --fail-swap-on="false" \
+          --client-ca-file ./cert/ca.pem \
+          --tls-cert-file ./cert/kubelet.pem \
+          --tls-private-key-file ./cert/kubelet-key.pem \
+          --image-gc-high-threshold 20 \
+          --image-gc-low-threshold 10 \
+          --kubeconfig ../conf/kubelet.kubeconfig \
+          --log-dir /data/logs/kubernetes/kube-kubelet \
+          --pod-infra-container-image harbor.zq.com/public/pause:latest \
+          --root-dir /data/kubelet
+        EOF
+    这里用没有指定dns的命令，因为我没有配置本地dns，试一下
+    cat >/opt/kubernetes/server/bin/kubelet.sh <<'EOF'
+    #!/bin/sh
+    ./kubelet \
+      --hostname-override 172.26.216.163 \
+      --anonymous-auth=false \
+      --cgroup-driver systemd \
+      --cluster-domain cluster.local \
+      --runtime-cgroups=/systemd/system.slice \
+      --kubelet-cgroups=/systemd/system.slice \
+      --fail-swap-on="false" \
+      --client-ca-file ./cert/ca.pem \
+      --tls-cert-file ./cert/kubelet.pem \
+      --tls-private-key-file ./cert/kubelet-key.pem \
+      --image-gc-high-threshold 20 \
+      --image-gc-low-threshold 10 \
+      --kubeconfig ../conf/kubelet.kubeconfig \
+      --log-dir /data/logs/kubernetes/kube-kubelet \
+      --pod-infra-container-image harbor.zq.com/public/pause:latest \
+      --root-dir /data/kubelet
+    EOF
+
+    # 创建目录&授权
+    chmod +x /opt/kubernetes/server/bin/kubelet.sh
+    mkdir -p /data/logs/kubernetes/kube-kubelet
+    mkdir -p /data/kubelet
+
+    没有kubelet.kubeconfig 记得复制一下
+    nohup sh ./kubelet.sh >> test10.log 2>&1 &
+
+
+    由于没有配置内部dns，被迫使用ip地址，以后这里可以配置一下bind9
+    kubectl get nodes
+    NAME             STATUS   ROLES    AGE     VERSION
+    172.26.216.163   Ready    <none>   5m27s   v1.15.11
+    172.26.216.164   Ready    <none>   8m7s    v1.15.11
+
+    6.2.8 部署其他node节点
+        第一个节点部署完成后,其他节点就要简单很多,只需拷贝kubelet.kubeconfig配置到本地后,创建启动脚本并用`supervisord启动即可
+        也可以不拷贝配置文件,就需要手动再执行创建配置文件的四步
+        # 拷贝证书
+        cd /opt/kubernetes/server/bin/cert
+        scp hdss7-200:/opt/certs/kubelet.pem .
+        scp hdss7-200:/opt/certs/kubelet-key.pem .
+        # 拷贝配置文件
+        cd /opt/kubernetes/server/conf/
+        scp hdss7-21:/opt/kubernetes/server/conf/kubelet.kubeconfig .
+        拷贝完配置后,剩下的步骤参考6.2.5 创建kubelet启动脚本,除脚本中--hostname-override不同外,其他都一样
+    6.2.9 检查所有节点并给节点打上标签
+        此操作非必须,因为只是打的一个标签,方便识别而已
+        kubectl get nodes
+        kubectl label node hdss7-21.host.com node-role.kubernetes.io/master=
+        kubectl label node hdss7-21.host.com node-role.kubernetes.io/node=
+        [root@hdss7-22 cert]# kubectl get nodes
+        NAME                STATUS   ROLES         AGE   VERSION
+        hdss7-21.host.com   Ready    master,node   9m    v1.15.5
+        hdss7-22.host.com   Ready    <none>        64s   v1.15.5
+
+        kubectl label node 172.26.216.163  node-role.kubernetes.io/master=
+        kubectl label node 172.26.216.163  node-role.kubernetes.io/node=
+        kubectl label node 172.26.216.164  node-role.kubernetes.io/node=
+    6.3 创建kube-proxy服务
+       签发证书在7.200上
+    6.3.1 签发kube-proxy证书
+        (1) 创建生成证书csr的json配置文件
+
+        cd /opt/certs/
+        cat >/opt/certs/kube-proxy-csr.json <<EOF
+        {
+            "CN": "system:kube-proxy",
+            "key": {
+                "algo": "rsa",
+                "size": 2048
+            },
+            "names": [
+                {
+                    "C": "CN",
+                    "ST": "beijing",
+                    "L": "beijing",
+                    "O": "zq",
+                    "OU": "ops"
+                }
+            ]
+        }
+        EOF
+
+        cfssl gencert \
+              -ca=ca.pem \
+              -ca-key=ca-key.pem \
+              -config=ca-config.json \
+              -profile=client \
+              kube-proxy-csr.json |cfssljson -bare kube-proxy-client
+
+
+        拷贝证书至node节点
+        cd /opt/kubernetes/server/bin/cert
+        scp hdss7-200:/opt/certs/kube-proxy-client.pem .
+        scp hdss7-200:/opt/certs/kube-proxy-client-key.pem .
+
+        6.3.3 创建kube-proxy配置
+        同样是四步操作,类似kubelet
+
+        同样是四步操作,类似kubelet
+        (1) set-cluster
+        cd /opt/kubernetes/server/conf/
+        kubectl config set-cluster myk8s \
+            --certificate-authority=/opt/kubernetes/server/bin/cert/ca.pem \
+            --embed-certs=true \
+            --server=https://server.phantom5702.com:7443 \
+            --kubeconfig=kube-proxy.kubeconfig
+        (2) set-credentials
+        kubectl config set-credentials kube-proxy \
+            --client-certificate=/opt/kubernetes/server/bin/cert/kube-proxy-client.pem \
+            --client-key=/opt/kubernetes/server/bin/cert/kube-proxy-client-key.pem \
+            --embed-certs=true \
+            --kubeconfig=kube-proxy.kubeconfig
+        (3) set-context
+        kubectl config set-context myk8s-context \
+            --cluster=myk8s \
+            --user=kube-proxy \
+            --kubeconfig=kube-proxy.kubeconfig
+        (4) use-context
+        kubectl config use-context myk8s-context --kubeconfig=kube-proxy.kubeconfig
+
+
+
+        6.3.4 加载ipvs模块以备kube-proxy启动用
+        # 创建开机ipvs脚本
+        cat >/etc/ipvs.sh <<'EOF'
+        #!/bin/bash
+        ipvs_mods_dir="/usr/lib/modules/$(uname -r)/kernel/net/netfilter/ipvs"
+        for i in $(ls $ipvs_mods_dir|grep -o "^[^.]*")
+        do
+          /sbin/modinfo -F filename $i &>/dev/null
+          if [ $? -eq 0 ];then
+            /sbin/modprobe $i
+          fi
+        done
+        EOF
+        # 执行脚本开启ipvs
+        sh /etc/ipvs.sh
+        # 验证开启结果
+        [root@hdss7-21 conf]# lsmod |grep ip_vs
+        ip_vs_wrr              12697  0
+        ip_vs_wlc              12519  0
+        ......略
+
+        6.3.5 创建kube-proxy启动脚本
+        同上,--hostname-override参数在不同的node节点上不一样,需修改
+        cat >/opt/kubernetes/server/bin/kube-proxy.sh <<'EOF'
+        #!/bin/sh
+        ./kube-proxy \
+          --hostname-override 172.26.216.164 \
+          --cluster-cidr 172.7.0.0/16 \
+          --proxy-mode=ipvs \
+          --ipvs-scheduler=nq \
+          --kubeconfig ../conf/kube-proxy.kubeconfig
+        EOF
+        # 授权
+        chmod +x /opt/kubernetes/server/bin/kube-proxy.sh
+
+        6.3.7 启动服务并检查
+        mkdir -p /data/logs/kubernetes/kube-proxy
+        nohup sh ./kube-proxy.sh >> test11.log 2>&1 &
+
+        [root@hdss7-21 conf]# kubectl get svc
+        NAME         TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
+        kubernetes   ClusterIP   192.168.0.1   <none>        443/TCP   47h
+        # 检查ipvs,是否新增了配置
+        yum install ipvsadm -y
+
+        [root@iZ8vbijyckskmvy6mpnogmZ bin]# ipvsadm -Ln
+        IP Virtual Server version 1.2.1 (size=4096)
+        Prot LocalAddress:Port Scheduler Flags
+          -> RemoteAddress:Port           Forward Weight ActiveConn InActConn
+        TCP  192.168.0.1:443 nq
+          -> 172.26.216.163:6443          Masq    1      0          0
+          -> 172.26.216.164:6443          Masq    1      0          0
+
+
+
+        6.3.8 部署所有节点
+        首先需拷贝kube-proxy.kubeconfig 到 hdss7-22.host.com的conf目录下
+        # 拷贝证书文件
+        cd /opt/kubernetes/server/bin/cert
+        scp hdss7-200:/opt/certs/kube-proxy-client.pem .
+        scp hdss7-200:/opt/certs/kube-proxy-client-key.pem .
+        # 拷贝配置文件
+        cd /opt/kubernetes/server/conf/
+        scp hdss7-21:/opt/kubernetes/server/conf/kube-proxy.kubeconfig .
+
+        7 验证kubernetes集群
+        7.1 在任意一个节点上创建一个资源配置清单
+cat >/root/nginx-ds.yaml <<'EOF'
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: nginx-ds
+spec:
+  template:
+    metadata:
+      labels:
+        app: nginx-ds
+    spec:
+      containers:
+      - name: my-nginx
+        image: harbor.phantom5702.com/public/nginx:1.7.9
+        ports:
+        - containerPort: 80
+EOF
+
+        kubectl create -f /root/nginx-ds.yaml
+        kubectl get pods
+        kubectl delete -f /root/nginx-ds.yaml
 
