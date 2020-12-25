@@ -113,10 +113,12 @@ wget https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
 chmod +x cfssljson_linux-amd64
 wget https://pkg.cfssl.org/R1.2/cfssl-certinfo_linux-amd64
 chmod +x cfssl-certinfo_linux-amd64
+mkdir -p /root/local/bin
 mv cfssl_linux-amd64 /root/local/bin/cfssl
 mv cfssl-certinfo_linux-amd64 /root/local/bin/cfssl-certinfo
 mv cfssljson_linux-amd64 /root/local/bin/cfssljson
 export PATH=/root/local/bin:$PATH
+export PATH=/home/liang/local/bin:$PATH
 
     2.需要一个根证书. 创建生产ca证书签名请求（csr)的json配置文件
     ca-csr.json 文件
@@ -142,8 +144,15 @@ export PATH=/root/local/bin:$PATH
     [root@iZ8vb7b85wvb10l0kcmk03Z certs]# ls
     ca.csr  ca-csr.json  ca-key.pem  ca.pem
 
+    CN: Common Name，浏览器使用该字段验证网站是否合法，一般写的是域名。非常重要。浏览器使用该字段验证网站是否合法
+    C: Country， 国家
+    ST: State，州，省
+    L: Locality，地区，城市
+    O: Organization Name，组织名称，公司名称
+    OU: Organization Unit Name，组织单位名称，公司部门
+
 6 部署docker环境
-     部署三台机器  c
+     部署三台机器
     curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
     /etc/docker/daemon.json
 {
@@ -155,6 +164,18 @@ export PATH=/root/local/bin:$PATH
      "exec-opts": ["native.cgroupdriver=systemd"],
      "live-restore":true
 }
+
+cat >/etc/docker/daemon.json <<EOF
+{
+  "graph": "/data/docker",
+  "storage-driver": "overlay2",
+  "insecure-registries": ["registry.access.redhat.com","quay.io","harbor.phantom5702.com"],
+  "registry-mirrors": ["https://tuj12vuh.mirror.aliyuncs.com"],
+  "bip": "172.7.161.1/24",
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "live-restore": true
+}
+EOF
 
 7.docker 私有仓库
     1.下载harbor
@@ -219,58 +240,85 @@ server {
     6.docker pull nginx:v1.7.9
 
         docker tag 7baf28ea91eb harbor.od.com/public/nginx:1.7.9 打一个tag
-        docker push harbor.od.com/public/nginx:1.1.1  这里会失败
+        docker push harbor.phantom5702.com/public/nginx:1.7.9  这里会失败
 
         docker login harbor.od.com
         之后可以push成功
 
+   7. 提前准备pauser/nginx基础镜像
 
-8.安装master的etcd  (test2,test3,test4)
+        pauser镜像是k8s启动pod时,预先用来创建相关资源(如名称空间)的
+        nginx镜像是k8s部署好以后,我们测试pod创建所用的
+
+        docker pull kubernetes/pause
+        docker tag kubernetes/pause:latest harbor.phantom5702.com/public/pause:latest
+        docker push harbor.phantom5702.com/public/pause:latest
+
+
+        docker login harbor.zq.com -uadmin -pHarbor12345
+        docker pull kubernetes/pause
+        docker pull nginx:1.17.9
+        docker tag kubernetes/pause:latest harbor.zq.com/public/pause:latest
+        docker tag nginx:1.17.9 harbor.zq.com/public/nginx:v1.17.9
+        docker push harbor.zq.com/public/pause:latest
+        docker push harbor.zq.com/public/nginx:v1.17.9
+
+8.安装master的etcd  (test2,test3,test4)  3台机器
     1.给etcd签发证书，etcd之间通信需要证书
       创建基于根证书的config配置文件 ca-config.json
-    {
-        "signing": {
-            "default": {
-                "expiry": "175200h"
-            },
-            "profiles": {
-                "server": {
-                    "expiry": "175200h",
-                    "usages": [
-                        "signing",
-                        "key encipherment",
-                        "server auth"
-                    ]
+        {
+            "signing": {
+                "default": {
+                    "expiry": "175200h"
                 },
-                "client": {
-                    "expiry": "175200h",
-                    "usages": [
-                        "signing",
-                        "key encipherment",
-                        "client auth"
-                    ]
-                },
-                 "peer": {
-                    "expiry": "175200h",
-                    "usages": [
-                        "signing",
-                        "key encipherment",
-                        "client auth"
-                    ]
+                "profiles": {
+                    "server": {
+                        "expiry": "175200h",
+                        "usages": [
+                            "signing",
+                            "key encipherment",
+                            "server auth"
+                        ]
+                    },
+                    "client": {
+                        "expiry": "175200h",
+                        "usages": [
+                            "signing",
+                            "key encipherment",
+                            "client auth"
+                        ]
+                    },
+                    "peer": {
+                        "expiry": "175200h",
+                        "usages": [
+                            "signing",
+                            "key encipherment",
+                            "server auth",
+                            "client auth"
+                        ]
+                    }
                 }
             }
         }
-    }
 
-      创建etcd请求的证书文件
-        {
+        证书时间统一为10年,不怕过期
+        证书类型
+        client certificate：客户端使用，用于服务端认证客户端,例如etcdctl、etcd proxy、fleetctl、docker客户端
+        server certificate：服务端使用，客户端以此验证服务端身份,例如docker服务端、kube-apiserver
+        peer certificate：双向证书，用于etcd集群成员间通信
+
+    创建etcd请求的证书文件
+        注意:
+        需要将所有可能用来部署etcd的机器,都加入到hosts列表中
+        否则后期重新加入不在列表中的机器,需要更换所有etcd服务的证书
+    {
         "CN": "k8s-etcd",
         "hosts": [
-          "172.26.216.148",
-          "172.26.216.145",
-          "172.26.216.146",
-          "172.26.216.147",
-          "172.26.216.149"
+          "172.26.216.164",
+          "172.26.216.163",
+          "172.26.216.162",
+          "172.26.216.161",
+          "172.26.216.142"
         ],
         "key": {
           "algo": "rsa",
@@ -285,7 +333,7 @@ server {
             "OU": "ops"
           }
         ]
-        }
+    }
 
     cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=peer etcd-peer-csr.json
 
@@ -294,51 +342,61 @@ server {
     2. 创建etcd用户
         useradd -s /sbin/nologin -M etcd
     3.下载etcd github
-        不建议超过3.3
+         tar xf etcd-v3.3.10-linux-amd64.tar.gz -C /opt/
+        cd /opt/
+        mv etcd-v3.3.10-linux-amd64/ etcd-v3.3.10
+        ln -s /opt/etcd-v3.3.10/ /opt/etcd
+
     4.获取生成的证书文件
         ca.pem   etcd-peer-key.pem  etcd-peer.pem
 
+
+
+        创建目录，拷贝证书文件
+        创建证书目录、数据目录、日志目录
+        mkdir -p /opt/etcd/certs /data/etcd /data/logs/etcd-server
+        chown -R etcd.etcd /opt/etcd-v3.3.10/
+        chown -R etcd.etcd /data/etcd/
+        chown -R etcd.etcd /data/logs/etcd-server/
+        拷贝生成的证书文件
+        cd /opt/etcd/certs
+        scp www.phantom5702.com:/opt/certs/ca.pem .
+        scp www.phantom5702.com:/opt/certs/etcd-peer.pem .
+        scp www.phantom5702.com:/opt/certs/etcd-peer-key.pem .
+        chown -R etcd.etcd /opt/etcd/certs
+        也可以先创建一个NFS,直接从NFS中拷贝
+
+      mv /root/*.pem /opt/etcd/certs
     5.创建执行脚本etcd  参数根据情况改变
-#!/bin/bash
-./etcd --name etcd-server-145 \
-       --data-dir /data/etcd/etcd-server \
-       --listen-client-urls https://172.26.216.145:2379,https://127.0.0.1:2379 \
-       --listen-peer-urls https://172.26.216.145:2380 \
-       --quota-backend-bytes 8000000000 \
-       --advertise-client-urls https://172.26.216.145:2380 \
-       --initial-advertise-peer-urls https://172.26.216.145:2379,https://127.0.0.1:2379 \
-       --initial-cluster etcd-server-145=https://172.26.216.145:2380,etcd-server-147=https://172.26.216.147:2380,etcd-server-149=https://172.26.216.149:2380 \
-       --ca-file ./certs/ca.pem \
-       --cert-file ./certs/etcd-peer.pem \
-       --key-file ./certs/etcd-peer-key.pem \
-       --client-cert-auth \
-       --trusted-ca-file ./certs/ca.pem \
-       --peer-ca-file ./certs/ca.pem \
-       --peer-cert-file ./certs/etcd-peer.pem \
-       --peer-key-file ./certs/etcd-peer-key.pem \
-       --peer-client-cert-auth \
-       --peer-trusted-ca-file ./certs/ca.pem
 
-#!/bin/bash
-./etcd --name etcd-server-149 \
-       --data-dir /data/etcd/etcd-server \
-       --listen-client-urls https://172.26.216.149:2379,https://127.0.0.1:2379 \
-       --listen-peer-urls https://172.26.216.149:2380 \
-       --quota-backend-bytes 8000000000 \
-       --advertise-client-urls https://172.26.216.149:2380 \
-       --initial-advertise-peer-urls https://172.26.216.149:2379,https://127.0.0.1:2379 \
-       --initial-cluster etcd-server-145=https://172.26.216.145:2380,etcd-server-147=https://172.26.216.147:2380,etcd-server-149=https://172.26.216.149:2380 \
-       --ca-file ./certs/ca.pem \
-       --cert-file ./certs/etcd-peer.pem \
-       --key-file ./certs/etcd-peer-key.pem \
-       --client-cert-auth \
-       --trusted-ca-file ./certs/ca.pem \
-       --peer-ca-file ./certs/ca.pem \
-       --peer-cert-file ./certs/etcd-peer.pem \
-       --peer-key-file ./certs/etcd-peer-key.pem \
-       --peer-client-cert-auth \
-       --peer-trusted-ca-file ./certs/ca.pem
+    tar xf etcd-v3.3.10-linux-amd64.tar.gz -C /opt/
+    cd /opt/
+    mv etcd-v3.3.10-linux-amd64/ etcd-v3.3.10
+    ln -s /opt/etcd-v3.3.10/ /opt/etcd
 
+cat >/opt/etcd/etcd-server-startup.sh <<'EOF'
+#!/bin/sh
+./etcd \
+    --name etcd-server-162 \
+    --data-dir /data/etcd/etcd-server \
+    --listen-peer-urls https://172.26.216.163:2380 \
+    --listen-client-urls https://172.26.216.163:2379,http://127.0.0.1:2379 \
+    --quota-backend-bytes 8000000000 \
+    --initial-advertise-peer-urls https://172.26.216.163:2380 \
+    --advertise-client-urls https://172.26.216.163:2379,http://127.0.0.1:2379 \
+    --initial-cluster  etcd-server-164=https://172.26.216.164:2380,etcd-server-163=https://172.26.216.163:2380,etcd-server-161=https://172.26.216.161:2380 \
+    --ca-file ./certs/ca.pem \
+    --cert-file ./certs/etcd-peer.pem \
+    --key-file ./certs/etcd-peer-key.pem \
+    --client-cert-auth  \
+    --trusted-ca-file ./certs/ca.pem \
+    --peer-ca-file ./certs/ca.pem \
+    --peer-cert-file ./certs/etcd-peer.pem \
+    --peer-key-file ./certs/etcd-peer-key.pem \
+    --peer-client-cert-auth \
+    --peer-trusted-ca-file ./certs/ca.pem \
+    --log-output stdout
+EOF
 
 
     6.改变etcd的所属人和组
@@ -349,11 +407,14 @@ server {
     7 可选 （考虑用nohup 简单化）
       supervisor
 
-      nohup sh start.sh >> test.log 2>&1 &
+      nohup sh ./etcd-server-startup.sh >> test.log 2>&1 &
 
       netstat -luntp | grep etcd
       看到监听 2379 和 2380
+    启动失败看   https://blog.csdn.net/qdqht2009/article/details/87937941
+    https://blog.csdn.net/love8753/article/details/88972918
 
+    rm -rf /data/etcd/etcd-server/member/
 
 9.kube-apiServer 集群
     计划放在 两个slave上
@@ -361,21 +422,216 @@ server {
 
     如果etcd配置了证书，则这里需要配置证书
 
-    详情见https://www.bilibili.com/video/BV1Gi4y1x7co?p=41
+    9.1 签发client端证书
+    此证书的用途是apiserver和etcd之间通信所用
+
+    cat >/opt/certs/client-csr.json <<EOF
+    {
+        "CN": "k8s-node",
+        "hosts": [
+        ],
+        "key": {
+            "algo": "rsa",
+            "size": 2048
+        },
+        "names": [
+            {
+                "C": "CN",
+                "ST": "beijing",
+                "L": "beijing",
+                "O": "zq",
+                "OU": "ops"
+            }
+        ]
+    }
+    EOF
+
+    cfssl gencert \
+          -ca=ca.pem \
+          -ca-key=ca-key.pem \
+          -config=ca-config.json \
+          -profile=client \
+          client-csr.json |cfssljson -bare client
+
+
+    9.2 签发kube-apiserver证书
+    此证书的用途是apiserver对外提供的服务的证书
+    此配置中的hosts包含所有可能会部署apiserver的列表
+    其中10.4.7.10是反向代理的vip地址
+    cat >/opt/certs/apiserver-csr.json <<EOF
+    {
+        "CN": "k8s-apiserver",
+        "hosts": [
+            "127.0.0.1",
+            "192.168.0.1",
+            "kubernetes.default",
+            "kubernetes.default.svc",
+            "kubernetes.default.svc.cluster",
+            "kubernetes.default.svc.cluster.local",
+            "172.26.216.164",
+            "172.26.216.163",
+            "172.26.216.162",
+            "172.26.216.161",
+            "172.26.216.142"
+        ],
+        "key": {
+            "algo": "rsa",
+            "size": 2048
+        },
+        "names": [
+            {
+                "C": "CN",
+                "ST": "beijing",
+                "L": "beijing",
+                "O": "zq",
+                "OU": "ops"
+            }
+        ]
+    }
+    EOF
+
+    cfssl gencert \
+          -ca=ca.pem \
+          -ca-key=ca-key.pem \
+          -config=ca-config.json \
+          -profile=server \
+          apiserver-csr.json |cfssljson -bare apiserver
 
     使用脚本启动
 
+    9.3下载安装kube-apiserver
+    # 上传并解压缩
+    tar xf kubernetes-server-linux-amd64.tar.gz  -C /opt
+    cd /opt
+    mv kubernetes/ kubernetes-v1.15.2
+    ln -s /opt/kubernetes-v1.15.2/ /opt/kubernetes
+    cd /opt/kubernetes
+    rm -rf kubernetes-src.tar.gz
+    cd server/bin
+    rm -f *.tar
+    rm -f *_tag
+    ln -s /opt/kubernetes/server/bin/kubectl /usr/bin/kubectl
+
+    部署apiserver服务
+    4.4.1 拷贝证书文件
+    mkdir -p /opt/kubernetes/server/bin/cert
+    cd /opt/kubernetes/server/bin/cert
+    scp hdss7-200:/opt/certs/ca.pem .
+    scp hdss7-200:/opt/certs/ca-key.pem .
+    scp hdss7-200:/opt/certs/client.pem .
+    scp hdss7-200:/opt/certs/client-key.pem .
+    scp hdss7-200:/opt/certs/apiserver.pem .
+    scp hdss7-200:/opt/certs/apiserver-key.pem .
+
+    4.4.2创建audit配置
+    audit日志审计规则配置是k8s要求必须要有得配置,可以不理解,直接用
+    mkdir /opt/kubernetes/server/conf
+    cat >/opt/kubernetes/server/conf/audit.yaml <<'EOF'
+    apiVersion: audit.k8s.io/v1beta1 # This is required.
+    kind: Policy
+    # Don't generate audit events for all requests in RequestReceived stage.
+    omitStages:
+      - "RequestReceived"
+    rules:
+      # Log pod changes at RequestResponse level
+      - level: RequestResponse
+        resources:
+        - group: ""
+          # Resource "pods" doesn't match requests to any subresource of pods,
+          # which is consistent with the RBAC policy.
+          resources: ["pods"]
+      # Log "pods/log", "pods/status" at Metadata level
+      - level: Metadata
+        resources:
+        - group: ""
+          resources: ["pods/log", "pods/status"]
+      # Don't log requests to a configmap called "controller-leader"
+      - level: None
+        resources:
+        - group: ""
+          resources: ["configmaps"]
+          resourceNames: ["controller-leader"]
+      # Don't log watch requests by the "system:kube-proxy" on endpoints or services
+      - level: None
+        users: ["system:kube-proxy"]
+        verbs: ["watch"]
+        resources:
+        - group: "" # core API group
+          resources: ["endpoints", "services"]
+      # Don't log authenticated requests to certain non-resource URL paths.
+      - level: None
+        userGroups: ["system:authenticated"]
+        nonResourceURLs:
+        - "/api*" # Wildcard matching.
+        - "/version"
+      # Log the request body of configmap changes in kube-system.
+      - level: Request
+        resources:
+        - group: "" # core API group
+          resources: ["configmaps"]
+        # This rule only applies to resources in the "kube-system" namespace.
+        # The empty string "" can be used to select non-namespaced resources.
+        namespaces: ["kube-system"]
+      # Log configmap and secret changes in all other namespaces at the Metadata level.
+      - level: Metadata
+        resources:
+        - group: "" # core API group
+          resources: ["secrets", "configmaps"]
+      # Log all other resources in core and extensions at the Request level.
+      - level: Request
+        resources:
+        - group: "" # core API group
+        - group: "extensions" # Version of group should NOT be included.
+      # A catch-all rule to log all other requests at the Metadata level.
+      - level: Metadata
+        # Long-running requests like watches that fall under this rule will not
+        # generate an audit event in RequestReceived.
+        omitStages:
+          - "RequestReceived"
+    EOF
+
+    4.4.3 创建apiserver启动脚本
+
+    cat >/opt/kubernetes/server/bin/kube-apiserver.sh <<'EOF'
+    #!/bin/bash
+    ./kube-apiserver \
+      --apiserver-count 2 \
+      --audit-log-path /data/logs/kubernetes/kube-apiserver/audit-log \
+      --audit-policy-file ../conf/audit.yaml \
+      --authorization-mode RBAC \
+      --client-ca-file ./cert/ca.pem \
+      --requestheader-client-ca-file ./cert/ca.pem \
+      --enable-admission-plugins NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,DefaultTolerationSeconds,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,ResourceQuota \
+      --etcd-cafile ./cert/ca.pem \
+      --etcd-certfile ./cert/client.pem \
+      --etcd-keyfile ./cert/client-key.pem \
+      --etcd-servers https://172.26.216.164:2379,https://172.26.216.163:2379,https://172.26.216.161:2379 \
+      --service-account-key-file ./cert/ca-key.pem \
+      --service-cluster-ip-range 192.168.0.0/16 \
+      --service-node-port-range 30000-32767 \
+      --target-ram-mb=1024 \
+      --kubelet-client-certificate ./cert/client.pem \
+      --kubelet-client-key ./cert/client-key.pem \
+      --log-dir  /data/logs/kubernetes/kube-apiserver \
+      --tls-cert-file ./cert/apiserver.pem \
+      --tls-private-key-file ./cert/apiserver-key.pem \
+      --v 2
+    EOF
+    chmod +x /opt/kubernetes/server/bin/kube-apiserver.sh
+
+    nohup sh ./kube-apiserver.sh >> test.log 2>&1 &
+
+    部署启动所有apiserver机器
+    集群其他机器的部署,没有不同的地方,所以略
 
 10.配置反向代理两个apiServer,
     视频里面有用keepAlive做高可用，由于我这里用的阿里云,不做高可用，直接单机反代
-
 
 stream{
     upstream kube-apiserver{
         server 172.26.216.159:6433      max_fails=3 fail_timeout=30s;
         server 172.26.216.160:6433      max_fails=3 fail_timeout=30s;
     }
-
     server{
         listen 7443;
         proxy_connect_timeout 2s;

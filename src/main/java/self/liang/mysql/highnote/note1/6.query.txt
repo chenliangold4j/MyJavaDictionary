@@ -13,3 +13,5 @@ docker run -d -e MYSQL_ROOT_PASSWORD=123456 –-name mysql_query -v E:\docker\my
                 3.总时取出全部列
                     select * 禁止
                 4.重复查询相同的数据
+
+

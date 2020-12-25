@@ -1,0 +1,39 @@
+
+arm64(aarch64)下使用mysql
+建议直接考虑docker方案，目前官方的mysql server docker支持arm64，注意只有mysql8支持，也就是latest标签的
+
+这个和在x86下最常用的mysql镜像有点区别，简单翻译一下官方文档再补充一些，只说端口访问的方案：
+
+启动
+
+docker run --name=mysql1 -d -p 3306:3306 mysql/mysql-server
+这版本的mysql启动很花时间，所以一定要等状态变化了再操作，用docker ps看状态，状态从health: starting变成healthy就行了。
+
+获取初始密码，官方这次没提用环境参数配置密码这事，是否支持我没测，按官方的来
+
+docker logs mysql1 2>&1 | grep GENERATED
+使用该命令从docker log里获取初始密码。之后访问mysql，不支持跨域，得用容器方法访问
+
+docker exec -it mysql1 mysql -uroot -p
+把刚才密码输进去进入mysql的terminal，之后就可以改密码了。
+
+alter user 'root'@'localhost' identified by 'password';
+这里建议把用户的跨域也改了，毕竟咱要端口访问的。
+
+use mysql;
+update user set host='%' where user='root';
+flush privileges;
+当然自己建个新用户是官方推荐也是我比较推荐的做法。
+
+create database mydb;
+create user 'userName'@'%' identified by 'password';
+grant all privileges on mydb.* to userName@'%';
+flush privileges;
+
+docker run   -v /root/liangzheng/data:/var/lib/mysql  -e MYSQL_ROOT_PASSWORD=zx@2020  --name=mysql1 -d -p 3306:3306 mysql/mysql-server
+
+
+
+ALTER USER 'root'@'%' IDENTIFIED BY 'zx@2020' PASSWORD EXPIRE NEVER;
+ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'zx@2020';
+FLUSH PRIVILEGES;
