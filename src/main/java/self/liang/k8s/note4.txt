@@ -884,7 +884,7 @@ EOF
       --image-gc-low-threshold 10 \
       --kubeconfig ../conf/kubelet.kubeconfig \
       --log-dir /data/logs/kubernetes/kube-kubelet \
-      --pod-infra-container-image harbor.zq.com/public/pause:latest \
+      --pod-infra-container-image harbor.phantom5702.com/public/pause:latest \
       --root-dir /data/kubelet
     EOF
 
@@ -1059,25 +1059,41 @@ EOF
 
         7 验证kubernetes集群
         7.1 在任意一个节点上创建一个资源配置清单
-cat >/root/nginx-ds.yaml <<'EOF'
-apiVersion: extensions/v1beta1
-kind: DaemonSet
-metadata:
-  name: nginx-ds
-spec:
-  template:
-    metadata:
-      labels:
-        app: nginx-ds
-    spec:
-      containers:
-      - name: my-nginx
-        image: harbor.phantom5702.com/public/nginx:1.7.9
-        ports:
-        - containerPort: 80
-EOF
+        cat >/root/nginx-ds.yaml <<'EOF'
+        apiVersion: extensions/v1beta1
+        kind: DaemonSet
+        metadata:
+          name: nginx-ds
+        spec:
+          template:
+            metadata:
+              labels:
+                app: nginx-ds
+            spec:
+              containers:
+              - name: my-nginx
+                image: harbor.phantom5702.com/public/nginx:1.7.9
+                ports:
+                - containerPort: 80
+        EOF
 
-        kubectl create -f /root/nginx-ds.yaml
-        kubectl get pods
-        kubectl delete -f /root/nginx-ds.yaml
+                kubectl create -f /root/nginx-ds.yaml
+                kubectl get pods
+                kubectl delete -f /root/nginx-ds.yaml
 
+        7.2.3 查看kubernetes是否搭建好
+        [root@hdss7-22 conf]# kubectl get cs
+        NAME                 STATUS    MESSAGE              ERROR
+        etcd-0               Healthy   {"health": "true"}
+        etcd-2               Healthy   {"health": "true"}
+        etcd-1               Healthy   {"health": "true"}
+        controller-manager   Healthy   ok
+        scheduler            Healthy   ok
+        [root@hdss7-21 ~]# kubectl get nodes
+        NAME                STATUS   ROLES         AGE    VERSION
+        hdss7-21.host.com   Ready    master,node   6d1h   v1.15.5
+        hdss7-22.host.com   Ready    <none>        6d1h   v1.15.5
+        [root@hdss7-22 ~]# kubectl get pods
+        NAME             READY   STATUS    RESTARTS   AGE
+        nginx-ds-j777c   1/1     Running   0          6m45s
+        nginx-ds-nwsd6   1/1     Running   0          6m45s
