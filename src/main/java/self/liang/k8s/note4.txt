@@ -46,23 +46,23 @@
     5 配置主机域数据文件：
        /var/named/host.com.zone
 
-$ORIGIN  host.com.
-$TTL 600        ;10 minutes
-@ IN SOA dns.host.com. dnsadmin.host.com. (
-        2020121215;Serial
-        10800;Refresh
-        900;Retry
-        604800;Expire
-        86400;Minimum
-)
- NS dns.host.com.
-$TTL 60; 1 minute
-dns             A       172.26.216.148
-HD-148          A       172.26.216.148
-HD-145          A       172.26.216.145
-HD-147          A       172.26.216.147
-HD-149          A       172.26.216.149
-HD-146          A       172.26.216.146
+        $ORIGIN  host.com.
+        $TTL 600        ;10 minutes
+        @ IN SOA dns.host.com. dnsadmin.host.com. (
+                2020121215;Serial
+                10800;Refresh
+                900;Retry
+                604800;Expire
+                86400;Minimum
+        )
+         NS dns.host.com.
+        $TTL 60; 1 minute
+        dns             A       172.26.216.148
+        HD-148          A       172.26.216.148
+        HD-145          A       172.26.216.145
+        HD-147          A       172.26.216.147
+        HD-149          A       172.26.216.149
+        HD-146          A       172.26.216.146
 
 
 
@@ -873,6 +873,7 @@ EOF
       --hostname-override 172.26.216.163 \
       --anonymous-auth=false \
       --cgroup-driver systemd \
+      --cluster-dns 192.168.0.2 \
       --cluster-domain cluster.local \
       --runtime-cgroups=/systemd/system.slice \
       --kubelet-cgroups=/systemd/system.slice \
