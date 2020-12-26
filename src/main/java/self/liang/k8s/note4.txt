@@ -1075,6 +1075,7 @@ EOF
                 image: harbor.phantom5702.com/public/nginx:1.7.9
                 ports:
                 - containerPort: 80
+                - hostPort: 5002
         EOF
 
                 kubectl create -f /root/nginx-ds.yaml
@@ -1097,3 +1098,5 @@ EOF
         NAME             READY   STATUS    RESTARTS   AGE
         nginx-ds-j777c   1/1     Running   0          6m45s
         nginx-ds-nwsd6   1/1     Running   0          6m45s
+
+

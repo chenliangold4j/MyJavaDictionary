@@ -1,1 +1,214 @@
-1.
+k8s虽然设计了网络模型,然后将实现方式交给了CNI网络插件,而CNI网络插件的主要目的,就是实现POD资源能够跨宿主机进行通信
+  常见的网络插件有flannel,calico,canal,但是最简单的flannel已经完全满足我们的要求,故不在考虑其他网络插件
+
+1 flannel功能概述
+    1.1 flannel运转流程
+        1. 首先
+        flannel利用Kubernetes API或者etcd用于存储整个集群的网络配置，其中最主要的内容为设置集群的网络地址空间。
+        例如，设定整个集群内所有容器的IP都取自网段“10.1.0.0/16”。
+        2. 接着
+        flannel在每个主机中运行flanneld作为agent，它会为所在主机从集群的网络地址空间中，获取一个小的网段subnet，本主机内所有容器的IP地址都将从中分配。
+        例如，设定本主机内所有容器的IP地址网段“10.1.2.0/24”。
+        3. 然后
+        flanneld再将本主机获取的subnet以及用于主机间通信的Public IP，同样通过kubernetes API或者etcd存储起来。
+        4. 最后
+        flannel利用各种backend mechanism，例如udp，vxlan等等，跨主机转发容器间的网络流量，完成容器间的跨主机通信。
+
+    1.2 flannel的网络模型
+        1.2.2 实际工作中的模型选择
+        很多人不推荐部署K8S的使用的flannel做网络插件,不推荐的原因是是flannel性能不高,然而
+        1. flannel性能不高是指它的VXLAN隧道模型,而不是gw模型
+        2. 规划K8S集群的时候,应规划多个K8S集群来管理不同的业务
+        3. 同一个K8S集群的宿主机,就应该规划到同一个网段
+        4. 既然是同一个网段的宿主机通信,使用的就应该是gw模型
+        5. gw模型只是创建了网关路由,通信效率极高
+        6. 因此,建议工作中使用flannel,且用gw模型
+
+2. 部署flannel插件
+    2.1 在etcd中写入网络信息
+    以下操作在任意etcd节点中执行都可以
+    /opt/etcd/etcdctl set /coreos.com/network/config '{"Network": "172.7.0.0/16", "Backend": {"Type": "host-gw"}}'
+    # 查看结果
+    [root@hdss7-12 ~]# /opt/etcd/etcdctl get /coreos.com/network/config
+    {"Network": "172.26.0.0/16", "Backend": {"Type": "host-gw"}}
+
+
+    2.2 部署准备
+     2.2.1 下载软件
+        wget https://grbk.oss-cn-zhangjiakou.aliyuncs.com/flannel-v0.11.0-linux-amd64.tar.gz
+        mkdir /opt/flannel-v0.11.0
+        tar xf flannel-v0.11.0-linux-amd64.tar.gz -C /opt/flannel-v0.11.0/
+        ln -s /opt/flannel-v0.11.0/ /opt/flannel
+
+     2.2.2 拷贝证书
+         因为要和apiserver通信，所以要配置client证书,当然ca公钥自不必说
+         cd /opt/flannel
+         mkdir cert
+         scp hdss7-200:/opt/certs/ca.pem         cert/
+         scp hdss7-200:/opt/certs/client.pem     cert/
+         scp hdss7-200:/opt/certs/client-key.pem cert/
+     2.2.3 配置子网信息
+        cat >/opt/flannel/subnet.env <<EOF
+        FLANNEL_NETWORK=172.7.0.0/16
+        FLANNEL_SUBNET=172.7.164.1/24
+        FLANNEL_MTU=1500
+        FLANNEL_IPMASQ=false
+        EOF
+        注意:subnet子网网段信息,每个宿主机都要修改
+
+     2.3 启动flannel服务
+     2.3.1 创建flannel启动脚本
+
+        cat >/opt/flannel/flanneld.sh <<'EOF'
+        #!/bin/sh
+        ./flanneld \
+          --public-ip=172.26.216.164 \
+          --etcd-endpoints=https://172.26.216.164:2379,https://172.26.216.163:2379,https://172.26.216.161:2379 \
+          --etcd-keyfile=./cert/client-key.pem \
+          --etcd-certfile=./cert/client.pem \
+          --etcd-cafile=./cert/ca.pem \
+          --iface=eth0 \
+          --subnet-file=./subnet.env \
+          --healthz-port=2401
+        EOF
+         # 授权
+         chmod u+x flanneld.sh
+         注意:
+         public-ip为节点IP,注意按需修改
+         iface为网卡,若本机网卡不是eth0,注意修改
+     2.3.3 启动flannel服务并验证
+         启动服务
+         mkdir -p /data/logs/flanneld
+         nohup sh ./flanneld.sh >> test.log 2>&1 &
+         验证路由
+
+        [root@iZ8vbijyckskmvy6mpnognZ flannel]# route -n|egrep -i '172.7|des'
+        Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+        172.7.163.0     0.0.0.0         255.255.255.0   U     0      0        0 docker0
+        172.7.164.0     172.26.216.164  255.255.255.0   UG    0      0        0 eth0
+
+
+       [root@iZ8vbijyckskmvy6mpnogmZ flannel]# route -n|egrep -i '172.7|des'
+       Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+       172.7.163.0     172.26.216.163  255.255.255.0   UG    0      0        0 eth0
+       172.7.164.0     0.0.0.0         255.255.255.0   U     0      0        0 docker0
+
+         验证通信结果
+         [root@hdss7-21 ~]# ping 172.7.164.2
+         PING 172.7.22.2 (172.7.22.2) 56(84) bytes of data.
+         64 bytes from 172.7.22.2: icmp_seq=1 ttl=63 time=0.538 ms
+         64 bytes from 172.7.22.2: icmp_seq=2 ttl=63 time=0.896 ms
+         [root@hdss7-22 ~]# ping 172.7.21.2
+         PING 172.7.21.2 (172.7.21.2) 56(84) bytes of data.
+         64 bytes from 172.7.21.2: icmp_seq=1 ttl=63 time=0.805 ms
+         64 bytes from 172.7.21.2: icmp_seq=2 ttl=63 time=1.14 ms
+
+     2 阿里云ecs不支持flannel的gw模式
+         2.1 场景描述
+         后端node节点不多,且都在同一个vpc下面,计划直接用flannel的host-gw模式来实现容器跨节点通信
+
+         选择原因如下:
+         flannel简单好用,node节点又不多
+         gw模式只是增加了路由转发条目,性能极高
+         node节点都在同一个vpc下面,想着二层互通,正好满足gw模式的要求
+         兴冲冲的开始拿两台ecs部署验证,部署过程很简单,路由条目也自动添加了,但是就是不能互相ping通,又是一顿自我检查没找出原因,工单求助阿里
+
+         2.2 结论和解决办法
+         2.2.1 结论:
+         阿里云同一vpc下的ecs,二层不互通
+
+         2.2.2 办法1:添加路由
+         按工程师的要求,在阿里云的路由表中添加了到各容器网段的路由指向后,pod间通信成功,但是问题在于
+
+         添加一个node节点就得来改一次路由表
+         路由表是全局生效的,路由器下所有ecs都能访问pod
+         要想不全局访问,就得在用安全组来控制
+         基于上诉问题,最终放弃了改方案
+
+         2.2.3 办法2:vxlan模式
+         gw模式走不通后,只好用flannel的vxlan模式,虽说有性能损耗,但通过压测工具实测,也没有网传的30%-40%的损耗,大概在5%-10%区间,能接受
+
+     3.vxlan模型
+       {"Network": "172.7.0.0/16", "Backend": {"Type": "VxLAN"}}
+
+        /opt/etcd/etcdctl rm /coreos.com/network/config
+        /opt/etcd/etcdctl set /coreos.com/network/config '{"Network": "172.7.0.0/16", "Backend": {"Type": "VxLAN"}}'
+        重启 nohup sh ./flanneld.sh >> test.log 2>&1 &
+
+        可以ping通容器
+
+     3 优化iptables规则
+     3.1 前因后果
+         3.1.1 优化原因说明
+         我们使用的是gw网络模型,而这个网络模型只是创建了一条到其他宿主机下POD网络的路由信息.
+         因而我们可以猜想:
+         1. 从外网访问到B宿主机中的POD,源IP应该是外网IP
+         2. 从A宿主机访问B宿主机中的POD,源IP应该是A宿主机的IP
+         3. 从A的POD-A01中,访问B中的POD,源IP应该是POD-A01的容器IP
+         此情形可以想象是一个路由器下的2个不同网段的交换机下的设备通过路由器(gw)通信
+         然后遗憾的是:
+         • 前两条毫无疑问成立
+         • 第3条理应成立,但实际不成立
+         不成立的原因是:
+         1. Docker容器的跨网络隔离与通信，借助了iptables的机制
+         2. 因此虽然K8S我们使用了ipvs调度,但是宿主机上还是有iptalbes规则
+         3. 而docker默认生成的iptables规则为：
+         若数据出网前，先判断出网设备是不是本机docker0设备(容器网络)
+         如果不是的话，则进行SNAT转换后再出网，具体规则如下
+         [root@hdss7-21 ~]# iptables-save |grep -i postrouting|grep docker0
+         -A POSTROUTING -s 172.7.21.0/24 ! -o docker0 -j MASQUERADE
+         1. 由于gw模式产生的数据,是从eth0流出,因而不在此规则过滤范围内
+         2. 就导致此跨宿主机之间的POD通信,使用了该条SNAT规则
+         解决办法是:
+         • 修改此IPTABLES规则,增加过滤目标:过滤目的地是宿主机网段的流量
+     3.1.2 问题复现
+         1. 在164宿主机中,访问172.7.163.2
+         curl 172.7.163.2
+         1. 查看163宿主机上启动的nginx容器日志
+            [root@iZ8vbijyckskmvy6mpnognZ flannel]# kubectl logs nginx-ds-qqp94 --tail=2
+            172.7.164.0 - - [26/Dec/2020:03:22:07 +0000] "GET / HTTP/1.1" 200 612 "-" "curl/7.64.0" "-"
+            172.7.164.0 - - [26/Dec/2020:03:23:15 +0000] "GET / HTTP/1.1" 200 612 "-" "curl/7.64.0" "-"
+             1. 第一条日志为对端宿主机访问日志
+             第二条日志为对端容器访问日志
+             可以看出源IP都是宿主机的IP
+
+     3.2 具体优化过程
+
+     3.2.1 先查看iptables规则
+     [root@hdss7-21 ~]# iptables-save |grep -i postrouting|grep docker0
+     -A POSTROUTING -s 172.7.21.0/24 ! -o docker0 -j MASQUERADE
+     3.2.2 安装iptables并修改规则
+     yum install iptables-services -y
+     systemctl start iptalbes
+     systemctl enable iptables
+     iptables -t nat -D POSTROUTING -s 172.7.163.0/24 ! -o docker0 -j MASQUERADE
+     iptables -t nat -I POSTROUTING -s 172.7.163.0/24 ! -d 172.7.0.0/16 ! -o docker0  -j MASQUERADE
+
+          iptables -t nat -D POSTROUTING -s 172.7.164.0/24 ! -o docker0 -j MASQUERADE
+          iptables -t nat -I POSTROUTING -s 172.7.164.0/24 ! -d 172.7.0.0/16 ! -o docker0  -j MASQUERADE
+     # 验证规则并保存配置
+     [root@hdss7-21 ~]# iptables-save |grep -i postrouting|grep docker0
+     -A POSTROUTING -s 172.7.21.0/24 ! -d 172.7.0.0/16 ! -o docker0 -j MASQUERADE
+     [root@hdss7-21 ~]# iptables-save > /etc/sysconfig/iptables
+
+     3.2.3 注意docker重启后操作
+     docker服务重启后,会再次增加该规则,要注意在每次重启docker服务后,删除该规则
+     验证:
+     修改后会影响到docker原本的iptables链的规则，所以需要重启docker服务
+     [root@hdss7-21 ~]# systemctl restart docker
+     [root@hdss7-21 ~]# iptables-save |grep -i postrouting|grep docker0
+     -A POSTROUTING -s 172.7.21.0/24 ! -o docker0 -j MASQUERADE
+     -A POSTROUTING -s 172.7.21.0/24 ! -d 172.7.0.0/16 ! -o docker0 -j MASQUERADE
+     # 可以用iptables-restore重新应用iptables规则,也可以直接再删
+     [root@hdss7-21 ~]# iptables-restore /etc/sysconfig/iptables
+     [root@hdss7-21 ~]# iptables-save |grep -i postrouting|grep docker0
+     -A POSTROUTING -s 172.7.21.0/24 ! -d 172.7.0.0/16 ! -o docker0 -j MASQUERADE
+     3.2.4 结果验证
+     # 对端启动容器并访问
+     [root@hdss7-21 ~]# docker run --rm -it busybox  sh
+     / # wget 172.7.22.2
+     # 本端验证日志
+     [root@hdss7-22 ~]# kubectl logs nginx-ds-j777c --tail=1
+     172.7.21.3 - - [xxxx] "GET / HTTP/1.1" 200 612 "-" "Wget" "-"
+
+
