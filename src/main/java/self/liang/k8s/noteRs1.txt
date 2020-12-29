@@ -1,0 +1,398 @@
+1.安装
+
+    1.设置host ，这里不一样的是，原来是dns解析，这里是直接设置host
+        172.26.216.162 k8s-master01
+        172.26.216.163 k8s-node01
+        172.26.216.164 k8s-node02
+
+    2.yum install -y conntrack ntpdata ntp ipvsadm ipset jq iptables sysstat libseccomp
+
+
+    3.设置防火墙为iptables 并设置空规则
+        systemctl stop firewalld && systemctl disable firewalld
+        yum -y install iptables-services && systemctl start iptables && systemctl enable iptables && iptables -F && service iptables save
+
+    4.kube-proxy 开启ipvs的前置条件
+        modprobe br_netfilter
+
+        cat > /etc/sysconfig/modules/ipvs.modules <<EOF
+        #!/bin/bash
+        modprobe -- ip_vs
+        modprobe -- ip_vs_rr
+        modprobe -- ip_vs_wrr
+        modprobe -- ip_vs_sh
+        modprobe -- nf_conntrack_ipv4
+        EOF
+
+        chmod 755 /etc/sysconfig/modules/ipvs.modules && bash /etc/sysconfig/modules/ipvs.modules && lsmod | grep -e ip_vs -e nf_conntrack_ipv4
+
+
+    5. 安装docker
+        curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
+
+          /etc/docker/daemon.json
+        {
+             "insecure-registries": ["harbor.phantom5702.com"],
+             "registry-mirrors":["https://tuj12vuh.mirror.aliyuncs.com"],
+             "bip": "172.7.#{自己的ip最后尾数}.1/24",
+             "exec-opts": ["native.cgroupdriver=systemd"],
+             "live-restore":true
+        }
+
+        mkdir -p /etc/systemd/system/docker.service.d
+
+        systemctl daemon-reload && systemctl restart docker && systemctl restart docker
+
+    6. 安装kubeadm(主从配置)
+
+    [root@k8s-1 network-scripts]# cat /etc/yum.repos.d/kubernetes.repo
+    [kubernetes]
+    name=Kubernetes
+    baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64
+    enabled=1
+    gpgcheck=0
+
+
+    yum -y install kubeadm-1.15.1 kubectl-1.15.1 kubelet-1.15.1
+    systemctl enable kubelet.service
+
+
+
+
+
+    7.初始化节点
+       1.导入镜像 https://grbk.oss-cn-zhangjiakou.aliyuncs.com/kubeadm1.15.1/kubeadm-basic.images.tar.gz 解压
+        docker load 脚本
+        vim load.sh
+        #!/bin/bash
+        ls /root/kubeadm-basic.images > /tmp/image-list.txt
+        cd /root/kubeadm-basic.images
+        for i in $( cat /tmp/image-list.txt)
+        do
+            docker load -i $i
+        done
+
+        rm -rf /tmp/image-list.txt
+
+        sh load.sh
+
+       2.在主节点
+        获取默认的初始化模板
+         kubeadm config print init-defaults > kubeadm-config.yaml
+        修改
+        advertiseAddress 为自己的ip
+        network 下 podSubnet: "10.244.0.0/16"
+        以及添加在scheduler:{} 添加 配置
+
+
+        apiVersion: kubeadm.k8s.io/v1beta2
+        bootstrapTokens:
+        - groups:
+          - system:bootstrappers:kubeadm:default-node-token
+          token: abcdef.0123456789abcdef
+          ttl: 24h0m0s
+          usages:
+          - signing
+          - authentication
+        kind: InitConfiguration
+        localAPIEndpoint:
+          advertiseAddress: 172.26.216.162
+          bindPort: 6443
+        nodeRegistration:
+          criSocket: /var/run/dockershim.sock
+          name: iz8vb9oywzkx86ud7t818hz
+          taints:
+          - effect: NoSchedule
+            key: node-role.kubernetes.io/master
+        ---
+        apiServer:
+          timeoutForControlPlane: 4m0s
+        apiVersion: kubeadm.k8s.io/v1beta2
+        certificatesDir: /etc/kubernetes/pki
+        clusterName: kubernetes
+        controllerManager: {}
+        dns:
+          type: CoreDNS
+        etcd:
+          local:
+            dataDir: /var/lib/etcd
+        imageRepository: k8s.gcr.io
+        kind: ClusterConfiguration
+        kubernetesVersion: v1.15.1
+        networking:
+          dnsDomain: cluster.local
+          podSubnet: "10.244.0.0/16"
+          serviceSubnet: 10.96.0.0/12
+        scheduler: {}
+        ---
+        apiVersion: kubeproxy.config.k8s.io/v1alpha1
+        kind: KubeProxyConfiguration
+        featureGates:
+          SupportIPVSProxyMode: true
+        mode: ipvs
+
+
+        kubeadm init --config=kubeadm-config.yaml --experimental-upload-certs | tee kubeadm-init.log
+
+        这里--experimental-upload-certs 会自动颁发证书
+
+        查看日志会有这句话：
+        To start using your cluster, you need to run the following as a regular user:
+
+          mkdir -p $HOME/.kube
+          sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+          sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+        执行以上命令，之后可以获取节点
+        # kubectl get node
+        NAME                      STATUS     ROLES    AGE     VERSION
+        iz8vb9oywzkx86ud7t818hz   NotReady   master   5m41s   v1.15.1
+
+
+     3.加入节点  在日志的结尾
+     kubeadm join 172.26.216.162:6443 --token abcdef.0123456789abcdef \
+         --discovery-token-ca-cert-hash sha256:0852b4fe182e0694af43bcb55f5d4b76243f9170a86487aedcc08ca435701cc1
+
+
+      https://github.com/coreos/flannel/blob/master/Documentation/kube-flannel.yml
+
+        ---
+        apiVersion: policy/v1beta1
+        kind: PodSecurityPolicy
+        metadata:
+          name: psp.flannel.unprivileged
+          annotations:
+            seccomp.security.alpha.kubernetes.io/allowedProfileNames: docker/default
+            seccomp.security.alpha.kubernetes.io/defaultProfileName: docker/default
+            apparmor.security.beta.kubernetes.io/allowedProfileNames: runtime/default
+            apparmor.security.beta.kubernetes.io/defaultProfileName: runtime/default
+        spec:
+          privileged: false
+          volumes:
+          - configMap
+          - secret
+          - emptyDir
+          - hostPath
+          allowedHostPaths:
+          - pathPrefix: "/etc/cni/net.d"
+          - pathPrefix: "/etc/kube-flannel"
+          - pathPrefix: "/run/flannel"
+          readOnlyRootFilesystem: false
+          # Users and groups
+          runAsUser:
+            rule: RunAsAny
+          supplementalGroups:
+            rule: RunAsAny
+          fsGroup:
+            rule: RunAsAny
+          # Privilege Escalation
+          allowPrivilegeEscalation: false
+          defaultAllowPrivilegeEscalation: false
+          # Capabilities
+          allowedCapabilities: ['NET_ADMIN', 'NET_RAW']
+          defaultAddCapabilities: []
+          requiredDropCapabilities: []
+          # Host namespaces
+          hostPID: false
+          hostIPC: false
+          hostNetwork: true
+          hostPorts:
+          - min: 0
+            max: 65535
+          # SELinux
+          seLinux:
+            # SELinux is unused in CaaSP
+            rule: 'RunAsAny'
+        ---
+        kind: ClusterRole
+        apiVersion: rbac.authorization.k8s.io/v1
+        metadata:
+          name: flannel
+        rules:
+        - apiGroups: ['extensions']
+          resources: ['podsecuritypolicies']
+          verbs: ['use']
+          resourceNames: ['psp.flannel.unprivileged']
+        - apiGroups:
+          - ""
+          resources:
+          - pods
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - nodes/status
+          verbs:
+          - patch
+        ---
+        kind: ClusterRoleBinding
+        apiVersion: rbac.authorization.k8s.io/v1
+        metadata:
+          name: flannel
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: flannel
+        subjects:
+        - kind: ServiceAccount
+          name: flannel
+          namespace: kube-system
+        ---
+        apiVersion: v1
+        kind: ServiceAccount
+        metadata:
+          name: flannel
+          namespace: kube-system
+        ---
+        kind: ConfigMap
+        apiVersion: v1
+        metadata:
+          name: kube-flannel-cfg
+          namespace: kube-system
+          labels:
+            tier: node
+            app: flannel
+        data:
+          cni-conf.json: |
+            {
+              "name": "cbr0",
+              "cniVersion": "0.3.1",
+              "plugins": [
+                {
+                  "type": "flannel",
+                  "delegate": {
+                    "hairpinMode": true,
+                    "isDefaultGateway": true
+                  }
+                },
+                {
+                  "type": "portmap",
+                  "capabilities": {
+                    "portMappings": true
+                  }
+                }
+              ]
+            }
+          net-conf.json: |
+            {
+              "Network": "10.244.0.0/16",
+              "Backend": {
+                "Type": "vxlan"
+              }
+            }
+        ---
+        apiVersion: apps/v1
+        kind: DaemonSet
+        metadata:
+          name: kube-flannel-ds
+          namespace: kube-system
+          labels:
+            tier: node
+            app: flannel
+        spec:
+          selector:
+            matchLabels:
+              app: flannel
+          template:
+            metadata:
+              labels:
+                tier: node
+                app: flannel
+            spec:
+              affinity:
+                nodeAffinity:
+                  requiredDuringSchedulingIgnoredDuringExecution:
+                    nodeSelectorTerms:
+                    - matchExpressions:
+                      - key: kubernetes.io/os
+                        operator: In
+                        values:
+                        - linux
+              hostNetwork: true
+              priorityClassName: system-node-critical
+              tolerations:
+              - operator: Exists
+                effect: NoSchedule
+              serviceAccountName: flannel
+              initContainers:
+              - name: install-cni
+                image: quay.io/coreos/flannel:v0.13.1-rc1
+                command:
+                - cp
+                args:
+                - -f
+                - /etc/kube-flannel/cni-conf.json
+                - /etc/cni/net.d/10-flannel.conflist
+                volumeMounts:
+                - name: cni
+                  mountPath: /etc/cni/net.d
+                - name: flannel-cfg
+                  mountPath: /etc/kube-flannel/
+              containers:
+              - name: kube-flannel
+                image: quay.io/coreos/flannel:v0.13.1-rc1
+                command:
+                - /opt/bin/flanneld
+                args:
+                - --ip-masq
+                - --kube-subnet-mgr
+                resources:
+                  requests:
+                    cpu: "100m"
+                    memory: "50Mi"
+                  limits:
+                    cpu: "100m"
+                    memory: "50Mi"
+                securityContext:
+                  privileged: false
+                  capabilities:
+                    add: ["NET_ADMIN", "NET_RAW"]
+                env:
+                - name: POD_NAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+                - name: POD_NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.namespace
+                volumeMounts:
+                - name: run
+                  mountPath: /run/flannel
+                - name: flannel-cfg
+                  mountPath: /etc/kube-flannel/
+              volumes:
+              - name: run
+                hostPath:
+                  path: /run/flannel
+              - name: cni
+                hostPath:
+                  path: /etc/cni/net.d
+              - name: flannel-cfg
+                configMap:
+                  name: kube-flannel-cfg
+
+
+      kubectl create -f kube-flannel.yml
+
+      可以
+      kubectl get pod -n kube-system
+      NAME                                              READY   STATUS     RESTARTS   AGE
+      coredns-5c98db65d4-lhkg2                          0/1     Pending    0          20m
+      coredns-5c98db65d4-q2x28                          0/1     Pending    0          20m
+      etcd-iz8vb9oywzkx86ud7t818hz                      1/1     Running    0          19m
+      kube-apiserver-iz8vb9oywzkx86ud7t818hz            1/1     Running    0          19m
+      kube-controller-manager-iz8vb9oywzkx86ud7t818hz   1/1     Running    0          19m
+      kube-flannel-ds-rhsc4                             0/1     Init:0/1   0          72s
+      kube-proxy-ns4zj                                  1/1     Running    0          20m
+      kube-scheduler-iz8vb9oywzkx86ud7t818hz            1/1     Running    0          19m
+
+
