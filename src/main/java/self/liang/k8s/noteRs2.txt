@@ -6,7 +6,7 @@
     NAME                                READY   STATUS    RESTARTS   AGE
     nginx-deployment-7b8f9b5945-5bx8g   1/1     Running   0
 
-2.    kubectl scale --replicas=3 deployment/nginx-deployment
+2.  kubectl scale --replicas=3 deployment/nginx-deployment
     可以扩容
 
 3.kubectl expose --help 查看如何暴露服务
