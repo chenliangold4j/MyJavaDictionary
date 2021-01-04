@@ -1,0 +1,326 @@
+Ingress
+
+    Ingress-Nginx github 地址：https://github.com/kubernetes/ingress-nginx
+    Ingress-Nginx 官方网站：https://kubernetes.github.io/ingress-nginx/
+
+
+    下载mandatory.yaml 这里最新版已经没有了，跳转到老版，然后手动下载了一个，里面需要一个镜像 ，docker pull 一下，如果太慢就得科学下载
+    8hZ ~]# docker  pull quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.25.0
+
+    kubectl create -f  mandatory.yaml   #官网的还需要改一个地方 https://blog.csdn.net/Cxinsect/article/details/105846333
+
+     ~]# kubectl get pod -n ingress-nginx
+    NAME                                        READY   STATUS              RESTARTS   AGE
+    nginx-ingress-controller-7995bd9c47-mlnsb   0/1     ContainerCreating   0          21s
+
+     ~]# kubectl get pod -n ingress-nginx
+    NAME                                        READY   STATUS    RESTARTS   AGE
+    nginx-ingress-controller-7995bd9c47-ljjjw   1/1     Running   0          14s
+
+
+    使用使用nodeport方式创建service ： service-nodeport.yml
+    这里yaml文件也是手动改版本下载的
+
+    hZ ~]# kubectl  get svc -n ingress-nginx
+    NAME            TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)                      AGE
+    ingress-nginx   NodePort   10.98.46.215   <none>        80:31746/TCP,443:31142/TCP   14s
+
+
+    Ingress Http 代理访问
+
+    deployment、Service、Ingress Yaml 文件
+
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    metadata:
+        name: nginx-dm
+    spec:
+        replicas: 2
+        template:
+            metadata:
+                labels:
+                    name: nginx
+            spec:
+                containers:
+                - name: nginx
+                  image: harbor.phantom5702.com/library/myapp:v1
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                    - containerPort: 80
+
+    ---
+
+    apiVersion: v1
+    kind: Service
+    metadata:
+        name: nginx-svc
+    spec:
+        ports:
+        - port: 80
+          targetPort: 80
+          protocol: TCP
+        selector:
+          name: nginx
+    ---
+
+    apiVersion: extensions/v1beta1
+    kind: Ingress
+    metadata:
+        name: nginx-test
+    spec:
+        rules:
+        - host: service.phantom5702.com
+          http:
+            paths:
+            - path: /
+              backend:
+                serviceName: nginx-svc
+                servicePort: 80
+
+
+
+        Z ~]# kubectl get svc -n ingress-nginx
+        NAME            TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)                      AGE
+        ingress-nginx   NodePort   10.98.46.215   <none>        80:31746/TCP,443:31142/TCP   5h33m
+
+        注意这里要通过31746 访问
+
+
+    实验。。两个svc ，一个ingress转发
+
+       deployment1.yaml
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+    name: deployment1
+spec:
+    replicas: 2
+    template:
+        metadata:
+            labels:
+                name: nginx
+        spec:
+            containers:
+            - name: nginx
+              image: harbor.phantom5702.com/library/myapp:v1
+              imagePullPolicy: IfNotPresent
+              ports:
+                - containerPort: 80
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+    name: svc1
+spec:
+    ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+    selector:
+      name: nginx
+---
+
+
+        deployment2.yaml
+
+        apiVersion: extensions/v1beta1
+        kind: Deployment
+        metadata:
+            name: deployment2
+        spec:
+            replicas: 2
+            template:
+                metadata:
+                    labels:
+                        name: nginx2
+                spec:
+                    containers:
+                    - name: nginx2
+                      image: nginx:1.7.9
+                      imagePullPolicy: IfNotPresent
+                      ports:
+                        - containerPort: 80
+        ---
+
+        apiVersion: v1
+        kind: Service
+        metadata:
+            name: svc2
+        spec:
+            ports:
+            - port: 80
+              targetPort: 80
+              protocol: TCP
+            selector:
+              name: nginx2
+        ---
+
+        ingress.yaml
+
+        apiVersion: extensions/v1beta1
+        kind: Ingress
+        metadata:
+            name: ingress1
+        spec:
+            rules:
+            - host: service.phantom5702.com
+              http:
+                paths:
+                - path: /
+                  backend:
+                    serviceName: svc1
+                    servicePort: 80
+        ---
+
+        apiVersion: extensions/v1beta1
+        kind: Ingress
+        metadata:
+            name: ingress2
+        spec:
+            rules:
+            - host: service1.phantom5702.com
+              http:
+                paths:
+                - path: /
+                  backend:
+                    serviceName: svc2
+                    servicePort: 80
+
+
+        创建完成之后，可以
+        -vh]# kubectl get pod -n ingress-nginx
+        NAME                                        READY   STATUS    RESTARTS   AGE
+        nginx-ingress-controller-7995bd9c47-ljjjw   1/1     Running   0          6h1m
+
+        -vh]# kubectl exec   nginx-ingress-controller-7995bd9c47-ljjjw -it -n ingress-nginx /bin/bash
+
+        进入ingress容器，查看nginx配置
+
+        h]# kubectl get svc -n ingress-nginx
+        NAME            TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)                      AGE
+        ingress-nginx   NodePort   10.98.46.215   <none>        80:31746/TCP,443:31142/TCP   6h9m
+
+        通过域名+端口访问，可以看到nginx来回切换
+
+
+Ingress https
+
+        openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=nginxsvc/O=nginxsvc"
+        kubectl create secret tls tls-secret --key tls.key --cert tls.crt
+
+        deployment3.yml
+
+        apiVersion: extensions/v1beta1
+        kind: Deployment
+        metadata:
+            name: deployment3
+        spec:
+            replicas: 2
+            template:
+                metadata:
+                    labels:
+                        name: nginx3
+                spec:
+                    containers:
+                    - name: nginx3
+                      image: harbor.phantom5702.com/library/myapp:v1
+                      imagePullPolicy: IfNotPresent
+                      ports:
+                        - containerPort: 80
+        ---
+
+        apiVersion: v1
+        kind: Service
+        metadata:
+            name: svc3
+        spec:
+            ports:
+            - port: 80
+              targetPort: 80
+              protocol: TCP
+            selector:
+              name: nginx3
+        ---
+
+
+    ingress.https.yml
+
+    apiVersion: extensions/v1beta1
+    kind: Ingress
+    metadata:
+        name: https
+    spec:
+        tls:
+          - hosts:
+            - service3.phantom5702.com
+            secretName: tls-secret
+        rules:
+            - host: service3.phantom5702.com
+              http:
+                paths:
+                    - path: /
+                      backend:
+                        serviceName: svc3
+                        servicePort: 80
+
+
+     https]# kubectl get svc -n ingress-nginx
+    NAME            TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)                      AGE
+    ingress-nginx   NodePort   10.98.46.215   <none>        80:31746/TCP,443:31142/TCP   6h57m
+
+    这里要用31142  注意手动打https 不然会认定为http
+
+Nginx 进行 BasicAuth
+    yum -y install httpd
+    htpasswd -c auth foo
+    kubectl create secret generic basic-auth --from-file=auth
+
+    添加认证
+
+    apiVersion: extensions/v1beta1
+    kind: Ingress
+    metadata:
+        name: ingress-with-auth
+        annotations:
+            nginx.ingress.kubernetes.io/auth-type: basic
+            nginx.ingress.kubernetes.io/auth-secret: basic-auth
+            nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - foo'
+    spec:
+        rules:
+        - host: auth.phantom5702.com
+          http:
+            paths:
+            - path: /
+              backend:
+                serviceName: svc1
+                servicePort: 80
+
+
+Nginx 进行重写
+    名称                                                             描述                                          值
+    nginx.ingress.kubernetes.io/rewrite-target      必须重定向流量的目标URI                                          串
+    nginx.ingress.kubernetes.io/ssl-redirect        指示位置部分是否仅可访问SSL（当Ingress包含证书时默认为True）         布尔
+    nginx.ingress.kubernetes.io/force-ssl-redirect  即使Ingress未启用TLS，也强制重定向到HTTPS                         布尔
+    nginx.ingress.kubernetes.io/app-root            定义Controller必须重定向的应用程序根，如果它在'/'上下文中            串
+    nginx.ingress.kubernetes.io/use-regex           指示Ingress上定义的路径是否使用正则表达式                          布尔
+
+    apiVersion: extensions/v1beta1
+    kind: Ingress
+    metadata:
+        name: nginx-test
+        annotations:
+            nginx.ingress.kubernetes.io/rewrite-target: https://service3.phantom5702.com:31142
+    spec:
+        rules:
+        - host: service4.phantom5702.com
+          http:
+            paths:
+            - path: /
+              backend:
+                serviceName: svc-s4
+                servicePort: 80
+
+    访问 http://service4.phantom5702.com:31746/  会重定向到 https://service3.phantom5702.com:31142
+
