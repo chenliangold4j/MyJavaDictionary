@@ -1,10 +1,13 @@
 package self.liang.classload.example;
 
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * 验证过程。。需要编译一个class文件到项目不可达的地方。。让后用类加载器加载
  *
  */
 public class LoaderTest  {
+    @Transactional
     public static void main(String[] args) {
 
 //        System.out.println(Integer.MAX_VALUE/(1024*1024));

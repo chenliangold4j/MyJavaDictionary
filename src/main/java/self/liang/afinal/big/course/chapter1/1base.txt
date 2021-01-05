@@ -1,0 +1,99 @@
+1. 数据库建模工具：
+    PDMan ： 开源，可以本地编译
+        用于设计数据库，而且可以版本版本控制。增量修改。
+
+2.HikariCP 数据源
+    高性能数据库连接池
+    这是 springboot 默认的datasource
+    https://github.com/brettwooldridge/HikariCP
+    https://github.com/brettwooldridge/HikariCP/wiki/Down-the-Rabbit-Hole 这里说了为什么块
+
+    概括一下：
+        1. 使用自定义的fastlist代理ArrayList<Statement>
+            ArrayList在 get方法中会调用rangeCheck，fastList消除了
+            ArrayList的remove从头开始扫描 ，FastList 从尾部开始，由于jdbc往往会关闭尾部的statement，fastList更快
+        2. HikariCP包含一个称为ConcurrentBag的自定义无锁集合
+        3. invokevirtual vs invokestatic
+            通过定义静态方法的方式，优化字节码调用，减少栈空间
+
+    配置，自行搜索上github等，用法与druid类似
+
+3.事务传播
+
+	/**
+	 * Support a current transaction, create a new one if none exists.
+	 * Analogous to EJB transaction attribute of the same name.
+	 * <p>This is the default setting of a transaction annotation.
+	 */
+	REQUIRED(TransactionDefinition.PROPAGATION_REQUIRED), 默认，没有就创建，有就加入
+
+	/**
+	 * Support a current transaction, execute non-transactionally if none exists.
+	 * Analogous to EJB transaction attribute of the same name.
+	 * <p>Note: For transaction managers with transaction synchronization,
+	 * PROPAGATION_SUPPORTS is slightly different from no transaction at all,
+	 * as it defines a transaction scope that synchronization will apply for.
+	 * As a consequence, the same resources (JDBC Connection, Hibernate Session, etc)
+	 * will be shared for the entire specified scope. Note that this depends on
+	 * the actual synchronization configuration of the transaction manager.
+	 * @see org.springframework.transaction.support.AbstractPlatformTransactionManager#setTransactionSynchronization
+	 */
+	SUPPORTS(TransactionDefinition.PROPAGATION_SUPPORTS),  如果存在一个事务，支持当前事务。如果没有事务，则非事务的执行
+
+	/**
+	 * Support a current transaction, throw an exception if none exists.
+	 * Analogous to EJB transaction attribute of the same name.
+	 */
+	MANDATORY(TransactionDefinition.PROPAGATION_MANDATORY), 如果已经存在一个事务，支持当前事务。如果没有一个活动的事务，则抛出异常
+
+	/**
+	 * Create a new transaction, and suspend the current transaction if one exists.
+	 * Analogous to the EJB transaction attribute of the same name.
+	 * <p><b>NOTE:</b> Actual transaction suspension will not work out-of-the-box
+	 * on all transaction managers. This in particular applies to
+	 * {@link org.springframework.transaction.jta.JtaTransactionManager},
+	 * which requires the {@code javax.transaction.TransactionManager} to be
+	 * made available it to it (which is server-specific in standard Java EE).
+	 * @see org.springframework.transaction.jta.JtaTransactionManager#setTransactionManager
+	 */
+	REQUIRES_NEW(TransactionDefinition.PROPAGATION_REQUIRES_NEW), 它会开启一个新的事务。如果一个事务已经存在，则先将这个存在的事务挂起。
+
+	/**
+	 * Execute non-transactionally, suspend the current transaction if one exists.
+	 * Analogous to EJB transaction attribute of the same name.
+	 * <p><b>NOTE:</b> Actual transaction suspension will not work out-of-the-box
+	 * on all transaction managers. This in particular applies to
+	 * {@link org.springframework.transaction.jta.JtaTransactionManager},
+	 * which requires the {@code javax.transaction.TransactionManager} to be
+	 * made available it to it (which is server-specific in standard Java EE).
+	 * @see org.springframework.transaction.jta.JtaTransactionManager#setTransactionManager
+	 */
+	NOT_SUPPORTED(TransactionDefinition.PROPAGATION_NOT_SUPPORTED),总是非事务地执行，并挂起任何存在的事务。
+
+	/**
+	 * Execute non-transactionally, throw an exception if a transaction exists.
+	 * Analogous to EJB transaction attribute of the same name.
+	 */
+	NEVER(TransactionDefinition.PROPAGATION_NEVER),总是非事务地执行，如果存在一个活动事务，则抛出异常。
+
+	/**
+	 * Execute within a nested transaction if a current transaction exists,
+	 * behave like PROPAGATION_REQUIRED else. There is no analogous feature in EJB.
+	 * <p>Note: Actual creation of a nested transaction will only work on specific
+	 * transaction managers. Out of the box, this only applies to the JDBC
+	 * DataSourceTransactionManager when working on a JDBC 3.0 driver.
+	 * Some JTA providers might support nested transactions as well.
+	 * @see org.springframework.jdbc.datasource.DataSourceTransactionManager
+	 */
+	NESTED(TransactionDefinition.PROPAGATION_NESTED);如果一个活动的事务存在，则运行在一个嵌套的事务中。 如果没有活动事务, 则按TransactionDefinition.PROPAGATION_REQUIRED 属性执行。
+
+
+    为什么不使用enableTransactionManagement 也能使用事务
+        在spring.factories 中有 transactionAutoConfiguration 这个类，这个自动装配类，开启了
+
+4. ComponentScan 可以指定扫描的包。用于需要注入其他包的bean
+
+5. 日志监控执行时间
+    通过切面，监控执行时间过长的service执行。 对应不同的时间做不同的日志级别。 比如3秒以上为error，2秒以上为warn
+    这是一个很好的习惯，可以及时的对执行时间过长的接口进行优化。
+    作为项目架构，要求每个项目这么做，也是可以在结果上确保接口的执行时间
