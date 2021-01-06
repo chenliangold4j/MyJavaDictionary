@@ -2,11 +2,16 @@ docker run -d -e MYSQL_ROOT_PASSWORD=123456 –-name mysql_query -v E:\docker\my
 
 dockermysql:docker create --name mysqlzx -v /root/liangzheng/data:/var/lib/mysql  -p 3306:3306 -e MYSQL_ROOT_PASSWORD=zx@$3030 mysql:5.7.28
 
-docker run --name=mysql1 -d  -v/root/zhengxie/data:/var/lib/mysql  -p 3306:3306 mysql/mysql-server
+docker run --name=mysql1 -d  -v/data/mysql:/var/lib/mysql  -p 3306:3306 mysql/mysql-server
+
+docker run --name=mysql1 -d  -v/data/mysql:/var/lib/mysql  -p 3306:3306 mysql:8.0.0
+docker run -d -e MYSQL_ROOT_PASSWORD=password@124 –-name mysql_query -v/data/mysql:/var/lib/mysql -p 3306:3306 mysql:8.0.0
+
 
     修改协议
-    ALTER USER 'root'@'%' IDENTIFIED BY 'zhengxie!#2020' PASSWORD EXPIRE NEVER;
-    ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'zhengxie!#2020';
+    alter user 'root'@'%' identified by 'password@124'
+    ALTER USER 'root'@'%' IDENTIFIED BY 'password@124' PASSWORD EXPIRE NEVER;
+    ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'password@124';
     FLUSH PRIVILEGES;
 
 

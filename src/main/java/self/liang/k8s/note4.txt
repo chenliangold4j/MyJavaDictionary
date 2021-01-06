@@ -12,8 +12,6 @@
  安装epel-release   (EPEL (Extra Packages for Enterprise Linux)是基于Fedora的一个项目，为“红帽系”的操作系统提供额外的软件包，适用于RHEL、CentOS和Scientific Linux.通过epel源可以安装大部分的软件包，)
     yum install epel-release
 
-
-
 4.dns 服务初始化  (详情看dns相关课程)
     1.安装bind9 yum install bind -y
     2.配置bind9
