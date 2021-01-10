@@ -96,3 +96,214 @@
             }
 6.高可用
      keepAlived nginx
+
+
+7. 进程模型
+    master 进程
+        只有一个,监控worker，如果worker挂了，从新拉起
+    worker 进程
+        默认只有一个:在开始的地方配置.
+
+        :~# ps -ef | grep nginx
+        root      1460     1  0  2020 ?        00:00:00 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
+        root      1462  1460  0  2020 ?        00:00:03 nginx: worker process
+
+
+        nginx -t 检查配置文件
+        nginx -s reload
+
+
+
+
+8.worker 抢占机制
+    每一个client进来之后，会有一个 accept_mutex 的锁，worker进程通过抢占这个锁来处理client
+
+    worker 使用了epoll模型，和netty的reactor模式相似
+
+
+        events {
+            user epoll; #默认
+            worker_connections  1024;
+        }
+
+        worker_connections 是每个worker允许连接客户端最大连接数
+
+
+
+9. 配置文件小解
+user nginx;                                                             #执行 worker 进程的用户
+worker_processes auto;                                                  # worker进程数量，如果但是作为nginx服务器，可以配置与核心数量，一样。或者自动
+error_log /var/log/nginx/error.log;                                     # 错误日志目录
+#error_log /var/log/nginx/error.log notice ;( 日志级别：debug ,info,notice,error crit)  # 错误日志目录 指定了日志级别
+
+pid /run/nginx.pid;                                                     # nginx的pid文件  这里目录不存在会报错 ，创建目录即可
+
+# Load dynamic modules. See /usr/share/doc/nginx/README.dynamic.
+include /usr/share/nginx/modules/*.conf;
+
+events {                                                                # 默认epoll
+    worker_connections 1024;                                            # 但worker处理的连接数量
+}
+
+http {
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';     # 日志格式
+
+    access_log  /var/log/nginx/access.log  main;                        # access.log 格式为 main
+
+    sendfile            on;                                             # 用于文件高效传输
+    tcp_nopush          on;                                             # 和sendfile 一起使用，数据包累计一定大小再发送
+    tcp_nodelay         on;                                             #
+    keepalive_timeout   65;                                             # 客户端连接服务器超时时间； 65秒keepalive
+    types_hash_max_size 2048;                                           #
+
+    #gzip on ;                                                          # 压缩传输
+
+    include             /etc/nginx/mime.types;                          # 包含了type类型，当web服务器收到静态的资源文件请求时，
+                                                                          依据请求文件的后缀名在服务器的MIME配置文件中找到对应的MIME Type，
+                                                                          再根据MIME Type设置HTTP Response的Content-Type，然后浏览器根据Content-Type的值处理文件。
+    default_type        application/octet-stream;                       # 默认type类型
+
+    # Load modular configuration files from the /etc/nginx/conf.d directory.
+    # See http://nginx.org/en/docs/ngx_core_module.html#include
+    # for more information.
+    include /etc/nginx/conf.d/*.conf;                                   # 通过包含文件的方式配置
+
+    server {
+        listen       80 default_server;
+        listen       [::]:80 default_server;
+        server_name  _;                                                 # 可以匹配相同端口的不同域名
+        root         /usr/share/nginx/html;                             # 文件路径前缀
+
+        # Load configuration files for the default server block.
+        include /etc/nginx/default.d/*.conf;
+
+        location / {
+        }
+
+        error_page 404 /404.html;
+        location = /404.html {
+        }
+
+        error_page 500 502 503 504 /50x.html;
+        location = /50x.html {
+        }
+    }
+
+# Settings for a TLS enabled server.
+#
+#    server {
+#        listen       443 ssl http2 default_server;
+#        listen       [::]:443 ssl http2 default_server;
+#        server_name  _;
+#        root         /usr/share/nginx/html;
+#
+#        ssl_certificate "/etc/pki/nginx/server.crt";
+#        ssl_certificate_key "/etc/pki/nginx/private/server.key";
+#        ssl_session_cache shared:SSL:1m;
+#        ssl_session_timeout  10m;
+#        ssl_ciphers HIGH:!aNULL:!MD5;
+#        ssl_prefer_server_ciphers on;
+#
+#        # Load configuration files for the default server block.
+#        include /etc/nginx/default.d/*.conf;
+#
+#        location / {
+#        }
+#
+#        error_page 404 /404.html;
+#        location = /404.html {
+#        }
+#
+#        error_page 500 502 503 504 /50x.html;
+#        location = /50x.html {
+#        }
+#    }
+
+}
+
+10.nginx 常用命令
+    ./nginx -s stop  # 暴力关闭
+    ./nginx -s quit  # 优雅关闭
+    ./nginx -t       # 检查配置文件
+    ./nginx -v       # version
+    ./nginx -V       # version detail
+    ./nginx -h       # help
+    ./nginx -c       # 指定配置文件
+
+
+11. 日志分割
+       这里能看到pid的作用
+       1. shell脚本  然后使用linux 定时任务（crontab）
+
+        #/bin/bash
+        set -e   #脚本执行，遇到错就退出，不再往下执行
+
+        sleep 1 # 配合定时任务，0 点过一秒再开始切割任务
+        yesterday=$(date -d 'yesterday' +%Y-%m-%d)  #取得服务器当前时间
+        ng_logs_dir='/var/log/nginx'  #nginx 日志文件目录
+
+        if [ -d $ng_logs_dir ];then    #判断日志目录是否存在
+          cd $ng_logs_dir
+          mv access.log  access_${yesterday}.log  #通过 mv 命令将日志移动到分割后的日志，error 日志我一般不做切割
+          kill -USR1 $(cat /usr/local/nginx/logs/nginx.pid)  #发送 kill -USR1 信号给 Nginx 的主进程号，让 Nginx 重新生成一个新的日志文件
+          sleep 1
+          tar -czf  access_${yesterday}.log.tar.gz access_${yesterday}.log  #把旧的日志打成压缩包
+          rm -f  access_${yesterday}.log  #已有压缩包，删除压缩前的日志
+        else
+          echo "日志目录不存在，请检查"
+          exit 0
+        fi
+
+
+
+12.nginx 静态资源服务器
+
+    配置路径有 root 和 alias 两种方式
+
+    server {
+        listen 90;
+        server_name localhost;
+        location /upload/ {
+            alias /tools/nginx/2/image1/;           #别名，/upload/直接对应 /images1/ 不会再后台再加upload
+            autoindex on;
+        }
+
+    }
+
+    server{
+        listen      80;
+        server_name k8syaml.phantom5702.com;
+        location / {
+            autoindex on;
+            default_type text/plain;
+            root /data/k8syaml;
+        }
+    }
+
+13.压缩
+    #开启
+    gzip on;
+    # 限制最小压缩，夏鸥1字节文件不会压缩
+    gzip_min_length 1;
+    #值越大，压缩比越大，cpu消耗越高， 3 用着还行
+    gzip_comp_level 1-9;
+    #需要压缩的文件类型
+    gzip_types text/plain application/x-javascript text/css application/xml text/javascript application/x-httpd-php application/javascript application/json;
+
+
+    指令	                                                        说明	                                                                默认值
+    gzip on/off	                                             开启/关闭gzip压缩	                                                 默认是off
+    gzip_min_length 1k	                                     允许压缩的页面最小字节数	                                             默认为0
+    gzip_buffers 4 16k	                            系统获取几个单位的缓存用于存储gzip的压缩结果数据流，4 16k
+                                                    代表以16k为单位，按照原始数据大小以16k为单位的4倍申请内存
+    gzip_http_version 1.1	                                设置http1.1协议才进行压缩	                                             默认为1.1
+    gzip_comp_level 6	                            表示gzip的压缩级别，范围是1-9，数据越大，压缩的越小，耗CPU，传输更快，一般选择适中的级别	 默认为1
+    gzip_types text/plain application/x-javascript
+     text/css application/xml text/javascript
+     application/x-httpd-php
+     application/javascript application/json	  设置哪种类型可以进行压缩，需要什么类型可以在参考nginx.conf同目录下的mime.types文件	      默认是text/html
+    gzip_disable “MSIE [1-6].”	                  禁用gzip的条件，这里表示禁用IE1-6的版本，                                             因为低版本不支持gzip
+    gzip_vary on	                              给代理服务器用的，有的浏览器支持压缩，有的不支持，所以避免浪费不支持的也压缩，
+                                                   所以根据客户端的HTTP头来判断是否需要压缩

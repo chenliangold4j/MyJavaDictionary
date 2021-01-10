@@ -1,0 +1,10 @@
+1.https://cron.qqe2.com/
+ 这个网址可以生成定时任务的表达式
+
+
+2.hibernate-validator
+  @Valid注解即可验证 ， 结果放在参数  BindingResult里面 判断里面错误信息即可， 使用BindingResult 可以把错误都拿出来。
+
+3.后台注意校验文件格式，防止执行脚本
+
+4.

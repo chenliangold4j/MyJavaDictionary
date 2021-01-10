@@ -1,0 +1,85 @@
+14.location
+
+    location / {
+           root html;
+           index index.html
+     }
+
+    # =号精确匹配  这里只能显示  /home/img/face1.png  不能访问同目录下的face2.png
+     location  = /img/face1.png {
+            root /home;
+     }
+
+     # 正则匹配  ~区分大小些的正则匹配 ~*不区分大小写     这里所有的图片都会到home下
+     location  ~*  \.(GIF|PNG|BMP|JPG|JPEG){
+             root /home;
+     }
+
+      #^~ 标识符后面跟一个字符串。Nginx将在这个字符串匹配后停止进行正则表达式的匹配.即：这个路径不使用正则
+      #  用户只能请求img下的资源
+     location  ^~  /img  {
+          root /home;
+     }
+
+15.nginx 跨域
+    #不推荐 ‘*' ，会导致安全问题
+    add_header Access-Control-Allow-Origin  *;
+    # 如果需要带Cookie，需设置：
+    add_header Access-Control-Allow-Credentials true;
+    add_header Access-Control-Allow-Headers X-Requested-With 或者 *;
+    add_header Access-Control-Allow-Methods GET,POST,OPTIONS 或者 *;
+
+
+    1. Access-Control-Allow-Origin
+    服务器默认是不被允许跨域的。给Nginx服务器配置`Access-Control-Allow-Origin *`后，表示服务器可以接受所有的请求源（Origin）,即接受所有跨域的请求。
+    2. Access-Control-Allow-Headers 是为了防止出现以下错误：
+    Request header field Content-Type is not allowed by Access-Control-Allow-Headers in preflight response.
+    这个错误表示当前请求Content-Type的值不被支持。其实是我们发起了"application/json"的类型请求导致的。这里涉及到一个概念：预检请求（preflight request）,请看下面"预检请求"的介绍。
+    3. Access-Control-Allow-Methods 是为了防止出现以下错误：
+    Content-Type is not allowed by Access-Control-Allow-Headers in preflight response.
+    4.给OPTIONS 添加 204的返回，是为了处理在发送POST请求时Nginx依然拒绝访问的错误
+    发送"预检请求"时，需要用到方法 OPTIONS ,所以服务器需要允许该方法。
+
+
+16.静态资源防盗链
+     location ~ \.(jpg|png|gif|jpeg)$ {
+          #对源站点验证
+          valid_referers *.phantom5702.com;
+          #非法引入会进入下方判断
+          if ($invalid_referer) {
+             return 403;
+          }
+     }
+
+
+17.nginx模块化
+    nginx -> nginx core ----> http------------------->event module
+                |                |------------------->phase handler
+                |                |------------------->output filter
+                |                |------------------->upstream
+                |                |------------------->load balancer
+                |                |------------------->extend module
+                |
+                |---> mail
+
+
+    nginx 的编译文件的obj下面有其他模块的配置 ngx_modules.c
+    之后分布式文件系统需要添加模块
+    src 里面有源码
+
+18.负载均衡
+
+    常用的四层负载：
+        F5   LVS   Haproxy   nginx
+
+    常用的七层负载：
+        nginx Haproxy  apache  DNS地域负载均衡
+
+        所谓DNS地域是基于地理的负载均衡 例子: 北方的用户访问北京的机房, 南方的用户访问深圳的机房,
+        DNS负载均衡的本质是DNS解析同一个域名可以访问不同的IP地址
+        例如: 同样是www.baidu.com,北京用户解析后获取的地址是61.135.165.224(北京机房IP),南方用户解析后获取的地址是14.215.177.38(深圳机房IP)
+
+        DNS负载均衡实现简单,成本低,但也存在粒度太粗、负载均衡算法少等缺点。
+
+
+
