@@ -1,0 +1,1 @@
+2 nginx  笔记放在nginx目录里面

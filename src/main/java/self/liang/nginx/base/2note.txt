@@ -82,4 +82,219 @@
         DNS负载均衡实现简单,成本低,但也存在粒度太粗、负载均衡算法少等缺点。
 
 
+19.使用jmeter测试单节点与集群的并发异常率
+    异常率的临界点 一般为 20% ~ 30% 左右。
+
+20.upstream
+      Nginx的upstream支持5种分配方式，下面将会详细介绍，其中，前三种为Nginx原生支持的分配方式，后两种为第三方支持的分配方式：
+    1、轮询
+            轮询是upstream的默认分配方式，即每个请求按照时间顺序轮流分配到不同的后端服务器，如果某个后端服务器down掉后，能自动剔除。
+            upstream backend {
+                server 192.168.1.101:8888;
+                server 192.168.1.102:8888;
+                server 192.168.1.103:8888;
+            }
+    2、weight
+            轮询的加强版，即可以指定轮询比率，weight和访问几率成正比，主要应用于后端服务器异质的场景下。
+            upstream backend {
+                server 192.168.1.101 weight=1;
+                server 192.168.1.102 weight=2;
+                server 192.168.1.103 weight=3;
+            }
+    3、ip_hash
+            每个请求按照访问ip（即Nginx的前置服务器或者客户端IP）的hash结果分配，这样每个访客会固定访问一个后端服务器，可以解决session一致问题。
+            upstream backend {
+                ip_hash;
+                server 192.168.1.101:7777;
+                server 192.168.1.102:8888;
+                server 192.168.1.103:9999;
+            }
+    4、fair
+            fair顾名思义，公平地按照后端服务器的响应时间（rt）来分配请求，响应时间短即rt小的后端服务器优先分配请求。
+            upstream backend {
+                server 192.168.1.101;
+                server 192.168.1.102;
+                server 192.168.1.103;
+                fair;
+            }
+    5、url_hash
+            与ip_hash类似，但是按照访问url的hash结果来分配请求，使得每个url定向到同一个后端服务器，主要应用于后端服务器为缓存时的场景下。
+            upstream backend {
+                server 192.168.1.101;
+                server 192.168.1.102;
+                server 192.168.1.103;
+                hash $request_uri;
+                hash_method crc32;
+            }
+            其中，hash_method为使用的hash算法，需要注意的是：此时，server语句中不能加weight等参数。
+            关于，如何在负载均衡中使用upstream请参看这里。
+
+    6. least_conn; 最少连接数优先
+
+    指令
+        max_conns       最大连接数，
+        down            down：表示当前server已停用
+        max_fails       max_fails和fail_timeout一般会关联使用，如果某台server在fail_timeout时间内出现了max_fails次连接失败
+        fail_timeout    ，那么Nginx会认为其已经挂掉了，从而在fail_timeout时间内不再去请求它，fail_timeout默认是10s，max_fails默认是1，
+                        即默认情况是只要发生错误就认为服务器挂掉了，如果将max_fails设置为0，则表示取消这项检查。
+        slow_start      慢启动，必须有权重
+        backup          备用机器
+
+        举例说明如下：
+        upstream backend {
+            server    backend1.example.com    weight=5;
+            server    127.0.0.1:8080               max_fails=3 fail_timeout=30s;
+            server    unix:/tmp/backend3;
+        }
+
+21. 使用keepalive 提高吞吐
+        再upstream 里面可以配置 keepalive
+        keepalive  32（要保持的连接数量）
+
+        实验环境吞吐翻倍
+
+22.proxy_set_header
+         upstream http_server_pool {
+                server 192.168.1.2:8080 weight=2 max_fails=2 fail_timeout=30s;
+                server 192.168.1.3:8080 weight=3 max_fails=2 fail_timeout=30s;
+                server 192.168.1.4:8080 weight=4 max_fails=2 fail_timeout=30s;
+            }
+    #    一个虚拟主机，用来反向代理http_server_pool这组服务器
+        server {
+            listen       80;
+    #        外网访问的域名
+            server_name  www.test.com;
+            location / {
+    #           后端服务器返回500 503 404错误，自动请求转发到upstream池中另一台服务器
+                proxy_next_upstream error timeout invalid_header http_500 http_503 http_404;
+                proxy_pass http://http_server_pool;
+                proxy_set_header            Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For  $proxy_add_x_forwarded_for;
+            }
+            access_log  logs/www.test.com.access.log  combined;
+        }
+
+        proxy_set_header用来重定义发往后端服务器的请求头。
+        语法格式：
+        proxy_set_header Field Value;
+        Value值可以是包含文本、变量或者它们的组合。常见的设置如：
+        proxy_set_header Host $proxy_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        # proxy_set_header            X-Forwarded-For $http_x_forwarded_for;
+        注意：在nginx的配置文件中，如果当前模块中没有proxy_set_header的设置，则会从上级别继承配置。继承顺序为：http, server, location。
+
+        1. proxy_set_header    X-real-ip $remote_addr;
+        我在查阅资料时，有一本名叫《实战nginx》的书，作者张晏，这本书上有这么一段话“经过反向代理后，由于在客户端和web服务器之间增加了中间层，因此web服务器无法直接拿到客户端的ip，
+        通过$remote_addr变量拿到的将是反向代理服务器的ip地址”。这句话的意思是说，当你使用了nginx反向服务器后，在web端使用request.getRemoteAddr()（本质上就是获取$remote_addr），
+        取得的是nginx的地址，即$remote_addr变量中封装的是nginx的地址，当然是没法获得用户的真实ip的，但是，nginx是可以获得用户的真实ip的，
+        也就是说nginx使用$remote_addr变量时获得的是用户的真实ip，如果我们想要在web端获得用户的真实ip，就必须在nginx这里作一个赋值操作，如下：
+
+        proxy_set_header            X-real-ip $remote_addr;
+
+        其中这个X-real-ip是一个自定义的变量名，名字可以随意取，这样做完之后，用户的真实ip就被放在X-real-ip这个变量里了，然后，在web端可以这样获取：
+
+        request.getAttribute("X-real-ip")
+
+        这样就明白了吧。
+
+        2.  proxy_set_header            X-Forwarded-For $proxy_add_x_forwarded_for;    # 为了各种转发也能获取到client 的真实ip
+        意思是增加一个$proxy_add_x_forwarded_for到X-Forwarded-For里去，注意是增加，而不是覆盖，当然由于默认的X-Forwarded-For值是空的，
+        所以我们总感觉X-Forwarded-For的值就等于$proxy_add_x_forwarded_for的值，实际上当你搭建两台nginx在不同的ip上，并且都使用了这段配置，
+        那你会发现在web服务器端通过request.getAttribute("X-Forwarded-For")获得的将会是客户端ip和第一台nginx的ip。
+
+        那么$proxy_add_x_forwarded_for又是什么？
+
+        $proxy_add_x_forwarded_for变量包含客户端请求头中的"X-Forwarded-For"，与$remote_addr两部分，他们之间用逗号分开。
+
+        举个例子，有一个web应用，在它之前通过了两个nginx转发，www.linuxidc.com 即用户访问该web通过两台nginx。
+
+        在第一台nginx中,使用
+
+        proxy_set_header            X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        现在的$proxy_add_x_forwarded_for变量的"X-Forwarded-For"部分是空的，所以只有$remote_addr，而$remote_addr的值是用户的ip，
+        于是赋值以后，X-Forwarded-For变量的值就是用户的真实的ip地址了。
+
+        到了第二台nginx，使用
+
+        proxy_set_header            X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        现在的$proxy_add_x_forwarded_for变量，X-Forwarded-For部分包含的是用户的真实ip，$remote_addr部分的值是上一台nginx的ip地址，
+        于是通过这个赋值以后现在的X-Forwarded-For的值就变成了“用户的真实ip，第一台nginx的ip”，这样就清楚了吧。
+
+        最后我们看到还有一个$http_x_forwarded_for变量，这个变量就是X-Forwarded-For，由于之前我们说了，默认的这个X-Forwarded-For是为空的，所以当我们直接使用proxy_set_header
+        X-Forwarded-For $http_x_forwarded_for时会发现，web服务器端使用request.getAttribute("X-Forwarded-For")获得的值是null。
+        如果想要通过request.getAttribute("X-Forwarded-For")获得用户ip，就必须先使用proxy_set_header       X-Forwarded-For $proxy_add_x_forwarded_for;
+        这样就可以获得用户真实ip。
+
+22.nginx控制浏览器缓存
+
+     默认会有缓存，多次请求状态码前台看到的是304状态
+     expires[time]
+
+     location /static {
+        alias /home/img;
+        expires 10s;  # 缓存10s
+     }
+
+     设置设个之后 response headers 里面有  cache-control : max-age = 10
+                                        expires: 过期时间
+
+
+     expires @[time]  @22h30m  22点30刷新
+     设置设个之后 response headers 里面有   expires :
+
+
+     expires -[time]   -1h 距离现在的一个小时之前就失效了
+
+     expires epoch      no-cache
+     expires off        默认，nginx关闭。 浏览器使用自己的缓存设置
+     expires max        永不过期
+
+23.nginx 缓存后台服务的文件
+    在nginx.conf文件中添加如下代码：
+    http{
+        ......
+        proxy_cache_path/data/nginx/tmp-test levels=1:2 keys_zone=tmp-test:100m inactive=7d max_size=1000g;
+    }
+    代码说明：
+    proxy_cache_path 缓存文件路径
+
+    levels 设置缓存文件目录层次；levels=1:2 表示两级目录
+
+    keys_zone 设置缓存名字和共享内存大小
+
+    inactive 在指定时间内没人访问则被删除
+
+    m ax_size 最大缓存空间，如果缓存空间满，默认覆盖掉缓存时间最长的资源。
+
+    当配置好之后，重启nginx，如果不报错，则配置的proxy_cache会生效
+
+    查看   proxy_cache_path / data/ nginx / 目录，
+    会发现生成了 tmp -test 文件夹。
+
+    ！如何使用proxy_cache
+    在你对应的nginx vhost server配置文件中添加如下代码:
+    location /tmp-test/ {
+      proxy_cache tmp-test;
+      proxy_cache_valid  200 206 304 301 302 10d;
+      proxy_cache_key $uri;
+      proxy_set_header Host $host:$server_port;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_passhttp://127.0.0.1:8081/media_store.php/tmp-test/;
+    }
+    配置项介绍：
+    Proxy_cache tmp -test 使用名为 tmp -test 的对应缓存配置
+    proxy_cache_valid  200 206 304 301 302 10d; 对httpcode为200…的缓存10天
+
+    proxy_cache_key $uri  定义缓存唯一key,通过唯一key来进行hash存取
+
+    proxy_set_header  自定义http header头，用于发送给后端真实服务器。
+
+    proxy_pass   指代理后转发的路径，注意是否 需要 最后的 /
+
+    到这里，最基本的 proxy_cache 功能就配置成功了。当uri成功匹配到该location,则proxy_cache就会生效。
 
