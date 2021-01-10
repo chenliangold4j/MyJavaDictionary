@@ -1,0 +1,154 @@
+26. keepalived 双机主备
+
+    问题是云服务器，不方便使用keepalived,
+
+    1. 安装
+      yum install keepalived
+      程序环境：
+
+      主配置文件：/etc/keepalived/keepalived.conf
+      主程序文件：/usr/sbin/keepalived
+      Unit File：keepalived.service
+      Unit File的环境配置文件：/etc/sysconfig/keepalived
+
+
+    2.配置文件
+      /etc/keepalived/keepalived.conf
+
+      配置文件组件部分：
+
+                  TOP HIERACHY
+                      GLOBAL CONFIGURATION
+                          Global definitions
+                          Static routes/addresses
+                      VRRPD CONFIGURATION
+                          VRRP synchronization group(s)：vrrp同步组；
+                          VRRP instance(s)：每个vrrp instance即一个vrrp路由器；
+                      LVS CONFIGURATION
+                          Virtual server group(s)
+                          Virtual server(s)：ipvs集群的vs和rs；
+
+
+    4：man keepalived.conf
+        可以查看配置文件的具体使用细则
+        第一个配置段：GLOBAL CONFIGURATION
+        第二配置段：VRRPD CONFIGURATION
+
+        此地址段为配置keepalived的核心配置段。主要包括两块内容
+        VRRP instance(s)：vrrp实例
+
+        一个vrrp instance 就是一个vrrp路由器
+        VRRP synchronization group(s)：虚拟路由器同步组
+
+           一个主机生产中一般需要配置两个以上的虚拟路由器。此配置可以实现将多个虚拟路由器编制在一个组内，可以实现，当一个虚拟路由器偏移至另一台主机时，其余的虚拟路由器（vip）也同时偏移至另一台主机上。
+        inside_network # name of vrrp_instance (below) 内网网络
+
+       第三段：LVS CONFIGURATION
+
+       高可用LVS时使用。若使用Nginx时不用关注此块
+
+    5. 配置语法
+         配置虚拟路由器：
+                      vrrp_instance <STRING> {
+                          ....
+                      }
+
+          专用参数：
+          state MASTER|BACKUP：当前节点在此虚拟路由器上的初始状态；只能有一个是MASTER，余下的都应该为BACKUP；
+          interface IFACE_NAME：绑定为当前虚拟路由器使用的物理接口；
+          virtual_router_id VRID：当前虚拟路由器的惟一标识，范围是0-255；
+          priority 100：当前主机在此虚拟路径器中的优先级；范围1-254；
+          advert_int 1：vrrp通告的时间间隔；
+          authentication {
+                  auth_type AH|PASS
+                  auth_pass <PASSWORD>
+                  }
+          virtual_ipaddress {
+              <IPADDR>/<MASK> brd <IPADDR> dev <STRING> scope <SCOPE> label <LABEL>
+                      192.168.200.17/24 dev eth1
+                      192.168.200.18/24 dev eth2 label eth2:1
+                          }
+              track_interface {
+              eth0
+              eth1
+                              ...
+          }
+          配置要监控的网络接口，一旦接口出现故障，则转为FAULT状态；
+          nopreempt：定义工作模式为非抢占模式；
+          preempt_delay 300：抢占式模式下，节点上线后触发新选举操作的延迟时长；
+
+          定义通知脚本：
+          notify_master <STRING>|<QUOTED-STRING>：当前节点成为主节点时触发的脚本
+          notify_backup <STRING>|<QUOTED-STRING>：当前节点转为备节点时触发的脚本；
+          notify_fault <STRING>|<QUOTED-STRING>：当前节点转为“失败”状态时触发的脚本；
+
+          notify <STRING>|<QUOTED-STRING>：通用格式的通知触发机制，一个脚本可完成以上三种状态的转换时的通知；
+
+    6：通知机制
+        通知机制：
+        notify_master：to be master时，调用指定的脚本完成辅助操作，，以“通知”为核心目标
+        notify_backup to be backup时，调用指定的脚本完成辅助操作，，以“通知”为核心目标
+        notify_fault
+
+        通知脚本的使用方式：
+        示例通知脚本：
+            #!/bin/bash
+            #
+            contact='root@localhost'
+
+            notify() {
+            local mailsubject="$(hostname) to be $1, vip floating"
+            local mailbody="$(date +'%F %T'): vrrp transition, $(hostname) changed to be $1"
+            echo "$mailbody" | mail -s "$mailsubject" $contact
+            }
+
+            case $1 in
+            master)
+                notify master
+                        ;;
+            backup)
+                notify backup
+                        ;;
+            fault)
+                notify fault
+                    ;;
+                    *)
+                echo "Usage: $(basename $0) {master|backup|fault}"
+                    exit 1
+                    ;;
+                esac
+
+        脚本的调用方法：
+            notify_master "/etc/keepalived/notify.sh master"
+            notify_backup "/etc/keepalived/notify.sh backup"
+            notify_fault "/etc/keepalived/notify.sh fault"
+
+    7.D类地址
+      D类IP地址第一个字节以“1110”开始 。它并不指向特定的网络，目前这一类地址被用在多点广播（Multicast）中。多点广播地址用来一次寻址一组计算机，它标识共享同一协议的一组计算机。
+      D类地址又分为三种类型：即专用地址、公用地址和私用地址；其中专用地址（224.0.0.0-224.0.0.255）用于网络协议组的广播，公用地址（224.0.1.0-238.255.255.255）用于其它组播，私用地址（239.0.0.0-239.255.255.255）用于测试。
+
+      在keepdlived的配置文件中
+      vrrp_mcast_group4 224.24.24.18
+      此地址用于向共同使用vrrp协议的主机 不断的广播自身的ip地址，及优先级。优先级高的主机将会使用vip
+
+      在现实中，会使用一根网线将 此两台主机直接绑定在一起，实现此类功能
+
+
+    找个文章配吧
+
+
+    2. 双主热备
+        dns轮询两个ip地址到同一个域名。
+
+
+            ---------> 虚拟ip 1--  --> nginx1
+        dns |                    x
+            ---------> 虚拟ip 2--  --> nginx2
+
+        这样就互为主备
+
+        dns解析两个地址到同一个域名，就是dns的负载均衡
+
+
+
+

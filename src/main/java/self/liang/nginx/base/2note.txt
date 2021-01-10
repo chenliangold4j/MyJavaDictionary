@@ -298,3 +298,68 @@
 
     到这里，最基本的 proxy_cache 功能就配置成功了。当uri成功匹配到该location,则proxy_cache就会生效。
 
+24.https
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    sendfile        on;
+    keepalive_timeout  65;
+        server {
+        listen       80;
+        server_name  www.phantom5702.com;
+        charset utf-8;
+        #charset koi8-r;
+        rewrite ^(.*) https://$server_name$1 permanent;
+
+        #access_log  logs/host.access.log  main;
+
+    }
+        upstream mytomcat {
+          #weight=5;
+          server 127.0.0.1:8080;
+        }
+    # HTTPS server
+    #
+    server {
+        listen       443;
+        ssl on;
+        server_name  www.phantom5702.com;
+        client_max_body_size 10m;
+        ssl_certificate      /root/nginx/4038901_www.phantom5702.com.pem;            #阿里云的免费证书
+        ssl_certificate_key  /root/nginx/4038901_www.phantom5702.com.key;            #阿里云的免费证书
+
+
+        ssl_session_cache    shared:SSL:1m;    # ssl会话 cache
+        ssl_session_timeout  5m;               # 会话超时时间
+
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+        ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
+        ssl_prefer_server_ciphers  on;
+
+        location /{
+        proxy_redirect off;
+        proxy_set_header Host $host;
+        proxy_ssl_server_name on;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        #看来这里要写死域名才行啊
+        proxy_pass http://www.phantom5702.com:8080;
+        }
+    }
+}
+
+25. 动静分离
+    1.cdn
+
+    2.nginx
+        1. 跨域
+            nginx
+            springboot
+        2. 分布式会话
+            redis
+
+
+    这里课程用的是，使用api.host.com 的方式代理api

@@ -1,0 +1,69 @@
+2 nginx  笔记放在nginx目录里面
+
+
+
+
+lvs
+
+1. 为什么使用lvs加nginx
+    1.lvs 基于 四层  ，工作效率高
+        甚至可以高几十倍
+
+    2.单个nginx承受不了压力，需要nginx集群
+
+    3.lvs 充当nginx集群的调度者，所以nginx keepalive在高流量下，还是一个后端服务
+
+    4.nginx接受请求来回，lvs可以只接受，不响应。
+        lvs转发给nginx之后，回来的流量不用处理
+
+    lvs通过ipvs实现
+
+2.lvs 三种模式             # lvs是真正处于公网下的
+    nat 基于网络地址的转换
+        这种模式会有请求的来回，即自己处理回来的包
+
+    tun ip隧道模式
+        这种模式，nginx响应会直接返回给用户。
+        但是nginx会暴露到公网
+
+    DR  直接路由
+        nginx将响应统一返回给router(路由)
+        router和lvs 具有相同的虚拟ip 。 这样client看到的是头一个ip过来的
+
+3. 配置dr
+    需要
+    虚拟ip  通过复制网卡文件配置ip
+
+    arp-ignore: ARP响应级别 （请求响应）
+        0： 只要配置了本机ip，就能响应请求
+        1： 请求的目标地址到达对应的网络端口，才会响应请求。   加入nginx有虚拟IP 192.168.0.150 192.168.0.151   使用1，才能使只用150处理网络请求
+
+    arp-announce: ARP 通告行为 （返回响应）
+        0： 本机上任何网络接口都向外通告，所有的网卡都能接受到通告
+        1： 尽可能避免本网卡与不匹配的目标进行通告
+        2： 只能本网卡通告                              这里配置只有150这个ip才能响应用户请求
+
+    https://www.jianshu.com/p/eae3fd16bb6c
+    配置 /etc/sysctl.conf
+        net.ipv4..conf.all.arp_ignore = 1
+        net.ipv4..conf.default.arp_ignore = 1
+        net.ipv4..conf.lo.arp_ignore = 1
+        net.ipv4..conf.all.arp_announce = 2
+        net.ipv4..conf.default.arp_announce = 2
+        net.ipv4..conf.lo.arp_announce = 2
+
+    sysctl -p 刷新配置
+
+    ipvsadm
+        添加 ipvs配置，负载均衡到nginx
+
+
+    nginx要配置route，将150的请求转给lo网卡
+
+    lvs也可以做主备
+
+总结：
+    真实的架构是：  dns解析到不同的公网ip，  公网ip数据 通过lvs主备 然后到nginx 再到tomcat，数据返回由nginx转路由器
+
+
+
