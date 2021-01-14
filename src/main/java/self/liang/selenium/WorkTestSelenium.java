@@ -11,7 +11,8 @@ import java.util.List;
 
 public class WorkTestSelenium {
     public static ChromeDriver driver;
-//    window.navigator.webdriver
+
+    //    window.navigator.webdriver
     public static void main(String[] args) throws InterruptedException {
         getDriver();
         driver.get("http://192.168.0.170:9527");
@@ -47,5 +48,6 @@ public class WorkTestSelenium {
         options.setExperimentalOption("excludeSwitches", excludeSwitches);
         driver = new ChromeDriver(options);
     }
+
 
 }

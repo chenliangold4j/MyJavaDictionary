@@ -2,18 +2,31 @@ docker run -d -e MYSQL_ROOT_PASSWORD=123456 –-name mysql_query -v E:\docker\my
 
 dockermysql:docker create --name mysqlzx -v /root/liangzheng/data:/var/lib/mysql  -p 3306:3306 -e MYSQL_ROOT_PASSWORD=zx@$3030 mysql:5.7.28
 
-docker run --name=mysql1 -d  -v/data/mysql:/var/lib/mysql  -p 3306:3306 mysql/mysql-server
-
-docker run --name=mysql1 -d  -v/data/mysql:/var/lib/mysql  -p 3306:3306 mysql:8.0.0
 docker run -d -e MYSQL_ROOT_PASSWORD=password@124 –-name mysql_query -v/data/mysql:/var/lib/mysql -p 3306:3306 mysql:8.0.0
 
+------------------------------------------------------------------------------------------------------------------------------------
+docker run --name=mysql1 -d  -v/data/mysql:/var/lib/mysql  -p 3306:3306 mysql/mysql-server
+获取初始密码，官方这次没提用环境参数配置密码这事，是否支持我没测，按官方的来
+
+docker logs mysql1 2>&1 | grep GENERATED
+使用该命令从docker log里获取初始密码。之后访问mysql，不支持跨域，得用容器方法访问
+
+docker exec -it mysql1 mysql -uroot -p
+把刚才密码输进去进入mysql的terminal，之后就可以改密码了。
+
+alter user 'root'@'localhost' identified by 'tiyuju@2020';
+这里建议把用户的跨域也改了，毕竟咱要端口访问的。
+
+use mysql;
+update user set host='%' where user='root';
+flush privileges;
 
     修改协议
-    alter user 'root'@'%' identified by 'password@124'
-    ALTER USER 'root'@'%' IDENTIFIED BY 'password@124' PASSWORD EXPIRE NEVER;
-    ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'password@124';
+    ALTER USER 'root'@'%' IDENTIFIED BY 'tiyuju@2020' PASSWORD EXPIRE NEVER;
+    ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'tiyuju@2020';
     FLUSH PRIVILEGES;
 
+-----------------------------------------------------------------------------------------------------------------------------------------------
 
 1.mysql的语句练习：
     建立表语句：
