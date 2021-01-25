@@ -1,5 +1,6 @@
 1.docker 安装redis
-    docker run -d --name redis6379 -p 6379:6379 redis --requirepass "123456"
+    docker run -d --name redis6379 -p 6379:6379 redis:6.0.9 --requirepass "123456"
+    "REDIS_VERSION=6.0.9"
 docker run -d --name redis16379 -p 16379:6379 redis
 2.运行  redis-cli
 
