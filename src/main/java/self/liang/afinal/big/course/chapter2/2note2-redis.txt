@@ -1,0 +1,64 @@
+1.nosql 常见分类
+    1. key-value 数据库  redis,memcache
+    2. 列存储数据库       hbase,cassandra
+    3. 文档数据库         mongodb,couchdb
+    4. 图形数据库         neo4j , flockdb
+
+
+2.缓存方案对比
+    1.EHcache
+        基本java开发
+        基于jvm缓存
+        简单，轻巧
+
+        缺点：集群不支持，分布式不支持
+
+    2.memcache
+        简单的 key-value 存储
+        内存使用率高
+        多线程
+
+        缺点： 无法容灾（无法持久化）
+
+
+    3.redis
+        丰富的数据结构
+        持久化
+        主从同步
+        内存数据库
+
+        缺点：单线程
+
+3. cmd
+    看原来的redis笔记
+
+
+4.线程模型
+    单线程，多路复用
+
+5.实战的细节
+    购物车加入的是redis。。购物车读写频繁，丢失可以接受。
+    cookie数据可能和redis数据冲突，一般以cookie为准。
+
+
+
+6.redis发布订阅
+    几乎也没人用
+
+7.持久化
+    见早期笔记  RDB 和  AOF
+
+
+8.主从复制
+    命令： info replication 可以查看主从信息
+
+    修改slave配置：
+       在REPLICATION项目下
+        replicaof <masterip> <masterport> 配置主节点ip端口
+        masterauth <master-password>  设置主节点密码
+        replica-read-only yes  这个是默认，只读
+
+        修改这个三个之后重启
+
+
+

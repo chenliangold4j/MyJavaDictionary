@@ -126,7 +126,18 @@
             1.按照时间作为score这样可以时间排序信息
             2.将score作为
 
-    5.HyperLogLog  用于基数统计算法
+
+    5 list
+       lpush list1 pig cow sheep chicken duck
+       lrange list1 0 -1
+       rpush list2 pig cow sheep chicken duck
+       lrange list2 0 -1
+       lpop list1
+       rpop list1
+       还有等等命令
+
+
+    6.HyperLogLog  用于基数统计算法
         pfadd key element [element] 添加指定元素到hyperloglog中
         pfcount key [key ...] 返回给定的基数估计值
         pfmerge destkey sourcekey [sourcekey ..] 将多个kyperloglog合并为一个
