@@ -1,0 +1,2 @@
+https://stackoverflow.com/questions/16296753/can-you-run-gui-applications-in-a-docker-container
+
